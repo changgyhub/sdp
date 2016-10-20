@@ -8,7 +8,8 @@ def index(request):
     for catagory in Catagory.objects.all():
         menu[catagory.name] = list()
     for course in Course.objects.all():
-        menu[course.catagory.name].append(course)
+        if course.is_open == True:
+            menu[course.catagory.name].append(course)
     for key, values in menu.items():
         html = '<p>'+ key
         for value in values:
