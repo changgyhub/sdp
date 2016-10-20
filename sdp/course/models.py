@@ -54,14 +54,12 @@ class Instructor(Staff):
             module_list = list()
             for module in Module.objects.all():
                 if module.course.id == course_id:
-                    menu['module'][module.name] = dict()
+                    menu['module'][module] = list()
                     module_list.append(module)
             for component in Component.objects.all():
                 for module in module_list:
                     if component.module.id == module.id:
-                        menu['module'][module.name][component.name] = dict()
-                        menu['module'][module.name][component.name]['content'] = component.content
-                        menu['module'][module.name][component.name]['content_type'] = component.content_type
+                        menu['module'][module].append(component)
             return menu
     def viewMyCourses(self):
         menu = dict()
