@@ -1,0 +1,20 @@
+<html>
+<head>
+  <title>AB Credit (HK) Staff Development Platform</title>
+</head>
+<body>
+
+<h1>AB Credit (HK) Staff Development Platform</h1>
+
+<h2>All courses</h2>
+
+{% for key, values in menu.items %}
+<p>{{key}}
+  {% for value in values %}
+    <br> > <a href="/course/{{value.id}}">{{value.name}}</a>
+  {% endfor %}<p>
+{% endfor %}
+
+
+</body>
+</html>
