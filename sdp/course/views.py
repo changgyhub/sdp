@@ -16,7 +16,6 @@ def all_courses(request):
     menu = dict()
     for catagory in Catagory.objects.all():
         menu[catagory.name] = list()
-    for course in Course.objects.all():
-        if course.is_open == True:
-            menu[course.catagory.name].append(course)
+    for course in Course.objects.filter(is_open = True):
+        menu[course.catagory.name].append(course)
     return render_to_response('index.html', locals())

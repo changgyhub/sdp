@@ -19,19 +19,12 @@ class Staff(models.Model):
         menu = dict()
         for catagory in Catagory.objects.all():
             menu[catagory.name] = list()
-        for course in Course.objects.all():
-            if course.is_open == True:
-                menu[course.catagory.name].append(course)
+        for course in Course.objects.filter(is_open = True):
+            menu[course.catagory.name].append(course)
         return menu
 
     def viewCourse(self, course_id):
-        course = Course.objects.get(pk=course_id)
-        menu = dict()
-        menu['name'] = course.name
-        menu['catagory'] = course.catagory.name
-        menu['instructor'] = course.instructor.name
-        menu['description'] = course.description
-        return menu
+        return Course.objects.get(pk = course_id)
 
 
 class Participant(Staff):
@@ -42,17 +35,16 @@ class Participant(Staff):
 
     def getHistoryInfo(self):
         menu = dict()
-        for history in HistoryEnrollment.objects.all():
-            if history.participant.id == self.pk:
-                menu[history.getCourse()] = history.getInfo()
+        for history in HistoryEnrollment.objects.filter(participant__id = self.pk):
+            menu[history.getCourse()] = history.getInfo()
         return menu
 
     def getCurrentInfo(self):
         menu = dict()
-        for current in CurrentEnrollment.objects.all():
-            if current.participant.id == self.pk:
-                menu[current.getCourse()] = current.getInfo()
-                return menu  # because participant can only have one current course
+        for current in CurrentEnrollment.objects.get(participant__id = self.pk):
+            # we use get here because there can only be one current course
+            menu[current.getCourse()] = current.getInfo()
+        return menu
 
 
 class Instructor(Staff):
@@ -70,10 +62,9 @@ class Instructor(Staff):
             menu['description'] = course.description
             menu['module'] = dict()
             module_list = list()
-            for module in Module.objects.all():
-                if module.course.id == course_id:
-                    menu['module'][module] = list()
-                    module_list.append(module)
+            for module in Module.objects.filter(course__id = course_id):
+                menu['module'][module] = list()
+                module_list.append(module)
             for component in Component.objects.all():
                 for module in module_list:
                     if component.module.id == module.id:
@@ -84,29 +75,26 @@ class Instructor(Staff):
         menu = dict()
         for catagory in Catagory.objects.all():
             menu[catagory.name] = list()
-        for course in Course.objects.all():
-            if course.instructor.id == self.pk:
-                menu[course.catagory.name].append(course)
+        for course in Course.objects.filter(instructor__id = self.pk):
+            menu[course.catagory.name].append(course)
         return menu
 
 
     def openCourse(self, course_id):
         course = Course.objects.get(pk=course_id)
         if course.instructor.id == self.pk:
-            # change the course to be open
             course.is_open = True;
+            course.save()
+        else:
+            print ("TODO")
+            # TODO: fail to open a course
+            #       this should not happen actually
 
     def createCourse(self, course_name, course_info, course_catagory):
         course = Course.objects.create(catagory = course_catagory,
                 name=course_name, description=course_info, instructor = self)
-                # is_open = False as default
-
-        course = Course.objects.create(
-        name=course_name, description=course_info, instructor = self)
+        # is_open = False as default
         # here we better do some validation before we got the right
-
-        #
-        course.save()
         if (DEBUG):
             Course.objects.value_list('name', flat=True)
         return "TODO: Wang Haicheng"
