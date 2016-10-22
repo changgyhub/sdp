@@ -1,7 +1,7 @@
 from django.db import models
 
 # set for debug
-DEBUG = false
+DEBUG = False
 
 
 class Staff(models.Model):
