@@ -3,7 +3,8 @@
 <title>AB Credit (HK) Staff Development Platform</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="http://www.w3schools.com/lib/w3.css">
-<link rel="stylesheet" href="http://www.w3schools.com/lib/w3-theme-black.css">
+{% load static %}
+<link rel="stylesheet" href="{% static 'CF916F.css' %}" />
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css">
 <style>
@@ -18,22 +19,22 @@ html,body,h1,h2,h3,h4,h5,h6 {font-family: "Roboto", sans-serif}
 
 <!-- Navbar -->
 <div class="w3-top">
-  <ul class="w3-navbar w3-theme w3-top w3-left-align w3-large">
+  <ul class="w3-navbar sdp-main-color w3-top w3-left-align w3-large">
     <li class="w3-opennav w3-right w3-hide-large">
-      <a class="w3-hover-white w3-large w3-theme-l1" href="javascript:void(0)" onclick="w3_open()"><i class="fa fa-bars"></i></a>
+      <a class="w3-hover-white w3-large sdp-main-color" href="javascript:void(0)" onclick="w3_open()"><i class="fa fa-bars"></i></a>
     </li>
-    <li><a href="/" class="w3-theme-l1">AB Credit (HK) Staff Development Platform</a></li>
-    <li class="w3-hide-small"><a href="#" class="w3-hover-white">About</a></li>
-    <li class="w3-hide-small"><a href="#" class="w3-hover-white">Values</a></li>
-    <li class="w3-hide-small"><a href="#" class="w3-hover-white">News</a></li>
-    <li class="w3-hide-small"><a href="#" class="w3-hover-white">Contact</a></li>
-    <li class="w3-hide-medium w3-hide-small"><a href="#" class="w3-hover-white">Clients</a></li>
-    <li class="w3-hide-medium w3-hide-small"><a href="#" class="w3-hover-white">Partners</a></li>
+    <li><a href="/" class="sdp-main-color-dark">AB Credit (HK) Staff Development Platform</a></li>
+    <li class="w3-hide-small"><a href="#" class="sdp-main-color">About</a></li>
+    <li class="w3-hide-small"><a href="#" class="sdp-main-color">Values</a></li>
+    <li class="w3-hide-small"><a href="#" class="sdp-main-color">News</a></li>
+    <li class="w3-hide-small"><a href="#" class="sdp-main-color">Contact</a></li>
+    <li class="w3-hide-medium w3-hide-small"><a href="#" class="sdp-main-color">Clients</a></li>
+    <li class="w3-hide-medium w3-hide-small"><a href="#" class="sdp-main-color">Partners</a></li>
   </ul>
 </div>
 
 <!-- Sidenav -->
-<nav class="w3-sidenav w3-collapse w3-theme-l5 w3-animate-left" style="z-index:3;width:250px;margin-top:51px;" id="mySidenav">
+<nav class="w3-sidenav w3-collapse sdp-main-color-xxlight w3-animate-left" style="z-index:3;width:250px;margin-top:51px;" id="mySidenav">
   <a href="javascript:void(0)" onclick="w3_close()" class="w3-right w3-xlarge w3-padding-large w3-hover-black w3-hide-large" title="close menu">
     <i class="fa fa-remove"></i>
   </a>
@@ -76,13 +77,10 @@ html,body,h1,h2,h3,h4,h5,h6 {font-family: "Roboto", sans-serif}
   </div>
 
   <footer id="myFooter">
-    <div class="w3-container w3-theme-l2 w3-padding-32">
+    <div class="w3-container sdp-main-color w3-padding-32">
       <h4>Footer</h4>
     </div>
 
-    <div class="w3-container w3-theme-l1">
-      <p>Powered by <a href="http://www.w3schools.com/w3css/default.asp" target="_blank">w3.css</a></p>
-    </div>
   </footer>
 
 <!-- END MAIN -->
