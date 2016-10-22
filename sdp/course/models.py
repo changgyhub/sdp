@@ -110,6 +110,9 @@ class Instructor(Staff):
             # is_open if needed
         course = Course.objects.create(
         name=course_name, description=course_info, instructor = self)
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
         # here we better do some validation before we got the right
 
