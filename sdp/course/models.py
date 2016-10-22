@@ -89,16 +89,15 @@ class Instructor(Staff):
                 menu[course.catagory.name].append(course)
         return menu
 
-    def createCourse(self, course_name, course_info):
-        # question : is the course_info the description?
-        # do we need to specifiy the course category?
-        # what is the return ? null?
-        # is_open need to verify from the instructor
-        # TODO: change the course_info,
-            # category
-            # is_open if needed
-        course = Course.objects.create(
-        name=course_name, description=course_info, instructor = self)
+    def openCourse(self, course_id):
+        course = Course.objects.get(pk=course_id)
+        if course.instructor.id == self.pk:
+            return "TODO: Wang Haicheng"
+
+    def createCourse(self, course_name, course_info, course_catagory):
+        course = Course.objects.create(catagory = course_catagory,
+                name=course_name, description=course_info, instructor = self)
+                # is_open = False as default
         course.save()
         if (DEBUG):
             Course.objects.value_list('name', flat=True)
