@@ -93,9 +93,12 @@ class Instructor(Staff):
         # question : is the course_info the description?
         # do we need to specifiy the course category?
         # what is the return ? null?
-        # TODO: change the course_info, category if any need
-        course = Course.objects.create(
-            name=course_name, description=course_info)
+        # is_open need to verify from the instructor
+        # TODO: change the course_info,
+            # category
+            # is_open if needed
+            course = Course.objects.create(
+            name=course_name, description=course_info, instructor = self)
         course.save()
         if (DEBUG):
             Course.objects.value_list('name', flat=True)
