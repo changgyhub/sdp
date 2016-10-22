@@ -98,6 +98,9 @@ class Instructor(Staff):
         course = Course.objects.create(catagory = course_catagory,
                 name=course_name, description=course_info, instructor = self)
                 # is_open = False as default
+        # here we better do some validation before we got the right
+
+        #
         course.save()
         if (DEBUG):
             Course.objects.value_list('name', flat=True)
