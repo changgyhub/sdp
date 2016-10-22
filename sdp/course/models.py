@@ -97,8 +97,8 @@ class Instructor(Staff):
         # TODO: change the course_info,
             # category
             # is_open if needed
-            course = Course.objects.create(
-            name=course_name, description=course_info, instructor = self)
+        course = Course.objects.create(
+        name=course_name, description=course_info, instructor = self)
         course.save()
         if (DEBUG):
             Course.objects.value_list('name', flat=True)
@@ -163,7 +163,7 @@ class Enrollment(models.Model):
         abstract = True
 
     def getCourse(self):
-        return course
+        return self.course
 
     def getInfo(self):
         return None
@@ -173,11 +173,11 @@ class HistoryEnrollment(Enrollment):
     date_of_completion = models.DateField()
 
     def getInfo(self):
-        return date_of_completion
+        return self.date_of_completion
 
 
 class CurrentEnrollment(Enrollment):
     progress = models.CharField(max_length=200)  # need to be changed later on
 
     def getInfo(self):
-        return progress
+        return self.progress
