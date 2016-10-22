@@ -97,10 +97,10 @@ class Instructor(Staff):
         # here we better do some validation before we got the right
         if (DEBUG):
             Course.objects.value_list('name', flat=True)
-        return "TODO: Wang Haicheng"
 
     def createModule(self, course_id, module_name):
-        return "TODO: Yan Kai"
+        parent_course = Course.objects.get(pk = course_id)
+        module = Module.objects.create(course = parent_course, name = module_name)
 
     def createComponent(self, module_id, component_name, component_content, component_content_type):
         return "TODO: Huang Qingwei"
