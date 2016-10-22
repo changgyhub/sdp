@@ -93,7 +93,8 @@ class Instructor(Staff):
     def openCourse(self, course_id):
         course = Course.objects.get(pk=course_id)
         if course.instructor.id == self.pk:
-            return "TODO: Wang Haicheng"
+            # change the course to be open
+            course.is_open = True;
 
     def createCourse(self, course_name, course_info, course_catagory):
         course = Course.objects.create(catagory = course_catagory,
