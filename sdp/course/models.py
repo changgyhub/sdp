@@ -1,12 +1,7 @@
 from django.db import models
+from django.contrib.auth.models import User
 
-# set for debug
-DEBUG = False
-
-
-class Staff(models.Model):
-    username = models.CharField(max_length=200)
-    password = models.CharField(max_length=200)
+class Staff(User):
     name = models.CharField(max_length=200)
 
     class Meta:

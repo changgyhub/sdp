@@ -1,13 +1,41 @@
-from django.shortcuts import render
-from django.http import HttpResponse
-from .models import Catagory
-from .models import Course
-from django.shortcuts import render_to_response
 import datetime as dt
+from .models import Catagory, Staff, Course, Instructor
+from .forms import LoginForm
+from django.shortcuts import render_to_response,render, get_object_or_404
+from django.http import HttpResponse, HttpResponseRedirect
+from django.contrib import auth, messages
+from django.template import RequestContext
+from django.forms.formsets import formset_factory
+from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
+from django.contrib.auth.decorators import login_required
+from django.views.decorators.csrf import csrf_protect, csrf_exempt
 
-def index(request):
-    title = "Welcome to AB Credit (HK) Staff Development Platform!"
-    return render_to_response('index.html', locals())
+@csrf_exempt
+def login(request):
+    if request.method == 'GET':
+        if request.user.is_authenticated():
+            return instrcutor_index(request)
+        else:
+            form = LoginForm()
+            return render_to_response('login.html', RequestContext(request, {'form': form,}))
+    else:
+        form = LoginForm(request.POST)
+        if form.is_valid():
+            username = request.POST.get('username', '')
+            password = request.POST.get('password', '')
+            user = auth.authenticate(username=username, password=password)
+            if user is not None and user.is_active:
+                auth.login(request, user)
+                return instrcutor_index(request)
+            else:
+                return render_to_response('login.html', RequestContext(request, {'form': form,'password_is_wrong':True}))
+        else:
+            return render_to_response('login.html', RequestContext(request, {'form': form,}))
+
+@login_required
+def logout(request):
+    auth.logout(request)
+    return HttpResponseRedirect("/")
 
 def course_info(request, course_id):
     course = Course.objects.get(pk=course_id)
@@ -33,6 +61,7 @@ def instrcutor_index(request):
         title = "Good afternoon, "
     else:
         title = "Good evening, "
-    title += "instructor!"
+    instructor = Instructor.objects.get(pk=request.user.id)
+    title += instructor.name + "!"
     content = "Daily Notices:"
     return render_to_response('instrcutor_index.html', locals())

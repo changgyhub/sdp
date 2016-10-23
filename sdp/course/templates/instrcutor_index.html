@@ -24,7 +24,8 @@ html,body,h1,h2,h3,h4,h5,h6 {font-family: "Roboto", sans-serif}
       <a class="w3-hover-white w3-large sdp-main-color" href="javascript:void(0)" onclick="w3_open()"><i class="fa fa-bars"></i></a>
     </li>
     <li><a class="sdp-main-color-dark">AB Credit (HK) Staff Development Platform</a></li>
-    <li class="w3-hide-small"><a href="/instructor/" class="sdp-main-color">Index</a></li>
+    <li class="w3-hide-small"><a href="/" class="sdp-main-color">Index</a></li>
+    <li class="w3-hide-small"><a onclick="logout()" class="sdp-main-color">Logout</a></li>
   </ul>
 </div>
 
@@ -113,6 +114,10 @@ function getCourse(course_id, course_name) {
     getHTML( '/course/'+course_id, function (response) {
       document.getElementById("content-main").innerHTML = response.documentElement.innerHTML;
     });
+}
+
+function logout(){
+  window.location = "/logout";
 }
 
 /**

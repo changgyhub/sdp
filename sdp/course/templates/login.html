@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>AB Credit (HK) Staff Development Platform</title>
+    <style type="text/css">
+        body {
+            padding-top: 60px;
+        }
+    </style>
+    <!--[if lt IE 9]>
+    <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'login.css' %}" />
+</head>
+
+<body>
+
+    {% if password_is_wrong %}
+        <script>
+          alert("Wrong password. Please try again.");
+        </script>
+    {% endif %}
+      <div class="form">
+          <h1>AB Credit (HK) Staff Development Platform</h1>
+          <p>&nbsp;</p>
+          <form action="" method="post">
+            {% csrf_token %}
+            {{form}}
+            <select id="staff_type">
+              <option value="1">Participant</option>
+              <option value="2">Instructor</option>
+              <option value="3">HR</option>
+              <option value="4">Admin</option>
+            </select>
+            <p><a href="#"><button type="submit"><b>Login</b></button></a></p>
+            <p><a href="#"><button><b>Forget Password</b></button></a></p>
+            <!-- <p><a href="#"><button><b>New Staff</b></button></a></p> -->
+          </form>
+      </div>
+
+</body>
+</html>
