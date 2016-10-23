@@ -93,18 +93,16 @@ class Instructor(Staff):
     def createCourse(self, course_name, course_info, course_catagory):
         course = Course.objects.create(catagory = course_catagory,
                 name=course_name, description=course_info, instructor = self)
-        # is_open = False as default
-        # here we better do some validation before we got the right
-        if (DEBUG):
-            Course.objects.value_list('name', flat=True)
+                # is_open = False as default
 
     def createModule(self, course_id, module_name):
         parent_course = Course.objects.get(pk = course_id)
         module = Module.objects.create(course = parent_course, name = module_name)
 
     def createComponent(self, module_id, component_name, component_content, component_content_type):
-        return "TODO: Huang Qingwei"
-
+        parent_module = Module.objects.get(pk = module_id)
+        component = Component.objects.create(name = component_name, content = component_content,
+                content_type = component_content_type, module = parent_module)
 
 class Catagory(models.Model):
     name = models.CharField(max_length=200)

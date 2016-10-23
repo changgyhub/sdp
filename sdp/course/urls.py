@@ -8,4 +8,7 @@ urlpatterns = [
     url(r'^catagory/',include([
         url(r'^(?P<catagory_id>\d+)$',views.catagory_info, name='catagory_info'),
     ])),
+    url(r'^instructor/',include([
+        url(r'^$', views.instrcutor_index, name='instrcutor_index'),
+    ])),
 ]
