@@ -103,7 +103,9 @@ class Instructor(Staff):
         module = Module.objects.create(course = parent_course, name = module_name)
 
     def createComponent(self, module_id, component_name, component_content, component_content_type):
-        return "TODO: Huang Qingwei"
+        parent_module = Module.objects.get(pk = module_id)
+        newComponent = Component(name = component_name, content = component_content, content_type = component_content_type, module = parent_module)
+        newComponent.save()
 
 
 class Catagory(models.Model):
