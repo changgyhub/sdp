@@ -23,10 +23,15 @@ def login(request):
         if form.is_valid():
             username = request.POST.get('username', '')
             password = request.POST.get('password', '')
+            staff_type = request.POST.get('staff_type')
             user = auth.authenticate(username=username, password=password)
             if user is not None and user.is_active:
-                auth.login(request, user)
-                return instrcutor_index(request)
+                if staff_type == '2':
+                    auth.login(request, user)
+                    return instrcutor_index(request)
+                else :
+                    # TODO: login for other users
+                    return render_to_response('login.html', RequestContext(request, {'form': form,}))
             else:
                 return render_to_response('login.html', RequestContext(request, {'form': form,'password_is_wrong':True}))
         else:
@@ -38,17 +43,23 @@ def logout(request):
     return HttpResponseRedirect("/")
 
 def course_info(request, course_id):
-    course = Course.objects.get(pk=course_id)
-    title = course.name
-    catagory = course.catagory.name
-    instructor = course.instructor.name
-    description = course.description
-    return render_to_response('course_info.html', locals())
+    if request.user.is_authenticated():
+        course = Course.objects.get(pk=course_id)
+        title = course.name
+        catagory = course.catagory.name
+        instructor = course.instructor.name
+        description = course.description
+        return render_to_response('course_info.html', locals())
+    else:
+        return login(request)
 
 def catagory_info(request, catagory_id):
-    parent_catagory = Catagory.objects.get(pk=catagory_id)
-    courses = Course.objects.filter(catagory = parent_catagory, is_open = True)
-    return render_to_response('catagory_info.html', locals())
+    if request.user.is_authenticated():
+        parent_catagory = Catagory.objects.get(pk=catagory_id)
+        courses = Course.objects.filter(catagory = parent_catagory, is_open = True)
+        return render_to_response('catagory_info.html', locals())
+    else:
+        return login(request)
 
 def instrcutor_index(request):
     catagories = Catagory.objects.all()

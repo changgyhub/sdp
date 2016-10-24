@@ -22,12 +22,11 @@
         </script>
     {% endif %}
       <div class="form">
-          <h1>AB Credit (HK) Staff Development Platform</h1>
-          <p>&nbsp;</p>
+          <h1>AB Credit (HK) Staff Development Platform</h1><br>
           <form action="" method="post">
             {% csrf_token %}
             {{form}}
-            <select id="staff_type">
+            <select name="staff_type">
               <option value="1">Participant</option>
               <option value="2">Instructor</option>
               <option value="3">HR</option>
