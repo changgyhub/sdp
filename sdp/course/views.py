@@ -51,7 +51,7 @@ def course_info(request, course_id):
         description = course.description
         return render_to_response('course_info.html', locals())
     else:
-        return login(request)
+        return HttpResponseRedirect("/")
 
 def catagory_info(request, catagory_id):
     if request.user.is_authenticated():
@@ -59,7 +59,7 @@ def catagory_info(request, catagory_id):
         courses = Course.objects.filter(catagory = parent_catagory, is_open = True)
         return render_to_response('catagory_info.html', locals())
     else:
-        return login(request)
+        return HttpResponseRedirect("/")
 
 def instrcutor_index(request):
     catagories = Catagory.objects.all()

@@ -2,7 +2,7 @@
 
 .form {
   position: relative;
-  z-index: 1;
+  z-index: 3;
   background: #FFFFFF;
   max-width: 360px;
   margin: 0 auto 100px;
@@ -29,7 +29,7 @@
   background: #f2f2f2;
   width: 80%;
   border: 0;
-  margin: 0 15px 15px;
+  margin: 0 0 20px;
   padding: 15px;
   box-sizing: border-box;
   font-size: 14px;
@@ -45,6 +45,7 @@
   padding: 15px;
   color: #FFFFFF;
   font-size: 14px;
+  margin: 0 0 20px;
   -webkit-transition: all 0.3 ease;
   transition: all 0.3 ease;
   cursor: pointer;
@@ -65,8 +66,61 @@
   display: none;
 }
 
+* { margin: 0; padding: 0; border: 0; }
+    html,body{
+    	margin: 0;
+    }
+    @-webkit-keyframes STAR-MOVE {
+	from {
+		background-position:0% 0%
+	}
+	to {
+		background-position: 600% 0%
+	}
+}
+ @keyframes STAR-MOVE {
+	from {
+		background-position: 0% 0%
+	}
+	to {
+		background-position: 600% 0%
+	}
+}
+.wall{
+	position: absolute;
+	top: 0;
+	left: 0;
+	bottom: 0;
+	right: 0;
+
+}
+div#background{
+	background: black url('img/background.png') repeat-x 5% 0%;
+	background-size: cover;
+	-webkit-animation: STAR-MOVE  200s linear infinite;
+	-moz-animation: STAR-MOVE  200s linear infinite;
+	-ms-animation: STAR-MOVE  200s linear infinite;
+	animation: STAR-MOVE  200s linear infinite;
+}
+div#midground{
+	background:url('img/midground.png')repeat 20% 0%;
+	z-index: 1;
+	-webkit-animation: STAR-MOVE  100s linear infinite;
+	-moz-animation: STAR-MOVE  100s linear infinite;
+	-ms-animation: STAR-MOVE  100s linear infinite;
+	animation: STAR-MOVE  100s linear infinite;
+}
+div#foreground{
+	background:url('img/foreground.png')repeat 35% 0%;
+	z-index: 2;
+	-webkit-animation: STAR-MOVE  50s linear infinite;
+	-moz-animation: STAR-MOVE  50s linear infinite;
+	-ms-animation: STAR-MOVE  50s linear infinite;
+	animation: STAR-MOVE  50s linear infinite;
+}
+
 body {
-  background: #e2bda8;
+  background: #eeeeee;
   font-family: "Roboto", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;

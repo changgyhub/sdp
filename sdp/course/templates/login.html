@@ -15,28 +15,29 @@
 </head>
 
 <body>
-
-    {% if password_is_wrong %}
-        <script>
-          alert("Wrong password. Please try again.");
-        </script>
-    {% endif %}
-      <div class="form">
-          <h1>AB Credit (HK) Staff Development Platform</h1><br>
-          <form action="" method="post">
-            {% csrf_token %}
-            {{form}}
-            <select name="staff_type">
-              <option value="1">Participant</option>
-              <option value="2">Instructor</option>
-              <option value="3">HR</option>
-              <option value="4">Admin</option>
-            </select>
-            <p><a href="#"><button type="submit"><b>Login</b></button></a></p>
-            <p><a href="#"><button><b>Forget Password</b></button></a></p>
-            <!-- <p><a href="#"><button><b>New Staff</b></button></a></p> -->
-          </form>
-      </div>
-
+  <div id="background" class="wall"></div>
+  <div id="midground" class="wall"></div>
+  <div id="foreground" class="wall"></div>
+  {% if password_is_wrong %}
+      <script>
+        alert("Wrong password. Please try again.");
+      </script>
+  {% endif %}
+    <div class="form">
+        <h1>AB Credit (HK) Staff Development Platform</h1><br><br>
+        <form action="" method="post">
+          {% csrf_token %}
+          {{form}}
+          <select name="staff_type">
+            <option value="1">Participant</option>
+            <option value="2">Instructor</option>
+            <option value="3">HR</option>
+            <option value="4">Admin</option>
+          </select>
+          <a href="#"><button type="submit"><b>Login</b></button></a>
+          <a href="#"><button><b>Forget Password</b></button></a>
+          <!-- <p><a href="#"><button><b>New Staff</b></button></a></p> -->
+        </form>
+    </div>
 </body>
 </html>
