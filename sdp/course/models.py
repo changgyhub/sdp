@@ -99,6 +99,7 @@ class Instructor(Staff):
         component = Component.objects.create(name = component_name, content = component_content,
                 content_type = component_content_type, module = parent_module)
 
+
 class Catagory(models.Model):
     name = models.CharField(max_length=200)
 
