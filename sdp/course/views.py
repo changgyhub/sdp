@@ -78,7 +78,9 @@ def instrcutor_index(request):
 
 def instructor_course(request):
     if request.user.is_authenticated():
-        catagories = Catagory.objects.all()
+        counts = dict()
+        for c in Catagory.objects.all():
+            counts[c] = Course.objects.filter(catagory=c).count()
         return render_to_response('instructor/course.html', locals())
     else:
         return HttpResponseRedirect("/")
