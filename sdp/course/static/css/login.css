@@ -17,7 +17,7 @@
   background: #f2f2f2;
   width: 70%;
   border: 0;
-  margin: 0 15px 15px;
+  margin: 0 15px 20px;
   padding: 15px;
   box-sizing: border-box;
   font-size: 14px;
@@ -29,6 +29,7 @@
   background: #f2f2f2;
   width: 80%;
   border: 0;
+  height: 30pt;
   margin: 0 0 20px;
   padding: 15px;
   box-sizing: border-box;
@@ -95,7 +96,7 @@
 
 }
 div#background{
-	background: black url('img/background.png') repeat-x 5% 0%;
+	background: black url('../image/background.png') repeat-x 5% 0%;
 	background-size: cover;
 	-webkit-animation: STAR-MOVE  200s linear infinite;
 	-moz-animation: STAR-MOVE  200s linear infinite;
@@ -103,7 +104,7 @@ div#background{
 	animation: STAR-MOVE  200s linear infinite;
 }
 div#midground{
-	background:url('img/midground.png')repeat 20% 0%;
+	background:url('../image/midground.png')repeat 20% 0%;
 	z-index: 1;
 	-webkit-animation: STAR-MOVE  100s linear infinite;
 	-moz-animation: STAR-MOVE  100s linear infinite;
@@ -111,7 +112,7 @@ div#midground{
 	animation: STAR-MOVE  100s linear infinite;
 }
 div#foreground{
-	background:url('img/foreground.png')repeat 35% 0%;
+	background:url('../image/foreground.png')repeat 35% 0%;
 	z-index: 2;
 	-webkit-animation: STAR-MOVE  50s linear infinite;
 	-moz-animation: STAR-MOVE  50s linear infinite;

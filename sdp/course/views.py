@@ -75,4 +75,4 @@ def instrcutor_index(request):
     instructor = Instructor.objects.get(pk=request.user.id)
     title += instructor.name + "!"
     content = "Daily Notices:"
-    return render_to_response('instrcutor_index.html', locals())
+    return render_to_response('test.html', locals())
