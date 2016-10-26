@@ -1,4 +1,15 @@
 <!DOCTYPE html>
-Catagory: {{catagory}}<br>
-Instructor: {{instructor}}<br>
-General Info: {{description}}
+{% if is_mine %}
+  General Info: {{description}}<br>
+  {% for module, components in modules.items %}
+  Module: {{module.name}}<br>
+    {% for component in components%}
+      Component: {{component.content}}<br>
+    {% endfor %}
+  {% endfor %}
+{% else %}
+  Catagory: {{catagory.name}}<br>
+  Instructor: {{instructor.name}}<br>
+  General Info: {{description}}<br>
+{% endif %}
+<a href="#" onclick="getCatagoryInfo('{{catagory.id}}', '{{catagory.name}}')">>Back</a>

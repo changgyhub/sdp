@@ -116,8 +116,8 @@
                 <div class="row">
                     <div class="action">
                         <div class="col-sm-12">
-                            <h1 class="title">Portfolio</h1>
-                            <p>Be Creative</p>
+                            <h1 class="title">View all courses here.</h1>
+                            <p>You can view information of other courses, or create and modify your courses.</p>
                         </div>
                     </div>
                 </div>
@@ -131,12 +131,12 @@
             <div class="row">
                 <div class="col-md-3 col-sm-4">
                     <div class="sidebar portfolio-sidebar">
-                        <div class="sidebar-item categories">
+                        <div class="sidebar-item categories" id="catagory_bar">
                             <h3>Categories</h3>
                             <ul class="nav navbar-stacked">
-                              {% for catagory in catagories %}
+                              {% for catagory, num in counts.items %}
                               <!-- set <li class="active"> for active !!!-->
-                                <li><a href="#" onclick="getCatagoryInfo('{{catagory.id}}', '{{catagory.name}}')">{{catagory}}<span class="pull-right">(1)</span></a></li>
+                                <li><a href="#" onclick="getCatagoryInfo('{{catagory.id}}', '{{catagory.name}}')">{{catagory.name}}<span class="pull-right">({{num}})</span></a></li>
                               {% endfor %}
                             </ul>
                         </div>
@@ -278,8 +278,8 @@
                 </div>
                 <div class="col-sm-12">
                     <div class="copyright-text text-center">
-                        <p>&copy; Your Company 2014. All Rights Reserved.</p>
-                        <p>Designed by <a target="_blank" href="http://www.themeum.com">Themeum</a></p>
+                        <p>&copy; AB Credit (HK) 2016. All Rights Reserved.</p>
+                        <p>Designed by <a target="_blank" href="http://www.cs.hku.hk/programme/course_info.jsp?infile=2013/comp3297.html">Mergy</a></p>
                     </div>
                 </div>
             </div>
@@ -308,6 +308,22 @@
         getHTML( '/instructor/course/'+course_id, function (response) {
           document.getElementById("content-main").innerHTML = response.documentElement.innerHTML;
         });
+    }
+
+    function createCourse(catagory_id) {
+        document.getElementById("content-title").innerHTML= "Create your course";
+        getHTML( '/instructor/course/create/'+catagory_id, function (response) {
+          document.getElementById("content-main").innerHTML = response.documentElement.innerHTML;
+        });
+    }
+
+    function finishCreateCourse(catagory_id, catagory_name){
+      getHTML( "/instructor/course/create/"+
+                catagory_id + "/" +
+                document.getElementById("create_name").value + "/" +
+                document.getElementById("create_description").value, function (response) {
+      });
+      getCatagoryInfo(catagory_id, catagory_name);
     }
 
     function logout(){
