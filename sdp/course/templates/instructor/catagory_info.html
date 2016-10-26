@@ -1,22 +1,16 @@
 <!DOCTYPE html>
 {% load static %}
-{% for course in courses %}
-<div class="col-xs-6 col-sm-6 col-md-4 portfolio-item branded logos">
+<div class="col-xs-6 col-sm-6 portfolio-item branded logos">
   <div class="portfolio-wrapper">
-    <div class="portfolio-single">
-        <div class="portfolio-thumb">
-            <img src="{% static 'image/portfolio/1.jpg' %}" class="img-responsive" alt="">
-        </div>
-        <div class="portfolio-view">
-            <ul class="nav nav-pills">
-                <li><a href="portfolio-details.html"><i class="fa fa-link"></i></a></li>
-                <li><a href="{% static 'image/portfolio/1.jpg' %}" data-lightbox="example-set"><i class="fa fa-eye"></i></a></li>
-            </ul>
-        </div>
-    </div>
-    <div class="portfolio-info ">
-      <a herf="#" onclick="getCourse('{{course.id}}','{{course.name}}')">{{course.name}}</a><br>
-    </div>
+    <h4 class="portfolio-info">
+      +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a herf="#" onclick="createCourse('{{parent_catagory.id}}','{{parent_catagory.name}}')">Create new course</a><br><br>
+      {% for course in courses %}
+      <li><a herf="#" onclick="getCourse('{{course.id}}', '{{course.name}}')">{{course.name}}</a>
+        {% if course.instructor == parent_instructor %}
+          &nbsp;-&nbsp;My Course&nbsp;-&nbsp;{% if course.is_open %}open{% else %}closed{% endif %}
+        {% endif %}
+      </li><br>
+      {% endfor %}
+    </h4>
   </div>
 </div>
-{% endfor %}

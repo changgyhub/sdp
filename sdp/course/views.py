@@ -1,4 +1,5 @@
 import datetime as dt
+from django.db.models import Q
 from .models import Catagory, Staff, Course, Instructor
 from .forms import LoginForm
 from django.shortcuts import render_to_response,render, get_object_or_404
@@ -44,19 +45,26 @@ def logout(request):
 
 def instructor_course_info(request, course_id):
     if request.user.is_authenticated():
-        course = Course.objects.get(pk=course_id)
-        title = course.name
-        catagory = course.catagory.name
-        instructor = course.instructor.name
-        description = course.description
+        instructor = Instructor.objects.get(pk=request.user.id)
+        menu = instructor.viewCourse(course_id)
+        title = menu['name']
+        catagory = menu['catagory']
+        instructor = menu['instructor']
+        description = menu['description']
+        if 'module' in menu:
+            is_mine = True
+            modules = menu['module']
+        else:
+            is_mine = False
         return render_to_response('instructor/course_info.html', locals())
     else:
         return HttpResponseRedirect("/")
 
 def instructor_catagory_info(request, catagory_id):
     if request.user.is_authenticated():
+        parent_instructor = Instructor.objects.get(pk=request.user.id)
         parent_catagory = Catagory.objects.get(pk=catagory_id)
-        courses = Course.objects.filter(catagory = parent_catagory, is_open = True)
+        courses = Course.objects.filter(Q(catagory = parent_catagory, is_open = True) | Q(catagory = parent_catagory, is_open = False, instructor = parent_instructor))
         return render_to_response('instructor/catagory_info.html', locals())
     else:
         return HttpResponseRedirect("/")
@@ -82,5 +90,22 @@ def instructor_course(request):
         for c in Catagory.objects.all():
             counts[c] = Course.objects.filter(catagory=c).count()
         return render_to_response('instructor/course.html', locals())
+    else:
+        return HttpResponseRedirect("/")
+
+def instructor_create_course(request, catagory_id):
+    if request.user.is_authenticated():
+        catagory = Catagory.objects.get(pk=catagory_id)
+        return render_to_response('instructor/create_course.html', locals())
+    else:
+        return HttpResponseRedirect("/")
+
+def instructor_finish_create_course(request, catagory_id, course_name, course_description):
+    if request.user.is_authenticated():
+        print ("!")
+        instructor = Instructor.objects.get(pk=request.user.id)
+        catagory = Catagory.objects.get(pk=catagory_id)
+        instructor.createCourse(course_name, course_description, catagory)
+        return render_to_response('instructor/course.html')
     else:
         return HttpResponseRedirect("/")

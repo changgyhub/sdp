@@ -116,8 +116,8 @@
                 <div class="row">
                     <div class="action">
                         <div class="col-sm-12">
-                            <h1 class="title">Portfolio</h1>
-                            <p>Be Creative</p>
+                            <h1 class="title">View all courses here.</h1>
+                            <p>You can view information of other courses, or create and modify your courses.</p>
                         </div>
                     </div>
                 </div>
@@ -131,7 +131,7 @@
             <div class="row">
                 <div class="col-md-3 col-sm-4">
                     <div class="sidebar portfolio-sidebar">
-                        <div class="sidebar-item categories">
+                        <div class="sidebar-item categories" id="catagory_bar">
                             <h3>Categories</h3>
                             <ul class="nav navbar-stacked">
                               {% for catagory, num in counts.items %}
@@ -308,6 +308,22 @@
         getHTML( '/instructor/course/'+course_id, function (response) {
           document.getElementById("content-main").innerHTML = response.documentElement.innerHTML;
         });
+    }
+
+    function createCourse(catagory_id) {
+        document.getElementById("content-title").innerHTML= "Create your course";
+        getHTML( '/instructor/course/create/'+catagory_id, function (response) {
+          document.getElementById("content-main").innerHTML = response.documentElement.innerHTML;
+        });
+    }
+
+    function finishCreateCourse(catagory_id, catagory_name){
+      getHTML( "/instructor/course/create/"+
+                catagory_id + "/" +
+                document.getElementById("create_name").value + "/" +
+                document.getElementById("create_description").value, function (response) {
+      });
+      getCatagoryInfo(catagory_id, catagory_name);
     }
 
     function logout(){

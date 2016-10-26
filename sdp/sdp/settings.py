@@ -52,7 +52,7 @@ MIDDLEWARE = [
 ]
 
 SESSION_EXPIRE_AT_BROWSER_CLOSE = False
-SESSION_COOKIE_AGE = 5 * 60 # 5 minutes auto-logout
+SESSION_COOKIE_AGE = 120 * 60 # 120 minutes auto-logout
 
 ROOT_URLCONF = 'sdp.urls'
 

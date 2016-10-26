@@ -19,8 +19,13 @@ class Staff(User):
         return menu
 
     def viewCourse(self, course_id):
-        return Course.objects.get(pk = course_id)
-
+        course = Course.objects.get(pk = course_id)
+        menu = dict()
+        menu['name'] = course.name
+        menu['catagory'] = course.catagory
+        menu['instructor'] = course.instructor
+        menu['description'] = course.description
+        return menu
 
 class Participant(Staff):
 
@@ -50,11 +55,7 @@ class Instructor(Staff):
             # call supermethod if it is not his course
             return super(Instructor, self).viewCourse(course_id)
         else:
-            menu = dict()
-            menu['name'] = course.name
-            menu['catagory'] = course.catagory.name
-            menu['instructor'] = course.instructor.name
-            menu['description'] = course.description
+            menu = super(Instructor, self).viewCourse(course_id)
             menu['module'] = dict()
             module_list = list()
             for module in Module.objects.filter(course__id = course_id):
