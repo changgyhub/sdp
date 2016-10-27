@@ -1,21 +1,17 @@
-<div class="col-sm-12">
-    <div class="contact-form bottom">
-        <form id="main-contact-form" name="contact-form" method="post" action="sendemail.php">
-            <div class="form-group">
-                <input type="text" id="create_name" name="name" class="form-control" required="required" placeholder="Course Name">
-            </div>
-            <div class="form-group">
-                <input type="text" name="catagory" class="form-control" required="required" value='Catagory: {{catagory.name}}' readonly></input>
-            </div>
-            <div class="form-group" style="display: none;">
-                <input type="text" id="create_catagory_id" name="catagory" class="form-control" required="required" value='{{catagory.id}}' readonly></input>
-            </div>
-            <div class="form-group">
-                <textarea name="message" id="create_description" required="required" class="form-control" rows="8" placeholder="description"></textarea>
-            </div>
-            <div class="form-group">
-                <input name="submit" class="btn btn-submit" value="Submit" onclick="finishCreateCourse('{{catagory.id}}', '{{catagory.name}}')">
-            </div>
-        </form>
+<div class="col-sm-12 contact-form bottom">
+    <div class="form-group">
+        <input type="text" id="create_name" class="form-control" required placeholder="Course Name">
+    </div>
+    <div class="form-group">
+        <input type="text" class="form-control" value='Catagory: {{catagory.name}}' readonly></input>
+    </div>
+    <div class="form-group" style="display: none;">
+        <input type="text" id="create_catagory_id" class="form-control" value='{{catagory.id}}' readonly></input>
+    </div>
+    <div class="form-group">
+        <textarea id="create_description" required class="form-control" rows="8" placeholder="description"></textarea>
+    </div>
+    <div class="form-group">
+        <input class="btn btn-warning" value="Submit" onclick="finishCreateCourse('{{catagory.id}}', '{{catagory.name}}')">
     </div>
 </div>

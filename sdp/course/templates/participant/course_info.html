@@ -1,0 +1,10 @@
+<!DOCTYPE html>
+<div id="accordion-container">
+    <h2 class="page-header">General Info</h2>
+    <div class="panel-body">{{description}}</div>
+    <h2 class="page-header">Catagory</h2>
+    <div class="panel-body">{{catagory.name}}</div>
+    <h2 class="page-header">Instructor</h2>
+    <div class="panel-body">{{instructor.name}}</div>
+</div><!--/#accordion-container-->
+<a class="btn btn-xs btn-warning" onclick="getCatagoryInfo('{{catagory.id}}', '{{catagory.name}}')">< Back</a>

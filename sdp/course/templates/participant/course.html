@@ -6,16 +6,13 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <title>AB Credit (HK) Staff Development Platform</title>
-
     {% load static %}
-    <link rel="stylesheet" href="{% static 'css/login.css' %}" />
     <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}" />
     <link rel="stylesheet" href="{% static 'css/font-awesome.min.css' %}" />
     <link rel="stylesheet" href="{% static 'css/animate.min.css' %}" />
     <link rel="stylesheet" href="{% static 'css/lightbox.css' %}" />
     <link rel="stylesheet" href="{% static 'css/main.css' %}" />
     <link rel="stylesheet" href="{% static 'css/responsive.css' %}" />
-
     <!--[if lt IE 9]>
 	    <script src="js/html5shiv.js"></script>
 	    <script src="js/respond.min.js"></script>
@@ -34,11 +31,11 @@
                 <div class="col-sm-12 overflow">
                    <div class="social-icons pull-right">
                         <ul class="nav nav-pills">
-                            <li><a href=""><i class="fa fa-facebook"></i></a></li>
-                            <li><a href=""><i class="fa fa-twitter"></i></a></li>
-                            <li><a href=""><i class="fa fa-google-plus"></i></a></li>
-                            <li><a href=""><i class="fa fa-dribbble"></i></a></li>
-                            <li><a href=""><i class="fa fa-linkedin"></i></a></li>
+                            <li><a><i class="fa fa-facebook"></i></a></li>
+                            <li><a><i class="fa fa-twitter"></i></a></li>
+                            <li><a><i class="fa fa-google-plus"></i></a></li>
+                            <li><a><i class="fa fa-dribbble"></i></a></li>
+                            <li><a><i class="fa fa-linkedin"></i></a></li>
                         </ul>
                     </div>
                 </div>
@@ -55,14 +52,14 @@
                     </button>
 
                     <a class="navbar-brand">
-                    	<h1><img src="{% static 'image/logo.png' %}" alt="logo"></h1>
+                        <h1><img src="{% static 'image/logo.png' %}" alt="logo"></h1>
                     </a>
 
                 </div>
                 <div class="collapse navbar-collapse">
                     <ul class="nav navbar-nav navbar-right">
-                        <li><a class="active" href="/">Home</a></li>
-                        <li><a href="instructor/course">Courses</a></li>
+                        <li><a href="/">Home</a></li>
+                        <li class="active"><a href="/instructor/course">Courses</a></li>
                         <li><a onclick="logout()">Logout</a></li>
                         <!-- <li class="dropdown"><a href="#">Pages <i class="fa fa-angle-down"></i></a>
                             <ul role="menu" class="sub-menu">
@@ -86,12 +83,12 @@
                                 <li><a href="blogdetails.html">Blog Details</a></li>
                             </ul>
                         </li>
-                        <li class="dropdown"><a href="portfolio.html">Portfolio <i class="fa fa-angle-down"></i></a>
+                        <li class="dropdown active"><a href="portfolio.html">Portfolio <i class="fa fa-angle-down"></i></a>
                             <ul role="menu" class="sub-menu">
                                 <li><a href="portfolio.html">Portfolio Default</a></li>
                                 <li><a href="portfoliofour.html">Isotope 3 Columns + Right Sidebar</a></li>
                                 <li><a href="portfolioone.html">3 Columns + Right Sidebar</a></li>
-                                <li><a href="portfoliotwo.html">3 Columns + Left Sidebar</a></li>
+                                <li><a class="active" href="portfoliotwo.html">3 Columns + Left Sidebar</a></li>
                                 <li><a href="portfoliothree.html">2 Columns</a></li>
                                 <li><a href="portfolio-details.html">Portfolio Details</a></li>
                             </ul>
@@ -112,153 +109,105 @@
     </header>
     <!--/#header-->
 
-    <section id="home-slider">
-        <div class="container">
-            <div class="main-slider">
-                <div class="slide-text">
-                    <h1>{{title}}</h1>
-                    <p>{{content}}</p>
-                    <a class="btn btn-common">A BUTTON</a>
-                </div>
-                <img src="{% static 'image/home/slider/slide1/house.png' %}" class="img-responsive slider-house" alt="slider image">
-                <img src="{% static 'image/home/slider/slide1/circle1.png' %}" class="slider-circle1" alt="slider image">
-                <img src="{% static 'image/home/slider/slide1/circle2.png' %}" class="slider-circle2" alt="slider image">
-                <img src="{% static 'image/home/slider/slide1/cloud1.png' %}" class="slider-cloud1" alt="slider image">
-                <img src="{% static 'image/home/slider/slide1/cloud2.png' %}" class="slider-cloud2" alt="slider image">
-                <img src="{% static 'image/home/slider/slide1/cloud3.png' %}" class="slider-cloud3" alt="slider image">
-                <img src="{% static 'image/home/slider/slide1/sun.png' %}" class="slider-sun" alt="slider image">
-                <img src="{% static 'image/home/cycle.png' %}" class="slider-cycle" alt="">
-            </div>
-        </div>
-        <div class="preloader"><i class="fa fa-sun-o fa-spin"></i></div>
-    </section>
-    <!--/#home-slider-->
 
-    <!-- <section id="services">
-        <div class="container">
-            <div class="row">
-                <div class="col-sm-4 text-center padding wow fadeIn" data-wow-duration="1000ms" data-wow-delay="300ms">
-                    <div class="single-service">
-                        <div class="wow scaleIn" data-wow-duration="500ms" data-wow-delay="300ms">
-                            <img src="{% static 'image/home/icon1.png' %}" alt="">
-                        </div>
-                        <h2>Incredibly Responsive</h2>
-                        <p>Ground round tenderloin flank shank ribeye. Hamkevin meatball swine. Cow shankle beef sirloin chicken ground round.</p>
-                    </div>
-                </div>
-                <div class="col-sm-4 text-center padding wow fadeIn" data-wow-duration="1000ms" data-wow-delay="600ms">
-                    <div class="single-service">
-                        <div class="wow scaleIn" data-wow-duration="500ms" data-wow-delay="600ms">
-                            <img src="{% static 'image/home/icon2.png' %}" alt="">
-                        </div>
-                        <h2>Superior Typography</h2>
-                        <p>Hamburger ribeye drumstick turkey, strip steak sausage ground round shank pastrami beef brisket pancetta venison.</p>
-                    </div>
-                </div>
-                <div class="col-sm-4 text-center padding wow fadeIn" data-wow-duration="1000ms" data-wow-delay="900ms">
-                    <div class="single-service">
-                        <div class="wow scaleIn" data-wow-duration="500ms" data-wow-delay="900ms">
-                            <img src="{% static 'image/home/icon3.png' %}" alt="">
-                        </div>
-                        <h2>Swift Page Builder</h2>
-                        <p>Venison tongue, salami corned beef ball tip meatloaf bacon. Fatback pork belly bresaola tenderloin bone pork kevin shankle.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section> -->
-    <!--/#services-->
-
-    <!-- <section id="action" class="responsive">
-        <div class="vertical-center">
+    <section id="page-breadcrumb">
+        <div class="vertical-center sun">
              <div class="container">
                 <div class="row">
-                    <div class="action take-tour">
-                        <div class="col-sm-7 wow fadeInLeft" data-wow-duration="500ms" data-wow-delay="300ms">
-                            <h1 class="title">Triangle Corporate Template</h1>
-                            <p>A responsive, retina-ready &amp; wide multipurpose template.</p>
-                        </div>
-                        <div class="col-sm-5 text-center wow fadeInRight" data-wow-duration="500ms" data-wow-delay="300ms">
-                            <div class="tour-button">
-                                <a href="#" class="btn btn-common">TAKE THE TOUR</a>
-                             </div>
+                    <div class="action">
+                        <div class="col-sm-12">
+                            <h1 class="title">View all courses here.</h1>
+                            <p>You can view information of other courses, or create and modify your courses.</p>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-   </section> -->
-    <!--/#action-->
+   </section>
+    <!--/#page-breadcrumb-->
 
-    <!-- <section id="features">
+    <section id="projects" class="padding-top">
         <div class="container">
             <div class="row">
-                <div class="single-features">
-                    <div class="col-sm-5 wow fadeInLeft" data-wow-duration="500ms" data-wow-delay="300ms">
-                        <img src="{% static 'image/home/image1.png' %}" class="img-responsive" alt="">
-                    </div>
-                    <div class="col-sm-6 wow fadeInRight" data-wow-duration="500ms" data-wow-delay="300ms">
-                        <h2>Experienced and Enthusiastic</h2>
-                        <P>Pork belly leberkas cow short ribs capicola pork loin. Doner fatback frankfurter jerky meatball pastrami bacon tail sausage. Turkey fatback ball tip, tri-tip tenderloin drumstick salami strip steak.</P>
+                <div class="col-md-3 col-sm-4">
+                    <div class="sidebar portfolio-sidebar">
+                        <div class="sidebar-item categories" id="catagory_bar">
+                            <h3>Categories</h3>
+                            <ul class="nav navbar-stacked">
+                              {% for catagory, num in counts.items %}
+                                <li><a onclick="getCatagoryInfo('{{catagory.id}}', '{{catagory.name}}')">{{catagory.name}}<span class="pull-right">({{num}})</span></a></li>
+                              {% endfor %}
+                            </ul>
+                        </div>
+                        <!-- <div class="sidebar-item  recent">
+                            <h3>Recent Projects</h3>
+                            <div class="media">
+                                <div class="pull-left">
+                                    <a href="#"><img src="{% static 'image/portfolio/project1.jpg' %}" alt=""></a>
+                                </div>
+                                <div class="media-body">
+                                    <h4><a href="#">Lorem ipsum dolor sit amet consectetur adipisicing elit,</a></h4>
+                                    <p>posted on  07 March 2014</p>
+                                </div>
+                            </div>
+                            <div class="media">
+                                <div class="pull-left">
+                                    <a href="#"><img src="{% static 'image/portfolio/project2.jpg' %}" alt=""></a>
+                                </div>
+                                <div class="media-body">
+                                    <h4><a href="#">Lorem ipsum dolor sit amet consectetur adipisicing elit,</a></h4>
+                                    <p>posted on  07 March 2014</p>
+                                </div>
+                            </div>
+                            <div class="media">
+                                <div class="pull-left">
+                                    <a href="#"><img src="{% static 'image/portfolio/project3.jpg' %}" alt=""></a>
+                                </div>
+                                <div class="media-body">
+                                    <h4><a href="#">Lorem ipsum dolor sit amet consectetur adipisicing elit,</a></h4>
+                                    <p>posted on  07 March 2014</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="sidebar-item popular">
+                            <h3>Popular Projects</h3>
+                            <ul class="gallery">
+                                <li><a href="#"><img src="{% static 'image/portfolio/popular1.jpg' %}" alt=""></a></li>
+                                <li><a href="#"><img src="{% static 'image/portfolio/popular2.jpg' %}" alt=""></a></li>
+                                <li><a href="#"><img src="{% static 'image/portfolio/popular3.jpg' %}" alt=""></a></li>
+                                <li><a href="#"><img src="{% static 'image/portfolio/popular4.jpg' %}" alt=""></a></li>
+                                <li><a href="#"><img src="{% static 'image/portfolio/popular5.jpg' %}" alt=""></a></li>
+                                <li><a href="#"><img src="{% static 'image/portfolio/popular1.jpg' %}" alt=""></a></li>
+                            </ul>
+                        </div> -->
                     </div>
                 </div>
-                <div class="single-features">
-                    <div class="col-sm-6 col-sm-offset-1 align-right wow fadeInLeft" data-wow-duration="500ms" data-wow-delay="300ms">
-                        <h2>Built for the Responsive Web</h2>
-                        <P>Mollit eiusmod id chuck turducken laboris meatloaf pork loin tenderloin swine. Pancetta excepteur fugiat strip steak tri-tip. Swine salami eiusmod sint, ex id venison non. Fugiat ea jowl cillum meatloaf.</P>
-                    </div>
-                    <div class="col-sm-5 wow fadeInRight" data-wow-duration="500ms" data-wow-delay="300ms">
-                        <img src="{% static 'image/home/image2.png' %}" class="img-responsive" alt="">
-                    </div>
-                </div>
-                <div class="single-features">
-                    <div class="col-sm-5 wow fadeInLeft" data-wow-duration="500ms" data-wow-delay="300ms">
-                        <img src="{% static 'image/home/image3.png' %}" class="img-responsive" alt="">
-                    </div>
-                    <div class="col-sm-6 wow fadeInRight" data-wow-duration="500ms" data-wow-delay="300ms">
-                        <h2>Experienced and Enthusiastic</h2>
-                        <P>Ut officia cupidatat anim excepteur fugiat cillum ea occaecat rump pork chop tempor. Ut tenderloin veniam commodo. Shankle aliquip short ribs, chicken eiusmod exercitation shank landjaeger spare ribs corned beef.</P>
+                <div class="col-md-9 col-sm-8">
+                    <div class="row">
+                        <h1 id="content-title">Welcome!</h1>
+                        <div id="content-main"/>
+                        <!-- <div class="portfolio-pagination">
+                            <ul class="pagination">
+                              <li><a href="#">left</a></li>
+                              <li><a href="#">1</a></li>
+                              <li><a href="#">2</a></li>
+                              <li class="active"><a href="#">3</a></li>
+                              <li><a href="#">4</a></li>
+                              <li><a href="#">5</a></li>
+                              <li><a href="#">6</a></li>
+                              <li><a href="#">7</a></li>
+                              <li><a href="#">8</a></li>
+                              <li><a href="#">9</a></li>
+                              <li><a href="#">right</a></li>
+                            </ul>
+                        </div> -->
                     </div>
                 </div>
             </div>
         </div>
-    </section>-->
-     <!--/#features-->
+    </section>
+    <!--/#projects-->
 
-    <!-- <section id="clients">
-        <div class="container">
-            <div class="row">
-                <div class="col-sm-12">
-                    <div class="clients text-center wow fadeInUp" data-wow-duration="500ms" data-wow-delay="300ms">
-                        <p><img src="{% static 'image/home/clients.png' %}" class="img-responsive" alt=""></p>
-                        <h1 class="title">Happy Clients</h1>
-                        <p>Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. <br> Ut enim ad minim veniam, quis nostrud </p>
-                    </div>
-                    <div class="clients-logo wow fadeIn" data-wow-duration="1000ms" data-wow-delay="600ms">
-                        <div class="col-xs-3 col-sm-2">
-                            <a href="#"><img src="{% static 'image/home/client1.png' %}" class="img-responsive" alt=""></a>
-                        </div>
-                        <div class="col-xs-3 col-sm-2">
-                            <a href="#"><img src="{% static 'image/home/client2.png' %}" class="img-responsive" alt=""></a>
-                        </div>
-                         <div class="col-xs-3 col-sm-2">
-                            <a href="#"><img src="{% static 'image/home/client3.png' %}" class="img-responsive" alt=""></a>
-                        </div>
-                         <div class="col-xs-3 col-sm-2">
-                            <a href="#"><img src="{% static 'image/home/client4.png' %}" class="img-responsive" alt=""></a>
-                        </div>
-                         <div class="col-xs-3 col-sm-2">
-                            <a href="#"><img src="{% static 'image/home/client5.png' %}" class="img-responsive" alt=""></a>
-                        </div>
-                         <div class="col-xs-3 col-sm-2">
-                            <a href="#"><img src="{% static 'image/home/client6.png' %}" class="img-responsive" alt=""></a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-     </section> -->
-    <!--/#clients-->
 
     <footer id="footer">
         <div class="container">
@@ -342,11 +291,51 @@
     <script type="text/javascript" src="{% static 'js/lightbox.min.js' %}"></script>
     <script type="text/javascript" src="{% static 'js/wow.min.js' %}"></script>
     <script type="text/javascript" src="{% static 'js/main.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/jquery.isotope.min.js' %}"></script>
 
     <script>
+
+    function getCatagoryInfo(catagory_id, catagory_name) {
+        $('#content-title').html(catagory_name);
+        getHTML( '/participant/catagory/'+catagory_id, function (response) {
+          $('#content-main').html(response.documentElement.innerHTML);
+        });
+    }
+
+    function getCourse(course_id, course_name) {
+        $('#content-title').html(course_name);
+        getHTML( '/participant/course/'+course_id, function (response) {
+          $('#content-main').html(response.documentElement.innerHTML);
+        });
+    }
+
     function logout(){
       window.location = "/logout";
     }
+
+    /**
+     * Get HTML asynchronously
+     * @param  {String}   url      The URL to get HTML from
+     * @param  {Function} callback A callback funtion. Pass in "response" variable to use returned HTML.
+     */
+    var getHTML = function(url, callback) {
+        // Feature detection
+        if ( !window.XMLHttpRequest ) return;
+        // Create new request
+        var xhr = new XMLHttpRequest();
+        // Setup callback
+        xhr.onload = function() {
+            if ( callback && typeof( callback ) === 'function' ) {
+                callback( this.responseXML );
+            }
+        }
+        // Get the HTML
+        xhr.open( 'GET', url );
+        xhr.responseType = 'document';
+        xhr.send();
+    };
+
     </script>
+
 </body>
 </html>

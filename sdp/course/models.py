@@ -25,6 +25,7 @@ class Staff(User):
         menu['catagory'] = course.catagory
         menu['instructor'] = course.instructor
         menu['description'] = course.description
+        menu['is_open'] = course.is_open
         return menu
 
 class Participant(Staff):
@@ -95,7 +96,7 @@ class Instructor(Staff):
         parent_course = Course.objects.get(pk = course_id)
         module = Module.objects.create(course = parent_course, name = module_name)
 
-    def createComponent(self, module_id, component_name, component_content, component_content_type):
+    def createComponent(self, module_id, component_name, component_content_type, component_content):
         parent_module = Module.objects.get(pk = module_id)
         component = Component.objects.create(name = component_name, content = component_content,
                 content_type = component_content_type, module = parent_module)
@@ -130,13 +131,13 @@ class Module(models.Model):
 
 class Component(models.Model):
     name = models.CharField(max_length=200)
-    content = models.CharField(max_length=200)
     CONTENT_TYPES = (
         (u'1', u'File'),
         (u'2', u'Text'),
         (u'3', u'Image'),
     )  # need to be changed later on
     content_type = models.CharField(max_length=1, choices=CONTENT_TYPES)
+    content = models.CharField(max_length=200)
     module = models.ForeignKey(Module, on_delete=models.CASCADE)  # many-to-one
 
     def __str__(self):
