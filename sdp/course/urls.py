@@ -8,12 +8,12 @@ urlpatterns = [
             url(r'^(?P<catagory_id>\d+)$',iv.catagory_info, name='instructor_catagory_info'),
         ])),
         url(r'^course/',include([
-            url(r'^$', iv.course, name='instructor_course'),
             url(r'^create/',include([
                 url(r'^(?P<catagory_id>\d+)/(?P<course_name>[\w|\W|\d]+)/(?P<course_description>[\w|\W|\d]+)$', iv.finish_create_course, name='instructor_finish_create_course'),
                 url(r'^(?P<catagory_id>\d+)$', iv.create_course, name='instructor_create_course'),
             ])),
             url(r'^(?P<course_id>\d+)$',iv.course_info, name='instructor_course_info'),
+            url(r'^$', iv.course, name='instructor_course'),
         ])),
         url(r'^module/',include([
             url(r'^create/',include([
@@ -34,8 +34,9 @@ urlpatterns = [
             url(r'^(?P<catagory_id>\d+)$',pv.catagory_info, name='participant_catagory_info'),
         ])),
         url(r'^course/',include([
-            url(r'^$', pv.course, name='participant_course'),
+            url(r'^(?P<course_id>\d+)/enroll$',pv.enroll, name='participant_enroll'),
             url(r'^(?P<course_id>\d+)$',pv.course_info, name='participant_course_info'),
+            url(r'^$', pv.course, name='participant_course'),
         ])),
     ])),
 ]

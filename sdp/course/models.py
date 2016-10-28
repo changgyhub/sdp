@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.core.exceptions import ObjectDoesNotExist
 
 class Staff(User):
     name = models.CharField(max_length=200)
@@ -31,8 +32,26 @@ class Staff(User):
 class Participant(Staff):
 
     def viewCourse(self, course_id):
-        # TODO: implement in next iteration
-        return super(Participant, self).viewCourse(course_id)
+        # TODO: implement more in next iteration
+        try:
+            currrentEnrollment = CurrentEnrollment.objects.get(participant=self, course__id = course_id)
+            menu = super(Participant, self).viewCourse(course_id)
+            menu['is_enrolled'] = True
+            menu['module'] = dict()
+            module_list = list()
+            for module in Module.objects.filter(course__id = course_id):
+                menu['module'][module] = list()
+                module_list.append(module)
+            for component in Component.objects.all():
+                for module in module_list:
+                    if component.module.id == module.id:
+                        menu['module'][module].append(component)
+            return menu
+        except ObjectDoesNotExist:
+            menu = super(Participant, self).viewCourse(course_id)
+            menu['is_enrolled'] = False
+            return menu
+
 
     def getHistoryInfo(self):
         menu = dict()
@@ -46,6 +65,14 @@ class Participant(Staff):
             # we use get here because there can only be one current course
             menu[current.getCourse()] = current.getInfo()
         return menu
+
+    def enroll(self, course_id):
+        if CurrentEnrollment.objects.filter(participant__id = self.pk).exists():
+            return False
+        else:
+            course = Course.objects.get(pk=course_id)
+            CurrentEnrollment.objects.create(course=course, participant=self, progress="0")
+            return True
 
 
 class Instructor(Staff):
@@ -151,6 +178,9 @@ class Enrollment(models.Model):
 
     class Meta:
         abstract = True
+
+    def __str__(self):
+        return self.course.name + ' - ' + self.participant.name
 
     def getCourse(self):
         return self.course

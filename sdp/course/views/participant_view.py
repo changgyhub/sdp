@@ -44,8 +44,19 @@ def course_info(request, course_id):
     participant = Participant.objects.get(pk=request.user.id)
     menu = participant.viewCourse(course_id)
     course_id = course_id
+    is_enrolled = menu['is_enrolled']
     title = menu['name']
     catagory = menu['catagory']
     instructor = menu['instructor']
     description = menu['description']
+    if is_enrolled:
+        modules = menu['module']
     return render_to_response('participant/course_info.html', locals())
+
+@login_required
+def enroll(request, course_id):
+    participant = Participant.objects.get(pk=request.user.id)
+    if participant.enroll(course_id):
+        return course_info(request, course_id)
+    else:
+        return HttpResponse("You cannot enroll in two courses at the same time.")

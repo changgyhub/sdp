@@ -4,8 +4,6 @@
     <div class="panel-body">{{description}}</div>
     {% if is_mine %}
     <div class="panel-group" id="accordion">
-      {% if not is_open %}
-      {% endif %}
       {% for module, components in modules.items %}
         <div class="panel panel-default">
             <div class="panel-heading">

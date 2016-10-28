@@ -369,7 +369,7 @@ ul.sub-menu {
 
 #footer {
   padding-bottom: 75px;
-  background-image: url(../image/home/footer.png);
+  /*background-image: url(../image/home/footer.png);*/
   background-repeat: repeat-x;
   background-position: bottom;
   background-size: contain;
