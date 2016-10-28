@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8">
@@ -324,7 +323,7 @@
                 catagory_id + "/" +
                 $('#create_name').val() + "/" +
                 $('#create_description').val(), function (response) {
-          $('#catagory_bar').html(response.documentElement.innerHTML);
+          $('#catagory_bar').html(response.body.innerHTML);
       });
       getCatagoryInfo(catagory_id, catagory_name);
     }
