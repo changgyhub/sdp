@@ -3,7 +3,7 @@
   <div class="portfolio-wrapper">
     <h4 class="portfolio-info">
       {% for course in courses %}
-      <li><a onclick="getCourse('{{course.id}}', '{{course.name}}')">{{course.name}}</a></li><br>
+      <li><a onclick="getCourseInfo('{{course.id}}', '{{course.name}}')">{{course.name}}</a></li><br>
       {% endfor %}
     </h4>
   </div>

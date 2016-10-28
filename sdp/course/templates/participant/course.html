@@ -159,49 +159,63 @@
 
     function getCatagoryInfo(catagory_id, catagory_name) {
         $('#content-title').html(catagory_name);
-        getHTML( '/participant/catagory/'+catagory_id, function (response) {
-          $('#content-main').html(response.documentElement.innerHTML);
+        $.ajax({
+            url : "/participant/catagory/info/", // the endpoint
+            type : "POST", // http method
+            data : { 'catagory_id' : catagory_id }, // data sent with the post request
+            // handle a successful response
+            success : function(response) {
+                $('#content-main').html(response);
+            },
+            // // handle a non-successful response
+            // error : function(xhr,errmsg,err) {
+            //     $('#results').html("<div class='alert-box alert radius' data-alert>Oops! We have encountered an error: "+errmsg+
+            //         " <a href='#' class='close'>&times;</a></div>"); // add the error to the dom
+            //     console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
+            // }
         });
     }
 
-    function getCourse(course_id, course_name) {
+    function getCourseInfo(course_id, course_name) {
         $('#content-title').html(course_name);
-        getHTML( '/participant/course/'+course_id, function (response) {
-          $('#content-main').html(response.documentElement.innerHTML);
+        $.ajax({
+            url : "/participant/course/info/", // the endpoint
+            type : "POST", // http method
+            data : { 'course_id' : course_id }, // data sent with the post request
+            // handle a successful response
+            success : function(response) {
+                $('#content-main').html(response);
+            },
+            // // handle a non-successful response
+            // error : function(xhr,errmsg,err) {
+            //     $('#results').html("<div class='alert-box alert radius' data-alert>Oops! We have encountered an error: "+errmsg+
+            //         " <a href='#' class='close'>&times;</a></div>"); // add the error to the dom
+            //     console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
+            // }
         });
     }
 
     function enroll(course_id){
-      getHTML( '/participant/course/'+course_id+'/enroll', function (response) {
-        $('#content-main').html(response.documentElement.innerHTML);
+      $.ajax({
+          url : "/participant/course/enroll/", // the endpoint
+          type : "POST", // http method
+          data : { 'course_id' : course_id }, // data sent with the post request
+          // handle a successful response
+          success : function(response) {
+              $('#content-main').html(response);
+          },
+          // // handle a non-successful response
+          // error : function(xhr,errmsg,err) {
+          //     $('#results').html("<div class='alert-box alert radius' data-alert>Oops! We have encountered an error: "+errmsg+
+          //         " <a href='#' class='close'>&times;</a></div>"); // add the error to the dom
+          //     console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
+          // }
       });
     }
 
     function logout(){
       window.location = "/logout";
     }
-
-    /**
-     * Get HTML asynchronously
-     * @param  {String}   url      The URL to get HTML from
-     * @param  {Function} callback A callback funtion. Pass in "response" variable to use returned HTML.
-     */
-    var getHTML = function(url, callback) {
-        // Feature detection
-        if ( !window.XMLHttpRequest ) return;
-        // Create new request
-        var xhr = new XMLHttpRequest();
-        // Setup callback
-        xhr.onload = function() {
-            if ( callback && typeof( callback ) === 'function' ) {
-                callback( this.responseXML );
-            }
-        }
-        // Get the HTML
-        xhr.open( 'GET', url );
-        xhr.responseType = 'document';
-        xhr.send();
-    };
 
     </script>
 

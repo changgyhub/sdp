@@ -294,45 +294,108 @@
 
     <script>
 
+
     function getCatagoryInfo(catagory_id, catagory_name) {
         $('#content-title').html(catagory_name);
-        getHTML( '/instructor/catagory/'+catagory_id, function (response) {
-          $('#content-main').html(response.documentElement.innerHTML);
+        $.ajax({
+            url : "/instructor/catagory/info/", // the endpoint
+            type : "POST", // http method
+            data : { 'catagory_id' : catagory_id }, // data sent with the post request
+            // handle a successful response
+            success : function(response) {
+                $('#content-main').html(response);
+            },
+            // // handle a non-successful response
+            // error : function(xhr,errmsg,err) {
+            //     $('#results').html("<div class='alert-box alert radius' data-alert>Oops! We have encountered an error: "+errmsg+
+            //         " <a href='#' class='close'>&times;</a></div>"); // add the error to the dom
+            //     console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
+            // }
         });
     }
 
-    function getCourse(course_id, course_name) {
+    function getCourseInfo(course_id, course_name) {
         $('#content-title').html(course_name);
-        getHTML( '/instructor/course/'+course_id, function (response) {
-          $('#content-main').html(response.documentElement.innerHTML);
+        $.ajax({
+            url : "/instructor/course/info/", // the endpoint
+            type : "POST", // http method
+            data : { 'course_id' : course_id }, // data sent with the post request
+            // handle a successful response
+            success : function(response) {
+                $('#content-main').html(response);
+            },
+            // // handle a non-successful response
+            // error : function(xhr,errmsg,err) {
+            //     $('#results').html("<div class='alert-box alert radius' data-alert>Oops! We have encountered an error: "+errmsg+
+            //         " <a href='#' class='close'>&times;</a></div>"); // add the error to the dom
+            //     console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
+            // }
         });
     }
 
     function createCourse(catagory_id) {
         $('#content-title').html("Create your course");
-        getHTML( '/instructor/course/create/'+catagory_id, function (response) {
-          $('#content-main').html(response.documentElement.innerHTML);
+        $.ajax({
+            url : "/instructor/course/create/start/", // the endpoint
+            type : "POST", // http method
+            data : { 'catagory_id' : catagory_id }, // data sent with the post request
+            // handle a successful response
+            success : function(response) {
+                $('#content-main').html(response);
+            },
+            // // handle a non-successful response
+            // error : function(xhr,errmsg,err) {
+            //     $('#results').html("<div class='alert-box alert radius' data-alert>Oops! We have encountered an error: "+errmsg+
+            //         " <a href='#' class='close'>&times;</a></div>"); // add the error to the dom
+            //     console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
+            // }
         });
     }
+
     function finishCreateCourse(catagory_id, catagory_name){
       if ($('#create_name').val() == "" | $('#create_description').val() == ""){
         alert("Must fill in all input boxes.");
         return;
       }
-      getHTML( "/instructor/course/create/"+
-                catagory_id + "/" +
-                $('#create_name').val() + "/" +
-                $('#create_description').val(), function (response) {
-          $('#catagory_bar').html(response.body.innerHTML);
+      $.ajax({
+          url : "/instructor/course/create/finish/", // the endpoint
+          type : "POST", // http method
+          data : {
+            'catagory_id' : catagory_id,
+            'course_name' : $('#create_name').val(),
+            'course_description' : $('#create_description').val(),
+          }, // data sent with the post request
+          // handle a successful response
+          success : function(response) {
+              $('#catagory_bar').html(response);
+              getCatagoryInfo(catagory_id, catagory_name);
+          },
+          // // handle a non-successful response
+          // error : function(xhr,errmsg,err) {
+          //     $('#results').html("<div class='alert-box alert radius' data-alert>Oops! We have encountered an error: "+errmsg+
+          //         " <a href='#' class='close'>&times;</a></div>"); // add the error to the dom
+          //     console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
+          // }
       });
-      getCatagoryInfo(catagory_id, catagory_name);
     }
 
-    function createModule(course_id, course_name){
-      $('#content-title').html("Create a new Module of "+course_name);
-      getHTML( '/instructor/module/create/'+course_id, function (response) {
-        $('#content-main').html(response.documentElement.innerHTML);
-      });
+    function createModule(course_id, course_name) {
+        $('#content-title').html("Create a new Module of "+course_name);
+        $.ajax({
+            url : "/instructor/module/create/start/", // the endpoint
+            type : "POST", // http method
+            data : { 'course_id' : course_id }, // data sent with the post request
+            // handle a successful response
+            success : function(response) {
+                $('#content-main').html(response);
+            },
+            // // handle a non-successful response
+            // error : function(xhr,errmsg,err) {
+            //     $('#results').html("<div class='alert-box alert radius' data-alert>Oops! We have encountered an error: "+errmsg+
+            //         " <a href='#' class='close'>&times;</a></div>"); // add the error to the dom
+            //     console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
+            // }
+        });
     }
 
     function finishCreateModule(course_id){
@@ -340,31 +403,70 @@
         alert("Must fill in all input boxes.");
         return;
       }
-      getHTML( "/instructor/module/create/"+
-                course_id + "/" +
-                $('#module_create_name').val(), function (response) {
-        $('#content-main').html(response.documentElement.innerHTML);
+      $.ajax({
+          url : "/instructor/module/create/finish/", // the endpoint
+          type : "POST", // http method
+          data : {
+            'course_id' : course_id,
+            'module_name' : $('#module_create_name').val(),
+          }, // data sent with the post request
+          // handle a successful response
+          success : function(response) {
+              $('#content-main').html(response);
+          },
+          // // handle a non-successful response
+          // error : function(xhr,errmsg,err) {
+          //     $('#results').html("<div class='alert-box alert radius' data-alert>Oops! We have encountered an error: "+errmsg+
+          //         " <a href='#' class='close'>&times;</a></div>"); // add the error to the dom
+          //     console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
+          // }
       });
     }
 
-    function createComponent(module_id, module_name){
-      $('#content-title').html("Create a new Component of "+ module_name);
-      getHTML( '/instructor/component/create/'+module_id, function (response) {
-        $('#content-main').html(response.documentElement.innerHTML);
-      });
+    function createComponent(module_id, module_name) {
+        $('#content-title').html("Create a new Component of "+ module_name);
+        $.ajax({
+            url : "/instructor/component/create/start/", // the endpoint
+            type : "POST", // http method
+            data : { 'module_id' : module_id }, // data sent with the post request
+            // handle a successful response
+            success : function(response) {
+                $('#content-main').html(response);
+            },
+            // // handle a non-successful response
+            // error : function(xhr,errmsg,err) {
+            //     $('#results').html("<div class='alert-box alert radius' data-alert>Oops! We have encountered an error: "+errmsg+
+            //         " <a href='#' class='close'>&times;</a></div>"); // add the error to the dom
+            //     console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
+            // }
+        });
     }
+
 
     function finishCreateComponent(module_id){
       if ($('#component_create_name').val() == "" | $('#component_create_content').val() == ""){
         alert("Must fill in all input boxes.");
         return;
       }
-      getHTML( "/instructor/component/create/"+
-                module_id + "/" +
-                $('#component_create_name').val() + "/" +
-                $('#component_create_content_type').val() + "/" +
-                $('#component_create_content').val(), function (response) {
-        $('#content-main').html(response.documentElement.innerHTML);
+      $.ajax({
+          url : "/instructor/component/create/finish/", // the endpoint
+          type : "POST", // http method
+          data : {
+            'module_id' : module_id,
+            'component_name' : $('#component_create_name').val(),
+            'component_type' : $('#component_create_content_type').val(),
+            'component_content' : $('#component_create_content').val(),
+          }, // data sent with the post request
+          // handle a successful response
+          success : function(response) {
+              $('#content-main').html(response);
+          },
+          // // handle a non-successful response
+          // error : function(xhr,errmsg,err) {
+          //     $('#results').html("<div class='alert-box alert radius' data-alert>Oops! We have encountered an error: "+errmsg+
+          //         " <a href='#' class='close'>&times;</a></div>"); // add the error to the dom
+          //     console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
+          // }
       });
     }
 

@@ -28,14 +28,13 @@ def index(request):
 @login_required
 def course(request):
     instructor = Instructor.objects.get(pk=request.user.id)
-    counts = dict()
-    for c in Catagory.objects.all():
-        counts[c] = Course.objects.filter(Q(catagory=c) & (Q(is_open=True) | Q(instructor=instructor))).count()
+    counts = instructor.viewCatagories()
     return render_to_response('instructor/course.html', locals())
 
 
 @login_required
-def catagory_info(request, catagory_id):
+def catagory_info(request):
+    catagory_id = request.POST['catagory_id']
     parent_instructor = Instructor.objects.get(pk=request.user.id)
     parent_catagory = Catagory.objects.get(pk=catagory_id)
     courses = Course.objects.filter(Q(catagory = parent_catagory, is_open = True) | Q(catagory = parent_catagory, is_open = False, instructor = parent_instructor))
@@ -43,10 +42,13 @@ def catagory_info(request, catagory_id):
 
 
 @login_required
-def course_info(request, course_id):
+def course_info(request, parent_course_id = None):
+    if parent_course_id == None:
+        course_id = request.POST['course_id']
+    else: # the case of finish creating component
+        course_id = parent_course_id
     instructor = Instructor.objects.get(pk=request.user.id)
     menu = instructor.viewCourse(course_id)
-    course_id = course_id
     is_open = menu['is_open']
     title = menu['name']
     catagory = menu['catagory']
@@ -60,24 +62,30 @@ def course_info(request, course_id):
     return render_to_response('instructor/course_info.html', locals())
 
 @login_required
-def create_course(request, catagory_id):
+def create_course(request):
+    catagory_id = request.POST['catagory_id']
     catagory = Catagory.objects.get(pk=catagory_id)
     return render_to_response('instructor/create_course.html', locals())
 
 @login_required
-def create_module(request, course_id):
+def create_module(request):
+    course_id = request.POST['course_id']
     course = Course.objects.get(pk=course_id)
     return render_to_response('instructor/create_module.html', locals())
 
 @login_required
-def create_component(request, module_id):
+def create_component(request):
+    module_id = request.POST['module_id']
     module = Module.objects.get(pk=module_id)
     return render_to_response('instructor/create_component.html', locals())
 
 @login_required
-def finish_create_course(request, catagory_id, course_name, course_description):
-    # create new course
+def finish_create_course(request):
+    catagory_id = request.POST['catagory_id']
+    course_name = request.POST['course_name']
+    course_description = request.POST['course_description']
 
+    # create new course
     instructor = Instructor.objects.get(pk=request.user.id)
     catagory = Catagory.objects.get(pk=catagory_id)
     instructor.createCourse(course_name, course_description, catagory)
@@ -93,13 +101,19 @@ def finish_create_course(request, catagory_id, course_name, course_description):
     return HttpResponse(returnHTML)
 
 @login_required
-def finish_create_module(request, course_id, module_name):
+def finish_create_module(request):
+    course_id = request.POST['course_id']
+    module_name = request.POST['module_name']
     instructor = Instructor.objects.get(pk=request.user.id)
     instructor.createModule(course_id, module_name)
-    return course_info(request, course_id)
+    return course_info(request)
 
 @login_required
-def finish_create_component(request, module_id, component_name, component_type, component_content):
+def finish_create_component(request):
+    module_id = request.POST['module_id']
+    component_name = request.POST['component_name']
+    component_type = request.POST['component_type']
+    component_content = request.POST['component_content']
     instructor = Instructor.objects.get(pk=request.user.id)
     instructor.createComponent(module_id, component_name, component_type, component_content)
     course_id = Module.objects.get(pk=module_id).course.id

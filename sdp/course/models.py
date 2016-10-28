@@ -1,4 +1,5 @@
 from django.db import models
+from django.db.models import Q
 from django.contrib.auth.models import User
 from django.core.exceptions import ObjectDoesNotExist
 
@@ -13,10 +14,6 @@ class Staff(User):
 
     def viewCatagories(self):
         menu = dict()
-        for catagory in Catagory.objects.all():
-            menu[catagory.name] = list()
-        for course in Course.objects.filter(is_open = True):
-            menu[course.catagory.name].append(course)
         return menu
 
     def viewCourse(self, course_id):
@@ -30,6 +27,12 @@ class Staff(User):
         return menu
 
 class Participant(Staff):
+
+    def viewCatagories(self):
+        menu = super(Participant, self).viewCatagories()
+        for c in Catagory.objects.all():
+            menu[c] = Course.objects.filter(catagory=c, is_open=True).count()
+        return menu
 
     def viewCourse(self, course_id):
         # TODO: implement more in next iteration
@@ -76,6 +79,12 @@ class Participant(Staff):
 
 
 class Instructor(Staff):
+
+    def viewCatagories(self):
+        menu = super(Instructor, self).viewCatagories()
+        for c in Catagory.objects.all():
+            menu[c] = Course.objects.filter(Q(catagory=c) & (Q(is_open=True) | Q(instructor=self))).count()
+        return menu
 
     def viewCourse(self, course_id):
         course = Course.objects.get(pk=course_id)

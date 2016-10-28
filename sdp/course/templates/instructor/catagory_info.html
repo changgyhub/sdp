@@ -4,7 +4,7 @@
     <h4 class="portfolio-info">
       <a class="btn btn-sm btn-success" onclick="createCourse('{{parent_catagory.id}}','{{parent_catagory.name}}')">+ Create new course</a><br><br>
       {% for course in courses %}
-      <li><a onclick="getCourse('{{course.id}}', '{{course.name}}')">{{course.name}}</a>
+      <li><a onclick="getCourseInfo('{{course.id}}', '{{course.name}}')">{{course.name}}</a>
         {% if course.instructor == parent_instructor %}
           &nbsp;-&nbsp;My Course&nbsp;-&nbsp;{% if course.is_open %}open{% else %}closed{% endif %}
         {% endif %}

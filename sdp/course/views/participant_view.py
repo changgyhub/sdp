@@ -27,23 +27,23 @@ def index(request):
 
 @login_required
 def course(request):
-    counts = dict()
-    for c in Catagory.objects.all():
-        counts[c] = Course.objects.filter(catagory=c, is_open=True).count()
+    participant = Participant.objects.get(pk=request.user.id)
+    counts = participant.viewCatagories()
     return render_to_response('participant/course.html', locals())
 
 @login_required
-def catagory_info(request, catagory_id):
+def catagory_info(request):
+    catagory_id = request.POST['catagory_id']
     parent_participant = Participant.objects.get(pk=request.user.id)
     parent_catagory = Catagory.objects.get(pk=catagory_id)
     courses = Course.objects.filter(catagory = parent_catagory, is_open = True)
     return render_to_response('participant/catagory_info.html', locals())
 
 @login_required
-def course_info(request, course_id):
+def course_info(request):
+    course_id = request.POST['course_id']
     participant = Participant.objects.get(pk=request.user.id)
     menu = participant.viewCourse(course_id)
-    course_id = course_id
     is_enrolled = menu['is_enrolled']
     title = menu['name']
     catagory = menu['catagory']
@@ -54,9 +54,11 @@ def course_info(request, course_id):
     return render_to_response('participant/course_info.html', locals())
 
 @login_required
-def enroll(request, course_id):
+def enroll(request):
+    course_id = request.POST['course_id']
     participant = Participant.objects.get(pk=request.user.id)
     if participant.enroll(course_id):
         return course_info(request, course_id)
     else:
+        # TODO: make it more like a warning
         return HttpResponse("You cannot enroll in two courses at the same time.")
