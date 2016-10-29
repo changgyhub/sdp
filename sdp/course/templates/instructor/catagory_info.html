@@ -1,11 +1,10 @@
-<!DOCTYPE html>
 {% load static %}
 <div class="col-xs-6 col-sm-6 portfolio-item branded logos">
   <div class="portfolio-wrapper">
     <h4 class="portfolio-info">
-      +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a herf="#" onclick="createCourse('{{parent_catagory.id}}','{{parent_catagory.name}}')">Create new course</a><br><br>
+      <a class="btn btn-sm btn-success" onclick="createCourse('{{parent_catagory.id}}','{{parent_catagory.name}}')">+ Create new course</a><br><br>
       {% for course in courses %}
-      <li><a herf="#" onclick="getCourse('{{course.id}}', '{{course.name}}')">{{course.name}}</a>
+      <li><a onclick="getCourseInfo('{{course.id}}', '{{course.name}}')">{{course.name}}</a>
         {% if course.instructor == parent_instructor %}
           &nbsp;-&nbsp;My Course&nbsp;-&nbsp;{% if course.is_open %}open{% else %}closed{% endif %}
         {% endif %}

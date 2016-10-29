@@ -233,18 +233,18 @@
 
   #header .navbar-inverse .navbar-toggle,
   #header .navbar-inverse .navbar-toggle:focus {
-    border-color: #dbb075;
+    border-color: #cf916f;
     margin-top: 15px;
     margin-right: 5px;
     outline: none;
   }
 
   .navbar-header .navbar-toggle .icon-bar {
-    background-color: #DBB075;
+    background-color: #cf916f;
   }
 
   #header .navbar-inverse .navbar-toggle:hover {
-    background: #dbb075;
+    background: #cf916f;
   }
 
   #header .navbar-inverse .navbar-toggle:hover .icon-bar {

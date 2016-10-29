@@ -1,5 +1,7 @@
 from django.db import models
+from django.db.models import Q
 from django.contrib.auth.models import User
+from django.core.exceptions import ObjectDoesNotExist
 
 class Staff(User):
     name = models.CharField(max_length=200)
@@ -12,10 +14,6 @@ class Staff(User):
 
     def viewCatagories(self):
         menu = dict()
-        for catagory in Catagory.objects.all():
-            menu[catagory.name] = list()
-        for course in Course.objects.filter(is_open = True):
-            menu[course.catagory.name].append(course)
         return menu
 
     def viewCourse(self, course_id):
@@ -25,13 +23,38 @@ class Staff(User):
         menu['catagory'] = course.catagory
         menu['instructor'] = course.instructor
         menu['description'] = course.description
+        menu['is_open'] = course.is_open
         return menu
 
 class Participant(Staff):
 
+    def viewCatagories(self):
+        menu = super(Participant, self).viewCatagories()
+        for c in Catagory.objects.all():
+            menu[c] = Course.objects.filter(catagory=c, is_open=True).count()
+        return menu
+
     def viewCourse(self, course_id):
-        # TODO: implement in next iteration
-        return super(Participant, self).viewCourse(course_id)
+        # TODO: implement more in next iteration
+        try:
+            currrentEnrollment = CurrentEnrollment.objects.get(participant=self, course__id = course_id)
+            menu = super(Participant, self).viewCourse(course_id)
+            menu['is_enrolled'] = True
+            menu['module'] = dict()
+            module_list = list()
+            for module in Module.objects.filter(course__id = course_id):
+                menu['module'][module] = list()
+                module_list.append(module)
+            for component in Component.objects.all():
+                for module in module_list:
+                    if component.module.id == module.id:
+                        menu['module'][module].append(component)
+            return menu
+        except ObjectDoesNotExist:
+            menu = super(Participant, self).viewCourse(course_id)
+            menu['is_enrolled'] = False
+            return menu
+
 
     def getHistoryInfo(self):
         menu = dict()
@@ -46,8 +69,22 @@ class Participant(Staff):
             menu[current.getCourse()] = current.getInfo()
         return menu
 
+    def enroll(self, course_id):
+        if CurrentEnrollment.objects.filter(participant__id = self.pk).exists():
+            return False
+        else:
+            course = Course.objects.get(pk=course_id)
+            CurrentEnrollment.objects.create(course=course, participant=self, progress="0")
+            return True
+
 
 class Instructor(Staff):
+
+    def viewCatagories(self):
+        menu = super(Instructor, self).viewCatagories()
+        for c in Catagory.objects.all():
+            menu[c] = Course.objects.filter(Q(catagory=c) & (Q(is_open=True) | Q(instructor=self))).count()
+        return menu
 
     def viewCourse(self, course_id):
         course = Course.objects.get(pk=course_id)
@@ -95,7 +132,7 @@ class Instructor(Staff):
         parent_course = Course.objects.get(pk = course_id)
         module = Module.objects.create(course = parent_course, name = module_name)
 
-    def createComponent(self, module_id, component_name, component_content, component_content_type):
+    def createComponent(self, module_id, component_name, component_content_type, component_content):
         parent_module = Module.objects.get(pk = module_id)
         component = Component.objects.create(name = component_name, content = component_content,
                 content_type = component_content_type, module = parent_module)
@@ -131,13 +168,13 @@ class Module(models.Model):
 
 class Component(models.Model):
     name = models.CharField(max_length=200)
-    content = models.CharField(max_length=200)
     CONTENT_TYPES = (
         (u'1', u'File'),
         (u'2', u'Text'),
         (u'3', u'Image'),
     )  # need to be changed later on
     content_type = models.CharField(max_length=1, choices=CONTENT_TYPES)
+    content = models.CharField(max_length=200)
     module = models.ForeignKey(Module, on_delete=models.CASCADE)  # many-to-one
 
     def __str__(self):
@@ -151,6 +188,9 @@ class Enrollment(models.Model):
 
     class Meta:
         abstract = True
+
+    def __str__(self):
+        return self.course.name + ' - ' + self.participant.name
 
     def getCourse(self):
         return self.course

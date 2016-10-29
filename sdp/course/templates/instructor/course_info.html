@@ -1,15 +1,36 @@
-<!DOCTYPE html>
-{% if is_mine %}
-  General Info: {{description}}<br>
-  {% for module, components in modules.items %}
-  Module: {{module.name}}<br>
-    {% for component in components%}
-      Component: {{component.content}}<br>
-    {% endfor %}
-  {% endfor %}
-{% else %}
-  Catagory: {{catagory.name}}<br>
-  Instructor: {{instructor.name}}<br>
-  General Info: {{description}}<br>
+<div id="accordion-container">
+    <h2 class="page-header">General Info</h2>
+    <div class="panel-body">{{description}}</div>
+    {% if is_mine %}
+    <div class="panel-group" id="accordion">
+      {% for module, components in modules.items %}
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4 class="panel-title">
+                    <a data-toggle="collapse" data-parent="#accordion" href="#collapse{{module.id}}">
+                        Module: {{module.name}}&nbsp;&nbsp;
+                        {% if not is_open %}
+                        <a class="btn btn-xs btn-info" style="color:#FFFFFF" onclick="createComponent('{{module.id}}','{{module.name}}')">Add Component</a><br>
+                        {% endif %}
+                    </a>
+                </h4>
+            </div>
+            <div id="collapse{{module.id}}" class="panel-collapse collapse in">
+              {% for component in components%}
+                <div class="panel-body">Component: {{component.content}}</div>
+              {% endfor %}
+            </div>
+        </div>
+      {% endfor %}
+    </div><!--/#accordion-->
+    {% else %}
+    <h2 class="page-header">Catagory</h2>
+    <div class="panel-body">{{catagory.name}}</div>
+    <h2 class="page-header">Instructor</h2>
+    <div class="panel-body">{{instructor.name}}</div>
+    {% endif %}
+</div><!--/#accordion-container-->
+{% if is_mine and not is_open %}
+    <a class="btn btn-xs btn-success" onclick="createModule('{{course_id}}','{{title}}')">Add Module</a>
 {% endif %}
-<a href="#" onclick="getCatagoryInfo('{{catagory.id}}', '{{catagory.name}}')">>Back</a>
+<a class="btn btn-xs btn-warning" onclick="getCatagoryInfo('{{catagory.id}}', '{{catagory.name}}')">< Back</a>
