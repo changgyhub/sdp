@@ -12,6 +12,7 @@ from . import log_view as lv
 
 @login_required
 def index(request):
+    lv.assignType(request.user.id, "Instructor")
     hour = dt.datetime.now().hour
     if hour < 6 or hour > 19:
         title = "Good night, "
@@ -22,7 +23,6 @@ def index(request):
     else:
         title = "Good evening, "
     instructor = Instructor.objects.get(user__pk=request.user.id)
-    lv.assignType(request.user.id, "Instructor")
     title += str(instructor) + "!"
     content = "Daily Notices:"
     return render_to_response('instructor/index.html', locals())

@@ -29,8 +29,6 @@ def assignType(id, login_type):
         role = Instructor.objects.get(user__pk=id)
         role.last_login_type = login_type
         role.save()
-    else:
-        return "Invalid"
 
 def login(request):
     if request.method == 'GET':
