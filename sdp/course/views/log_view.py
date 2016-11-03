@@ -13,10 +13,22 @@ from . import instructor_view as iv, participant_view as pv
 
 # detect the latest group type the current user choose to login
 def typeSelect(id):
-    if Participant.objects.filter(pk=id).exists():
-        return Participant.objects.get(pk=id).last_login_type
-    elif Instructor.objects.filter(pk=id).exists():
-        return Instructor.objects.get(pk=id).last_login_type
+    if Participant.objects.filter(user__pk=id).exists():
+        return Participant.objects.get(user__pk=id).last_login_type
+    elif Instructor.objects.filter(user__pk=id).exists():
+        return Instructor.objects.get(user__pk=id).last_login_type
+    else:
+        return "Invalid"
+
+def assignType(id, login_type):
+    if Participant.objects.filter(user__pk=id).exists():
+        role = Participant.objects.get(user__pk=id)
+        role.last_login_type = login_type
+        role.save()
+    if Instructor.objects.filter(user__pk=id).exists():
+        role = Instructor.objects.get(user__pk=id)
+        role.last_login_type = login_type
+        role.save()
     else:
         return "Invalid"
 

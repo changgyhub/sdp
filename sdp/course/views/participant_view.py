@@ -8,6 +8,7 @@ from django.template import RequestContext
 from django.forms.formsets import formset_factory
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.contrib.auth.decorators import login_required
+from . import log_view as lv
 
 @login_required
 def index(request):
@@ -21,7 +22,7 @@ def index(request):
     else:
         title = "Good evening, "
     participant = Participant.objects.get(user__pk=request.user.id)
-    participant.last_login_type = "Participant"
+    lv.assignType(request.user.id, "Participant")
     participant.save()
     title += str(participant) + "!"
     content = "Daily Notices:"
