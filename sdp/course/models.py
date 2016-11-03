@@ -3,14 +3,15 @@ from django.db.models import Q
 from django.contrib.auth.models import User
 from django.core.exceptions import ObjectDoesNotExist
 
-class Staff(User):
-    name = models.CharField(max_length=200)
+class Staff(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)  # many-to-one
+    last_login_type = models.CharField(max_length=20, default="Staff")
 
     class Meta:
         abstract = True
 
     def __str__(self):
-        return self.name
+        return self.user.first_name + " " + self.user.last_name
 
     def viewCatagories(self):
         menu = dict()

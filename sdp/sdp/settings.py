@@ -53,6 +53,8 @@ MIDDLEWARE = [
 SESSION_EXPIRE_AT_BROWSER_CLOSE = False
 SESSION_COOKIE_AGE = 120 * 60 # 120 minutes auto-logout
 
+LOGIN_URL = '/'
+
 ROOT_URLCONF = 'sdp.urls'
 
 TEMPLATES = [
