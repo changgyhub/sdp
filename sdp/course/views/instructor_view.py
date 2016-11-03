@@ -20,14 +20,16 @@ def index(request):
         title = "Good afternoon, "
     else:
         title = "Good evening, "
-    instructor = Instructor.objects.get(pk=request.user.id)
-    title += instructor.name + "!"
+    instructor = Instructor.objects.get(user__pk=request.user.id)
+    instructor.last_login_type = "Instructor"
+    instructor.save()
+    title += str(instructor) + "!"
     content = "Daily Notices:"
     return render_to_response('instructor/index.html', locals())
 
 @login_required
 def course(request):
-    instructor = Instructor.objects.get(pk=request.user.id)
+    instructor = Instructor.objects.get(user__pk=request.user.id)
     counts = instructor.viewCatagories()
     return render_to_response('instructor/course.html', locals())
 
@@ -35,7 +37,7 @@ def course(request):
 @login_required
 def catagory_info(request):
     catagory_id = request.POST['catagory_id']
-    parent_instructor = Instructor.objects.get(pk=request.user.id)
+    parent_instructor = Instructor.objects.get(user__pk=request.user.id)
     parent_catagory = Catagory.objects.get(pk=catagory_id)
     courses = Course.objects.filter(Q(catagory = parent_catagory, is_open = True) | Q(catagory = parent_catagory, is_open = False, instructor = parent_instructor))
     return render_to_response('instructor/catagory_info.html', locals())
@@ -47,7 +49,7 @@ def course_info(request, parent_course_id = None):
         course_id = request.POST['course_id']
     else: # the case of finish creating component
         course_id = parent_course_id
-    instructor = Instructor.objects.get(pk=request.user.id)
+    instructor = Instructor.objects.get(user__pk=request.user.id)
     menu = instructor.viewCourse(course_id)
     is_open = menu['is_open']
     title = menu['name']
@@ -86,7 +88,7 @@ def finish_create_course(request):
     course_description = request.POST['course_description']
 
     # create new course
-    instructor = Instructor.objects.get(pk=request.user.id)
+    instructor = Instructor.objects.get(user__pk=request.user.id)
     catagory = Catagory.objects.get(pk=catagory_id)
     instructor.createCourse(course_name, course_description, catagory)
 
@@ -104,7 +106,7 @@ def finish_create_course(request):
 def finish_create_module(request):
     course_id = request.POST['course_id']
     module_name = request.POST['module_name']
-    instructor = Instructor.objects.get(pk=request.user.id)
+    instructor = Instructor.objects.get(user__pk=request.user.id)
     instructor.createModule(course_id, module_name)
     return course_info(request)
 
@@ -114,7 +116,7 @@ def finish_create_component(request):
     component_name = request.POST['component_name']
     component_type = request.POST['component_type']
     component_content = request.POST['component_content']
-    instructor = Instructor.objects.get(pk=request.user.id)
+    instructor = Instructor.objects.get(user__pk=request.user.id)
     instructor.createComponent(module_id, component_name, component_type, component_content)
     course_id = Module.objects.get(pk=module_id).course.id
     return course_info(request, course_id)

@@ -20,21 +20,23 @@ def index(request):
         title = "Good afternoon, "
     else:
         title = "Good evening, "
-    participant = Participant.objects.get(pk=request.user.id)
-    title += participant.name + "!"
+    participant = Participant.objects.get(user__pk=request.user.id)
+    participant.last_login_type = "Participant"
+    participant.save()
+    title += str(participant) + "!"
     content = "Daily Notices:"
     return render_to_response('participant/index.html', locals())
 
 @login_required
 def course(request):
-    participant = Participant.objects.get(pk=request.user.id)
+    participant = Participant.objects.get(user__pk=request.user.id)
     counts = participant.viewCatagories()
     return render_to_response('participant/course.html', locals())
 
 @login_required
 def catagory_info(request):
     catagory_id = request.POST['catagory_id']
-    parent_participant = Participant.objects.get(pk=request.user.id)
+    parent_participant = Participant.objects.get(user__pk=request.user.id)
     parent_catagory = Catagory.objects.get(pk=catagory_id)
     courses = Course.objects.filter(catagory = parent_catagory, is_open = True)
     return render_to_response('participant/catagory_info.html', locals())
@@ -42,7 +44,7 @@ def catagory_info(request):
 @login_required
 def course_info(request):
     course_id = request.POST['course_id']
-    participant = Participant.objects.get(pk=request.user.id)
+    participant = Participant.objects.get(user__pk=request.user.id)
     menu = participant.viewCourse(course_id)
     is_enrolled = menu['is_enrolled']
     title = menu['name']
@@ -56,7 +58,7 @@ def course_info(request):
 @login_required
 def enroll(request):
     course_id = request.POST['course_id']
-    participant = Participant.objects.get(pk=request.user.id)
+    participant = Participant.objects.get(user__pk=request.user.id)
     if participant.enroll(course_id):
         return course_info(request, course_id)
     else:

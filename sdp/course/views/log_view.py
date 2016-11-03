@@ -7,17 +7,26 @@ from django.forms.formsets import formset_factory
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.contrib.auth.decorators import login_required
 from ..models import Staff, Course, Instructor, Participant
-from . import instructor_view as iv
-from . import participant_view as pv
+from . import instructor_view as iv, participant_view as pv
 #from django.views.decorators.csrf import csrf_protect, csrf_exempt
 #from django.template.context_processors import csrf
+
+# detect the latest group type the current user choose to login
+def typeSelect(id):
+    if Participant.objects.filter(pk=id).exists():
+        return Participant.objects.get(pk=id).last_login_type
+    elif Instructor.objects.filter(pk=id).exists():
+        return Instructor.objects.get(pk=id).last_login_type
+    else:
+        return "Invalid"
 
 def login(request):
     if request.method == 'GET':
         if request.user.is_authenticated():
-            if Participant.objects.filter(pk=request.user.id).exists():
+            last_login_type = typeSelect(request.user.id)
+            if last_login_type == "Participant":
                 return pv.index(request)
-            elif Instructor.objects.filter(pk=request.user.id).exists():
+            elif last_login_type == "Instructor":
                 return iv.index(request)
             else:
                 return logout(request)
@@ -34,14 +43,14 @@ def login(request):
             if user is not None and user.is_active:
                 if staff_type == "1":
                     auth.login(request, user)
-                    if Participant.objects.filter(pk=request.user.id).exists():
+                    if user.groups.filter(name='Participant').exists():
                         return pv.index(request)
                     else:
                         # TODO: wrong access
                         return logout(request)
                 elif staff_type == '2':
                     auth.login(request, user)
-                    if Instructor.objects.filter(pk=request.user.id).exists():
+                    if user.groups.filter(name='Instructor').exists():
                         return iv.index(request)
                     else:
                         # TODO: wrong access
