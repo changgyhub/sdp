@@ -6,8 +6,8 @@ from django.template import RequestContext
 from django.forms.formsets import formset_factory
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.contrib.auth.decorators import login_required
-from ..models import Staff, Course, Instructor, Participant
-from . import instructor_view as iv, participant_view as pv
+from ..models import Staff, Course, Instructor, Participant, Administrator, HR
+from . import instructor_view as iv, participant_view as pv, administrator_view as av, hr_view as hv
 #from django.views.decorators.csrf import csrf_protect, csrf_exempt
 #from django.template.context_processors import csrf
 
@@ -17,8 +17,12 @@ def typeSelect(id):
         return Participant.objects.get(user__pk=id).last_login_type
     elif Instructor.objects.filter(user__pk=id).exists():
         return Instructor.objects.get(user__pk=id).last_login_type
+    elif HR.objects.filter(user__pk=id).exists():
+        return HR.objects.get(user__pk=id).last_login_type
+    elif Administrator.objects.filter(user__pk=id).exists():
+        return Administrator.objects.get(user__pk=id).last_login_type
     else:
-        return "Invalid"
+        return "Staff"
 
 def assignType(id, login_type):
     if Participant.objects.filter(user__pk=id).exists():
@@ -29,6 +33,15 @@ def assignType(id, login_type):
         role = Instructor.objects.get(user__pk=id)
         role.last_login_type = login_type
         role.save()
+    if HR.objects.filter(user__pk=id).exists():
+        role = HR.objects.get(user__pk=id)
+        role.last_login_type = login_type
+        role.save()
+    if Administrator.objects.filter(user__pk=id).exists():
+        role = Administrator.objects.get(user__pk=id)
+        role.last_login_type = login_type
+        role.save()
+
 
 def login(request):
     if request.method == 'GET':
@@ -38,6 +51,10 @@ def login(request):
                 return pv.index(request)
             elif last_login_type == "Instructor":
                 return iv.index(request)
+            elif last_login_type == "HR":
+                return hv.index(request)
+            elif last_login_type == "Administrator":
+                return av.index(request)
             else:
                 return logout(request)
         else:
@@ -62,6 +79,20 @@ def login(request):
                     auth.login(request, user)
                     if user.groups.filter(name='Instructor').exists():
                         return iv.index(request)
+                    else:
+                        # TODO: wrong access
+                        return logout(request)
+                elif staff_type == '3':
+                    auth.login(request, user)
+                    if user.groups.filter(name='HR').exists():
+                        return hv.index(request)
+                    else:
+                        # TODO: wrong access
+                        return logout(request)
+                elif staff_type == '4':
+                    auth.login(request, user)
+                    if user.groups.filter(name='Administrator').exists():
+                        return av.index(request)
                     else:
                         # TODO: wrong access
                         return logout(request)

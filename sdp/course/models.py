@@ -138,12 +138,22 @@ class Instructor(Staff):
         component = Component.objects.create(name = component_name, content = component_content,
                 content_type = component_content_type, module = parent_module)
 
+class Administrator(Staff):
+
+    def toBeDeleted(self):
+        return "fake method, to be deleted, DO NOT add fake attributes"
+
+class HR(Staff):
+
+    def toBeDeleted(self):
+        return "fake method, to be deleted, DO NOT add fake attributes"
+
+
 class Catagory(models.Model):
     name = models.CharField(max_length=200)
 
     def __str__(self):
         return self.name
-
 
 class Course(models.Model):
     name = models.CharField(max_length=200)
@@ -156,7 +166,6 @@ class Course(models.Model):
 
     def __str__(self):
         return self.name
-
 
 class Module(models.Model):
     name = models.CharField(max_length=200)
