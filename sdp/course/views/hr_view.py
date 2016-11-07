@@ -44,5 +44,15 @@ def category_info(request):
 @login_required
 def participant(request):
     hr = HR.objects.get(user__pk=request.user.id)
-    counts = hr.viewAllParticipants()
+    participants = hr.viewAllParticipants()
     return render_to_response('hr/participant.html', locals())
+
+@login_required
+def participant_info(request):
+    participant_id = request.POST['participant_id']
+    hr_id = request.POST['hr_id']
+    hr = HR.objects.get(user__pk=hr_id)
+    participant = hr.viewParticipant(participant_id)
+    history = participant.getHistoryInfo()
+    current = participant.getCurrentInfo()
+    return render_to_response('hr/participant_info.html', locals())
