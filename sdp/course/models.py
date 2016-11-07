@@ -13,7 +13,7 @@ class Staff(models.Model):
     def __str__(self):
         return self.user.first_name + " " + self.user.last_name
 
-    def viewCatagories(self):
+    def viewCategories(self):
         menu = dict()
         return menu
 
@@ -21,7 +21,7 @@ class Staff(models.Model):
         course = Course.objects.get(pk = course_id)
         menu = dict()
         menu['name'] = course.name
-        menu['catagory'] = course.catagory
+        menu['category'] = course.category
         menu['instructor'] = course.instructor
         menu['description'] = course.description
         menu['is_open'] = course.is_open
@@ -29,10 +29,10 @@ class Staff(models.Model):
 
 class Participant(Staff):
 
-    def viewCatagories(self):
-        menu = super(Participant, self).viewCatagories()
-        for c in Catagory.objects.all():
-            menu[c] = Course.objects.filter(catagory=c, is_open=True).count()
+    def viewCategories(self):
+        menu = super(Participant, self).viewCategories()
+        for c in Category.objects.all():
+            menu[c] = Course.objects.filter(category=c, is_open=True).count()
         return menu
 
     def viewCourse(self, course_id):
@@ -81,10 +81,10 @@ class Participant(Staff):
 
 class Instructor(Staff):
 
-    def viewCatagories(self):
-        menu = super(Instructor, self).viewCatagories()
-        for c in Catagory.objects.all():
-            menu[c] = Course.objects.filter(Q(catagory=c) & (Q(is_open=True) | Q(instructor=self))).count()
+    def viewCategories(self):
+        menu = super(Instructor, self).viewCategories()
+        for c in Category.objects.all():
+            menu[c] = Course.objects.filter(Q(category=c) & (Q(is_open=True) | Q(instructor=self))).count()
         return menu
 
     def viewCourse(self, course_id):
@@ -107,10 +107,10 @@ class Instructor(Staff):
 
     def viewMyCourses(self):
         menu = dict()
-        for catagory in Catagory.objects.all():
-            menu[catagory.name] = list()
+        for category in Category.objects.all():
+            menu[category.name] = list()
         for course in Course.objects.filter(instructor__id = self.pk):
-            menu[course.catagory.name].append(course)
+            menu[course.category.name].append(course)
         return menu
 
 
@@ -130,9 +130,9 @@ class Instructor(Staff):
             course.save()
         else:
             print ("TODO")
-            
-    def createCourse(self, course_name, course_info, course_catagory):
-        course = Course.objects.create(catagory = course_catagory,
+
+    def createCourse(self, course_name, course_info, course_category):
+        course = Course.objects.create(category = course_category,
                 name=course_name, description=course_info, instructor = self)
                 # is_open = False as default
 
@@ -156,7 +156,7 @@ class HR(Staff):
         return "fake method, to be deleted, DO NOT add fake attributes"
 
 
-class Catagory(models.Model):
+class Category(models.Model):
     name = models.CharField(max_length=200)
 
     def __str__(self):
@@ -167,8 +167,8 @@ class Course(models.Model):
     is_open = models.BooleanField(default=False)  # default set to false
     instructor = models.ForeignKey(
         Instructor, on_delete=models.CASCADE)  # many-to-one
-    catagory = models.ForeignKey(
-        Catagory, on_delete=models.CASCADE)  # many-to-one
+    category = models.ForeignKey(
+        Category, on_delete=models.CASCADE)  # many-to-one
     description = models.CharField(max_length=2000)
 
     def __str__(self):

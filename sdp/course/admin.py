@@ -1,7 +1,7 @@
 from django.contrib import admin
-from .models import Catagory, Course, Module, Component, Participant, Instructor, HistoryEnrollment, CurrentEnrollment, Administrator, HR
+from .models import Category, Course, Module, Component, Participant, Instructor, HistoryEnrollment, CurrentEnrollment, Administrator, HR
 
-admin.site.register(Catagory)
+admin.site.register(Category)
 admin.site.register(Course)
 admin.site.register(Module)
 admin.site.register(Component)

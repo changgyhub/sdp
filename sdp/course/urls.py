@@ -1,11 +1,11 @@
 from django.conf.urls import include, url
-from .views import log_view as lv, instructor_view as iv, participant_view as pv
+from .views import log_view as lv, instructor_view as iv, participant_view as pv, hr_view as hv
 urlpatterns = [
     url(r'^$', lv.login, name='login'),
     url(r'^logout/', lv.logout, name='logout'),
     url(r'^instructor/',include([
-        url(r'^catagory/',include([
-            url(r'^info/',iv.catagory_info, name='instructor_catagory_info'),
+        url(r'^category/',include([
+            url(r'^info/',iv.category_info, name='instructor_category_info'),
         ])),
         url(r'^course/',include([
             url(r'^create/',include([
@@ -32,13 +32,26 @@ urlpatterns = [
     ])),
 
     url(r'^participant/',include([
-        url(r'^catagory/',include([
-            url(r'^info/',pv.catagory_info, name='participant_catagory_info'),
+        url(r'^category/',include([
+            url(r'^info/',pv.category_info, name='participant_category_info'),
         ])),
         url(r'^course/',include([
             url(r'^enroll/',pv.enroll, name='participant_enroll'),
             url(r'^info/',pv.course_info, name='participant_course_info'),
             url(r'^$', pv.course, name='participant_course'),
+        ])),
+    ])),
+
+    url(r'^hr/',include([
+        url(r'^category/',include([
+            url(r'^info/',hv.category_info, name='hr_category_info'),
+        ])),
+        url(r'^course/',include([
+            #url(r'^info/',hv.course_info, name='hr_course_info'),
+            url(r'^$', hv.course, name='hr_course'),
+        ])),
+        url(r'^participant/',include([
+            url(r'^$', hv.participant, name='hr_participant'),
         ])),
     ])),
 ]
