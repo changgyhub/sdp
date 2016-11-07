@@ -1,0 +1,14 @@
+{% load static %}
+<div class="col-xs-6 col-sm-6 portfolio-item branded logos">
+  <div class="portfolio-wrapper">
+    <h4 class="portfolio-info">
+      <li>User ID: {{participant.user.pk}}</li>
+      <li>Current Enrollment: {{current}}</li>
+      <li>History Enrollment:&nbsp
+        {% for k, e in history.items %}
+        {{k}}</li>
+        {% endfor %}
+      </li>
+    </h4>
+  </div>
+</div>

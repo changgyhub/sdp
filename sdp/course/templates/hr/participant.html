@@ -100,8 +100,8 @@
                         <div class="sidebar-item categories" id="category_bar">
                             <h3>Participants</h3>
                             <ul class="nav navbar-stacked">
-                              {% for category, num in counts.items %}
-                                <li><a onclick="getCategoryInfo('{{category.id}}', '{{category.name}}')">{{category.name}}<span class="pull-right">({{num}})</span></a></li>
+                              {% for k, e in participants.items %}
+                                <li><a onclick="getParticipantInfo('{{e.user.pk}}', '{{k}}', '{{hr.user.pk}}')">{{k}}</a></li>
                               {% endfor %}
                             </ul>
                         </div>
@@ -110,22 +110,7 @@
                 <div class="col-md-9 col-sm-8">
                     <div class="row">
                         <h1 id="content-title">Welcome!</h1>
-                        <div id="content-main"/>
-                        <!-- <div class="portfolio-pagination">
-                            <ul class="pagination">
-                              <li><a href="#">left</a></li>
-                              <li><a href="#">1</a></li>
-                              <li><a href="#">2</a></li>
-                              <li class="active"><a href="#">3</a></li>
-                              <li><a href="#">4</a></li>
-                              <li><a href="#">5</a></li>
-                              <li><a href="#">6</a></li>
-                              <li><a href="#">7</a></li>
-                              <li><a href="#">8</a></li>
-                              <li><a href="#">9</a></li>
-                              <li><a href="#">right</a></li>
-                            </ul>
-                        </div> -->
+                        <div id="content-main"/> </div>
                     </div>
                 </div>
             </div>
@@ -157,31 +142,12 @@
 
     <script>
 
-    function getCategoryInfo(category_id, category_name) {
-        $('#content-title').html(category_name);
+    function getParticipantInfo(participant_id, participant_name, hr_id) {
+        $('#content-title').html(participant_name);
         $.ajax({
-            url : "/hr/category/info/", // the endpoint
+            url : "/hr/participant/info/", // the endpoint
             type : "POST", // http method
-            data : { 'category_id' : category_id }, // data sent with the post request
-            // handle a successful response
-            success : function(response) {
-                $('#content-main').html(response);
-            },
-            // // handle a non-successful response
-            // error : function(xhr,errmsg,err) {
-            //     $('#results').html("<div class='alert-box alert radius' data-alert>Oops! We have encountered an error: "+errmsg+
-            //         " <a href='#' class='close'>&times;</a></div>"); // add the error to the dom
-            //     console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
-            // }
-        });
-    }
-
-    function getCourseInfo(course_id, course_name) {
-        $('#content-title').html(course_name);
-        $.ajax({
-            url : "/hr/course/info/", // the endpoint
-            type : "POST", // http method
-            data : { 'course_id' : course_id }, // data sent with the post request
+            data : {'participant_id': participant_id, 'hr_id': hr_id}, // data sent with the post request
             // handle a successful response
             success : function(response) {
                 $('#content-main').html(response);
