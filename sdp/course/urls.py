@@ -14,7 +14,7 @@ urlpatterns = [
             ])),
             url(r'^info/',iv.course_info, name='instructor_course_info'),
             url(r'^open/', iv.open_course, name= 'instructor_open_course'),
-            # url(r'^close/', iv.close_course, name= 'instructor_close_course'),
+            url(r'^close/', iv.close_course, name= 'instructor_close_course'),
             url(r'^$', iv.course, name='instructor_course'),
         ])),
         url(r'^module/',include([

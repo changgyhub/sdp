@@ -126,12 +126,15 @@ def open_course(request):
     course_id = request.POST['course_id']
     instructor = Instructor.objects.get(user__pk=request.user.id)
     instructor.openCourse(course_id)
+    # TODO: need to change if there is any problem opening course
     return course_info(request, course_id)
 
 
-# @login_required
-# def close_course(request):
-#     course_id = request.POST['course_id']
-#     instructor = Instructor.objects.get(user__pk=request.user.id)
-#     instructor.closeCourse(course_id)
-#     return
+@login_required
+def close_course(request):
+    course_id = request.POST['course_id']
+    instructor = Instructor.objects.get(user__pk=request.user.id)
+    print ('close')
+    instructor.closeCourse(course_id)
+    return course_info(request, course_id)
+
