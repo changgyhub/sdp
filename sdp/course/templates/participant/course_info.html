@@ -21,8 +21,8 @@
         {% endfor %}
       </div><!--/#accordion-->
     {% else %}
-      <h2 class="page-header">Catagory</h2>
-      <div class="panel-body">{{catagory.name}}</div>
+      <h2 class="page-header">Category</h2>
+      <div class="panel-body">{{category.name}}</div>
       <h2 class="page-header">Instructor</h2>
       <div class="panel-body">{{instructor.name}}</div>
     {% endif %}
@@ -30,4 +30,4 @@
 {% if not is_enrolled %}
 <a class="btn btn-xs btn-info" onclick="enroll('{{course_id}}')">+ Enroll</a>
 {% endif %}
-<a class="btn btn-xs btn-warning" onclick="getCatagoryInfo('{{catagory.id}}', '{{catagory.name}}')">< Back</a>
+<a class="btn btn-xs btn-warning" onclick="getCategoryInfo('{{category.id}}', '{{category.name}}')">< Back</a>

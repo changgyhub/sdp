@@ -1,0 +1,10 @@
+{% load static %}
+<div class="col-xs-6 col-sm-6 portfolio-item branded logos">
+  <div class="portfolio-wrapper">
+    <h4 class="portfolio-info">
+      {% for course in courses %}
+      <li><a onclick="getCourseInfo('{{course.id}}', '{{course.name}}')">{{course.name}}</a></li><br>
+      {% endfor %}
+    </h4>
+  </div>
+</div>
