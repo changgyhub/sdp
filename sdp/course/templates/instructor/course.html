@@ -332,7 +332,33 @@
           // }
       });
     }
-
+    
+    function openCourse(course_id) {
+        $.ajax({
+            url : "/instructor/course/open/", // the endpoint
+            type : "POST", // http method
+            data : { 'course_id' : course_id }, // data sent with the post request
+            // handle a successful response
+            success : function() {
+            // unable the open regiestration button
+                $("#registrationButton").fadeOut(800);
+            },
+        });
+    }
+    
+    // function closeCourse(course_id) {
+    //     $.ajax({
+    //         url : "/instructor/course/close/", // the endpoint
+    //         type : "POST", // http method
+    //         data : { 'course_id' : course_id }, // data sent with the post request
+    //         // handle a successful response
+    //         success : function() {
+    //         // unable the close regiestration button
+    //             $("#regiestrationButton").delay(1000).fadeOut(800
+    //             $("#regiestrationButton").attr("disabled", false);
+    //         },
+    //     });
+    // }
     function logout(){
       window.location = "/logout";
     }

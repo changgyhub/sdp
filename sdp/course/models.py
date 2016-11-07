@@ -123,7 +123,14 @@ class Instructor(Staff):
             print ("TODO")
             # TODO: fail to open a course
             #       this should not happen actually
-
+    def closeCourse(self, course_id):
+        course = Course.objects.get(pk=course_id)
+        if course.instructor.id == self.pk:
+            course.is_open = False;
+            course.save()
+        else:
+            print ("TODO")
+            
     def createCourse(self, course_name, course_info, course_catagory):
         course = Course.objects.create(catagory = course_catagory,
                 name=course_name, description=course_info, instructor = self)

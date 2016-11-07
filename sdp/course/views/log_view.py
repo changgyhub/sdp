@@ -7,7 +7,6 @@ from django.forms.formsets import formset_factory
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.contrib.auth.decorators import login_required
 from ..models import Staff, Course, Instructor, Participant, Administrator, HR
-from . import instructor_view as iv, participant_view as pv, administrator_view as av, hr_view as hv
 #from django.views.decorators.csrf import csrf_protect, csrf_exempt
 #from django.template.context_processors import csrf
 
@@ -44,6 +43,7 @@ def assignType(id, login_type):
 
 
 def login(request):
+    from . import instructor_view as iv, participant_view as pv, administrator_view as av, hr_view as hv
     if request.method == 'GET':
         if request.user.is_authenticated():
             last_login_type = typeSelect(request.user.id)

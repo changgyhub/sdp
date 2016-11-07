@@ -1,5 +1,14 @@
 <div id="accordion-container">
-    <h2 class="page-header">General Info</h2>
+    <h2 class="page-header">General Info
+        {% if not is_open %}
+        <a id= 'registrationButton' class="btn btn-xs btn-info" style="color:#FFFFFF" onclick="openCourse('{{course_id}}')">Open Registration</a><br>
+        {% endif %}
+        <!-- {% if is_open %}
+        <a class="btn btn-xs btn-info" style="color:#FFFFFF" onclick="closeCourse('{{course_id}}')">Close Registration</a><br>
+        {% endif %} -->
+
+    </h2>
+
     <div class="panel-body">{{description}}</div>
     {% if is_mine %}
     <div class="panel-group" id="accordion">
