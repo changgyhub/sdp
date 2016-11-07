@@ -64,11 +64,10 @@ class Participant(Staff):
         return menu
 
     def getCurrentInfo(self):
-        menu = dict()
-        for current in CurrentEnrollment.objects.get(participant__id = self.pk):
-            # we use get here because there can only be one current course
-            menu[current.getCourse()] = current.getInfo()
-        return menu
+        if CurrentEnrollment.objects.filter(participant__id = self.pk).exists():
+            currentEnrollment = CurrentEnrollment.objects.get(participant__id = self.pk)
+            return currentEnrollment.course
+        return None
 
     def enroll(self, course_id):
         if CurrentEnrollment.objects.filter(participant__id = self.pk).exists():
@@ -169,6 +168,7 @@ class HR(Staff):
         menu = dict()
         for p in Participant.objects.all():
             menu[p.user.first_name + " " + p.user.last_name] = p
+        sorted(menu)
         return menu
 
     def viewParticipant(self, participant_id):
@@ -226,7 +226,7 @@ class Enrollment(models.Model):
         abstract = True
 
     def __str__(self):
-        return self.course.name + ' - ' + self.participant.name
+        return self.course.name + ' - ' + str(self.participant)
 
     def getCourse(self):
         return self.course
