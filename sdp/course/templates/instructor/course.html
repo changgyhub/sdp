@@ -97,11 +97,11 @@
             <div class="row">
                 <div class="col-md-3 col-sm-4">
                     <div class="sidebar portfolio-sidebar">
-                        <div class="sidebar-item categories" id="catagory_bar">
+                        <div class="sidebar-item categories" id="category_bar">
                             <h3>Categories</h3>
                             <ul class="nav navbar-stacked">
-                              {% for catagory, num in counts.items %}
-                                <li><a onclick="getCatagoryInfo('{{catagory.id}}', '{{catagory.name}}')">{{catagory.name}}<span class="pull-right">({{num}})</span></a></li>
+                              {% for category, num in counts.items %}
+                                <li><a onclick="getCategoryInfo('{{category.id}}', '{{category.name}}')">{{category.name}}<span class="pull-right">({{num}})</span></a></li>
                               {% endfor %}
                             </ul>
                         </div>
@@ -158,12 +158,12 @@
     <script>
 
 
-    function getCatagoryInfo(catagory_id, catagory_name) {
-        $('#content-title').html(catagory_name);
+    function getCategoryInfo(category_id, category_name) {
+        $('#content-title').html(category_name);
         $.ajax({
-            url : "/instructor/catagory/info/", // the endpoint
+            url : "/instructor/category/info/", // the endpoint
             type : "POST", // http method
-            data : { 'catagory_id' : catagory_id }, // data sent with the post request
+            data : { 'category_id' : category_id }, // data sent with the post request
             // handle a successful response
             success : function(response) {
                 $('#content-main').html(response);
@@ -196,12 +196,12 @@
         });
     }
 
-    function createCourse(catagory_id) {
+    function createCourse(category_id) {
         $('#content-title').html("Create your course");
         $.ajax({
             url : "/instructor/course/create/start/", // the endpoint
             type : "POST", // http method
-            data : { 'catagory_id' : catagory_id }, // data sent with the post request
+            data : { 'category_id' : category_id }, // data sent with the post request
             // handle a successful response
             success : function(response) {
                 $('#content-main').html(response);
@@ -215,7 +215,7 @@
         });
     }
 
-    function finishCreateCourse(catagory_id, catagory_name){
+    function finishCreateCourse(category_id, category_name){
       if ($('#create_name').val() == "" | $('#create_description').val() == ""){
         alert("Must fill in all input boxes.");
         return;
@@ -224,14 +224,14 @@
           url : "/instructor/course/create/finish/", // the endpoint
           type : "POST", // http method
           data : {
-            'catagory_id' : catagory_id,
+            'category_id' : category_id,
             'course_name' : $('#create_name').val(),
             'course_description' : $('#create_description').val(),
           }, // data sent with the post request
           // handle a successful response
           success : function(response) {
-              $('#catagory_bar').html(response);
-              getCatagoryInfo(catagory_id, catagory_name);
+              $('#category_bar').html(response);
+              getCategoryInfo(category_id, category_name);
           },
           // // handle a non-successful response
           // error : function(xhr,errmsg,err) {
@@ -332,7 +332,7 @@
           // }
       });
     }
-    
+
     function openCourse(course_id) {
         $.ajax({
             url : "/instructor/course/open/", // the endpoint
@@ -345,7 +345,7 @@
             },
         });
     }
-    
+
     // function closeCourse(course_id) {
     //     $.ajax({
     //         url : "/instructor/course/close/", // the endpoint

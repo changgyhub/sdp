@@ -3,15 +3,15 @@
         <input type="text" id="create_name" class="form-control" required placeholder="Course Name">
     </div>
     <div class="form-group">
-        <input type="text" class="form-control" value='Catagory: {{catagory.name}}' readonly></input>
+        <input type="text" class="form-control" value='Category: {{category.name}}' readonly></input>
     </div>
     <div class="form-group" style="display: none;">
-        <input type="text" id="create_catagory_id" class="form-control" value='{{catagory.id}}' readonly></input>
+        <input type="text" id="create_category_id" class="form-control" value='{{category.id}}' readonly></input>
     </div>
     <div class="form-group">
         <textarea id="create_description" required class="form-control" rows="8" placeholder="description"></textarea>
     </div>
     <div class="form-group">
-        <input class="btn btn-warning" value="Submit" onclick="finishCreateCourse('{{catagory.id}}', '{{catagory.name}}')">
+        <input class="btn btn-warning" value="Submit" onclick="finishCreateCourse('{{category.id}}', '{{category.name}}')">
     </div>
 </div>

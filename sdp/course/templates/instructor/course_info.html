@@ -33,8 +33,8 @@
       {% endfor %}
     </div><!--/#accordion-->
     {% else %}
-    <h2 class="page-header">Catagory</h2>
-    <div class="panel-body">{{catagory.name}}</div>
+    <h2 class="page-header">Category</h2>
+    <div class="panel-body">{{category.name}}</div>
     <h2 class="page-header">Instructor</h2>
     <div class="panel-body">{{instructor.name}}</div>
     {% endif %}
@@ -42,4 +42,4 @@
 {% if is_mine and not is_open %}
     <a class="btn btn-xs btn-success" onclick="createModule('{{course_id}}','{{title}}')">Add Module</a>
 {% endif %}
-<a class="btn btn-xs btn-warning" onclick="getCatagoryInfo('{{catagory.id}}', '{{catagory.name}}')">< Back</a>
+<a class="btn btn-xs btn-warning" onclick="getCategoryInfo('{{category.id}}', '{{category.name}}')">< Back</a>
