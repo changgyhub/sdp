@@ -1,0 +1,206 @@
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>AB Credit (HK) Staff Development Platform</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/font-awesome.min.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/animate.min.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/lightbox.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/main.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/responsive.css' %}" />
+    <!--[if lt IE 9]>
+	    <script src="js/html5shiv.js"></script>
+	    <script src="js/respond.min.js"></script>
+    <![endif]-->
+    <link rel="shortcut icon" href="{% static 'image/ico/favicon.ico' %}" />
+    <link rel="shortcut icon" sizes="144x144" href="{% static 'image/ico/apple-touch-icon-144-precomposed.png' %}" />
+    <link rel="shortcut icon" sizes="114x114" href="{% static 'image/ico/apple-touch-icon-114-precomposed.png' %}" />
+    <link rel="shortcut icon" sizes="72x72" href="{% static 'image/ico/apple-touch-icon-72-precomposed.png' %}" />
+    <link rel="shortcut icon" href="{% static 'image/ico/apple-touch-icon-57-precomposed.png' %}" />
+</head><!--/head-->
+
+<body>
+	<header id="header">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-12 overflow">
+                   <div class="social-icons pull-right">
+                        <ul class="nav nav-pills">
+                            <li><a><i class="fa fa-facebook"></i></a></li>
+                            <li><a><i class="fa fa-twitter"></i></a></li>
+                            <li><a><i class="fa fa-google-plus"></i></a></li>
+                            <li><a><i class="fa fa-dribbble"></i></a></li>
+                            <li><a><i class="fa fa-linkedin"></i></a></li>
+                        </ul>
+                    </div>
+                </div>
+             </div>
+        </div>
+        <div class="navbar navbar-inverse" role="banner">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+
+                    <a class="navbar-brand">
+                        <h1 style="font-size: 300%; color: #cf916f">AB Credit SDP</h1>
+                    </a>
+
+                </div>
+                <div class="collapse navbar-collapse">
+                    <ul class="nav navbar-nav navbar-right">
+                        <li><a href="/">Home</a></li>
+                        <li class="active"><a href="/hr/course">Courses</a></li>
+                        <li><a href="../participant">Participants</a></li>
+                        <li><a onclick="logout()">Logout</a></li>
+                    </ul>
+                </div>
+                <div class="search">
+                    <form role="form">
+                        <i class="fa fa-search"></i>
+                        <div class="field-toggle">
+                            <input type="text" class="search-form" autocomplete="off" placeholder="Search">
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </header>
+    <!--/#header-->
+
+
+    <section id="page-breadcrumb">
+        <div class="vertical-center sun">
+             <div class="container">
+                <div class="row">
+                    <div class="action">
+                        <div class="col-sm-12">
+                            <h1 class="title">View all courses here.</h1>
+                            <p>You can enroll and learn a course once at a time, or view information of other courses.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+   </section>
+    <!--/#page-breadcrumb-->
+
+    <section id="projects" class="padding-top">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-3 col-sm-4">
+                    <div class="sidebar portfolio-sidebar">
+                        <div class="sidebar-item categories" id="category_bar">
+                            <h3>Categories</h3>
+                            <ul class="nav navbar-stacked">
+                              {% for category, num in counts.items %}
+                                <li><a onclick="getCategoryInfo('{{category.id}}', '{{category.name}}')">{{category.name}}<span class="pull-right">({{num}})</span></a></li>
+                              {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-9 col-sm-8">
+                    <div class="row">
+                        <h1 id="content-title">Welcome!</h1>
+                        <div id="content-main"/>
+                        <!-- <div class="portfolio-pagination">
+                            <ul class="pagination">
+                              <li><a href="#">left</a></li>
+                              <li><a href="#">1</a></li>
+                              <li><a href="#">2</a></li>
+                              <li class="active"><a href="#">3</a></li>
+                              <li><a href="#">4</a></li>
+                              <li><a href="#">5</a></li>
+                              <li><a href="#">6</a></li>
+                              <li><a href="#">7</a></li>
+                              <li><a href="#">8</a></li>
+                              <li><a href="#">9</a></li>
+                              <li><a href="#">right</a></li>
+                            </ul>
+                        </div> -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!--/#projects-->
+
+
+    <footer id="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="copyright-text text-center">
+                        <p>&copy; AB Credit (HK) 2016. All Rights Reserved.</p>
+                        <p>Designed by <a target="_blank" href="http://www.cs.hku.hk/programme/course_info.jsp?infile=2013/comp3297.html">Mergy</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <!--/#footer-->
+
+    <script type="text/javascript" src="{% static 'js/jquery.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/bootstrap.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/lightbox.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/wow.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/main.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/jquery.isotope.min.js' %}"></script>
+
+    <script>
+
+    function getCategoryInfo(category_id, category_name) {
+        $('#content-title').html(category_name);
+        $.ajax({
+            url : "/hr/category/info/", // the endpoint
+            type : "POST", // http method
+            data : { 'category_id' : category_id }, // data sent with the post request
+            // handle a successful response
+            success : function(response) {
+                $('#content-main').html(response);
+            },
+            // // handle a non-successful response
+            // error : function(xhr,errmsg,err) {
+            //     $('#results').html("<div class='alert-box alert radius' data-alert>Oops! We have encountered an error: "+errmsg+
+            //         " <a href='#' class='close'>&times;</a></div>"); // add the error to the dom
+            //     console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
+            // }
+        });
+    }
+
+    function getCourseInfo(course_id, course_name) {
+        $('#content-title').html(course_name);
+        $.ajax({
+            url : "/hr/course/info/", // the endpoint
+            type : "POST", // http method
+            data : { 'course_id' : course_id }, // data sent with the post request
+            // handle a successful response
+            success : function(response) {
+                $('#content-main').html(response);
+            },
+            // // handle a non-successful response
+            // error : function(xhr,errmsg,err) {
+            //     $('#results').html("<div class='alert-box alert radius' data-alert>Oops! We have encountered an error: "+errmsg+
+            //         " <a href='#' class='close'>&times;</a></div>"); // add the error to the dom
+            //     console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
+            // }
+        });
+    }
+
+    function logout(){
+      window.location = "/logout";
+    }
+
+    </script>
+
+</body>
+</html>
