@@ -126,7 +126,7 @@ def open_course(request):
     course_id = request.POST['course_id']
     instructor = Instructor.objects.get(user__pk=request.user.id)
     instructor.openCourse(course_id)
-    return 
+    return render_to_response('instructor/course_info.html', locals())
     
     
 # @login_required
