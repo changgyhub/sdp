@@ -152,8 +152,28 @@ class Administrator(Staff):
 
 class HR(Staff):
 
-    def toBeDeleted(self):
-        return "fake method, to be deleted, DO NOT add fake attributes"
+    def viewCategories(self):
+        menu = super(HR, self).viewCategories()
+        for c in Category.objects.all():
+            menu[c] = Course.objects.filter(category=c, is_open=True).count()
+        return menu
+
+    def viewCourse(self, course_id):
+        menu = dict()
+        for p in Participant.objects.all():
+            if Enrollment.objects.filter(course__pk=course_id).exists():
+                menu[p.user.first_name + " " + p.user.last_name] = p
+        return menu
+
+    def viewAllParticipants(self):
+        menu = dict()
+        for p in Participant.objects.all():
+            menu[p.user.first_name + " " + p.user.last_name] = p
+        return menu
+
+    def viewParticipant(self, participant_id):
+        participant = Participant.objects.get(user__pk=participant_id)
+        return participant
 
 
 class Category(models.Model):
