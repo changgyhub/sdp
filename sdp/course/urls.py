@@ -51,6 +51,7 @@ urlpatterns = [
             url(r'^$', hv.course, name='hr_course'),
         ])),
         url(r'^participant/',include([
+            url(r'^info/',hv.participant_info, name='hr_participant_info'),
             url(r'^$', hv.participant, name='hr_participant'),
         ])),
     ])),
