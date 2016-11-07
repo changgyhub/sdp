@@ -1,6 +1,6 @@
 import datetime as dt
 from django.db.models import Q
-from ..models import Catagory, Staff, Course, Instructor, Module, Participant
+from ..models import Category, Staff, Course, Instructor, Module, Participant
 from django.shortcuts import render_to_response,render, get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib import auth, messages
@@ -30,16 +30,16 @@ def index(request):
 @login_required
 def course(request):
     participant = Participant.objects.get(user__pk=request.user.id)
-    counts = participant.viewCatagories()
+    counts = participant.viewCategories()
     return render_to_response('participant/course.html', locals())
 
 @login_required
-def catagory_info(request):
-    catagory_id = request.POST['catagory_id']
+def category_info(request):
+    category_id = request.POST['category_id']
     parent_participant = Participant.objects.get(user__pk=request.user.id)
-    parent_catagory = Catagory.objects.get(pk=catagory_id)
-    courses = Course.objects.filter(catagory = parent_catagory, is_open = True)
-    return render_to_response('participant/catagory_info.html', locals())
+    parent_category = Category.objects.get(pk=category_id)
+    courses = Course.objects.filter(category = parent_category, is_open = True)
+    return render_to_response('participant/category_info.html', locals())
 
 @login_required
 def course_info(request):
@@ -48,7 +48,7 @@ def course_info(request):
     menu = participant.viewCourse(course_id)
     is_enrolled = menu['is_enrolled']
     title = menu['name']
-    catagory = menu['catagory']
+    category = menu['category']
     instructor = menu['instructor']
     description = menu['description']
     if is_enrolled:

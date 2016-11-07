@@ -1,6 +1,6 @@
 import datetime as dt
 from django.db.models import Q
-from ..models import Catagory, Staff, Course, Instructor, Module, Participant, Administrator
+from ..models import Category, Staff, Course, Instructor, Module, Participant, Administrator
 from django.shortcuts import render_to_response,render, get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib import auth, messages

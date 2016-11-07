@@ -1,6 +1,6 @@
 import datetime as dt
 from django.db.models import Q
-from ..models import Catagory, Staff, Course, Instructor, Module
+from ..models import Category, Staff, Course, Instructor, Module
 from django.shortcuts import render_to_response,render, get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib import auth, messages
@@ -30,17 +30,17 @@ def index(request):
 @login_required
 def course(request):
     instructor = Instructor.objects.get(user__pk=request.user.id)
-    counts = instructor.viewCatagories()
+    counts = instructor.viewCategories()
     return render_to_response('instructor/course.html', locals())
 
 
 @login_required
-def catagory_info(request):
-    catagory_id = request.POST['catagory_id']
+def category_info(request):
+    category_id = request.POST['category_id']
     parent_instructor = Instructor.objects.get(user__pk=request.user.id)
-    parent_catagory = Catagory.objects.get(pk=catagory_id)
-    courses = Course.objects.filter(Q(catagory = parent_catagory, is_open = True) | Q(catagory = parent_catagory, is_open = False, instructor = parent_instructor))
-    return render_to_response('instructor/catagory_info.html', locals())
+    parent_category = Category.objects.get(pk=category_id)
+    courses = Course.objects.filter(Q(category = parent_category, is_open = True) | Q(category = parent_category, is_open = False, instructor = parent_instructor))
+    return render_to_response('instructor/category_info.html', locals())
 
 
 @login_required
@@ -53,7 +53,7 @@ def course_info(request, parent_course_id = None):
     menu = instructor.viewCourse(course_id)
     is_open = menu['is_open']
     title = menu['name']
-    catagory = menu['catagory']
+    category = menu['category']
     instructor = menu['instructor']
     description = menu['description']
     if 'module' in menu:
@@ -65,8 +65,8 @@ def course_info(request, parent_course_id = None):
 
 @login_required
 def create_course(request):
-    catagory_id = request.POST['catagory_id']
-    catagory = Catagory.objects.get(pk=catagory_id)
+    category_id = request.POST['category_id']
+    category = Category.objects.get(pk=category_id)
     return render_to_response('instructor/create_course.html', locals())
 
 @login_required
@@ -83,22 +83,22 @@ def create_component(request):
 
 @login_required
 def finish_create_course(request):
-    catagory_id = request.POST['catagory_id']
+    category_id = request.POST['category_id']
     course_name = request.POST['course_name']
     course_description = request.POST['course_description']
 
     # create new course
     instructor = Instructor.objects.get(user__pk=request.user.id)
-    catagory = Catagory.objects.get(pk=catagory_id)
-    instructor.createCourse(course_name, course_description, catagory)
+    category = Category.objects.get(pk=category_id)
+    instructor.createCourse(course_name, course_description, category)
 
-    # refresh catagory list
+    # refresh category list
     counts = dict()
-    for c in Catagory.objects.all():
-        counts[c] = Course.objects.filter(catagory=c).count()
+    for c in Category.objects.all():
+        counts[c] = Course.objects.filter(category=c).count()
     returnHTML = "<h3>Categories</h3><ul class=\"nav navbar-stacked\">"
-    for catagory, num in counts.items():
-        returnHTML += "<li><a onclick=\"getCatagoryInfo(\'" + str(catagory.id) + "\', \'" + catagory.name + "\')\">" + catagory.name + "<span class=\"pull-right\">(" + str(num) + ")</span></a></li>"
+    for category, num in counts.items():
+        returnHTML += "<li><a onclick=\"getCategoryInfo(\'" + str(category.id) + "\', \'" + category.name + "\')\">" + category.name + "<span class=\"pull-right\">(" + str(num) + ")</span></a></li>"
     returnHTML += "</ul>"
     return HttpResponse(returnHTML)
 
@@ -127,11 +127,11 @@ def open_course(request):
     instructor = Instructor.objects.get(user__pk=request.user.id)
     instructor.openCourse(course_id)
     return render_to_response('instructor/course_info.html', locals())
-    
-    
+
+
 # @login_required
 # def close_course(request):
 #     course_id = request.POST['course_id']
 #     instructor = Instructor.objects.get(user__pk=request.user.id)
 #     instructor.closeCourse(course_id)
-#     return 
+#     return
