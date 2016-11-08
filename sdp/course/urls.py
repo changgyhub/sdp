@@ -1,5 +1,5 @@
 from django.conf.urls import include, url
-from .views import log_view as lv, instructor_view as iv, participant_view as pv, hr_view as hv
+from .views import log_view as lv, instructor_view as iv, participant_view as pv, hr_view as hv, administrator_view as av
 urlpatterns = [
     url(r'^$', lv.login, name='login'),
     url(r'^logout/', lv.logout, name='logout'),
@@ -54,5 +54,10 @@ urlpatterns = [
             url(r'^info/',hv.participant_info, name='hr_participant_info'),
             url(r'^$', hv.participant, name='hr_participant'),
         ])),
+    ])),
+
+    url(r'^administrator/', include([
+        url(r'^category/', av.category, name='administrator_category'),
+        url(r'^priority/', av.priority, name='administrator_priority'),
     ])),
 ]

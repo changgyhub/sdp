@@ -27,3 +27,11 @@ def index(request):
     title += str(administrator) + "!"
     content = "Daily Notices:"
     return render_to_response('administrator/index.html', locals())
+
+@login_required
+def category(request):
+    return render_to_response('administrator/category.html',locals())
+
+@login_required
+def priority(request):
+    return render_to_response('administrator/priority.html',locals())
