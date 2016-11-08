@@ -1,6 +1,7 @@
 import datetime as dt
 from django.db.models import Q
 from ..models import Category, Staff, Course, Instructor, Module
+from ..forms import DocumentForm
 from django.shortcuts import render_to_response,render, get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib import auth, messages
@@ -137,6 +138,15 @@ def open_course(request):
 def close_course(request):
     course_id = request.POST['course_id']
     instructor = Instructor.objects.get(user__pk=request.user.id)
-    print ('close')
     instructor.closeCourse(course_id)
     return course_info(request, course_id)
+@login_required
+def file_upload(request):
+    module_id = request.POST['module_id']
+    if module_id == '#':
+        form = DocumentForm()
+        return render_to_response('instructor/file_upload.html', locals())
+    else:
+        form = DocumentForm(request.POST, request.FILES)
+        if form.is_valid():
+            print('gg')

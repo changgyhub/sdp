@@ -209,9 +209,10 @@ class Component(models.Model):
         (u'2', u'Text'),
         (u'3', u'Image'),
     )  # need to be changed later on
-    content_type = models.CharField(max_length=1, choices=CONTENT_TYPES)
-    content = models.CharField(max_length=200)
-    module = models.ForeignKey(Module, on_delete=models.CASCADE)  # many-to-one
+    content_type = models.CharField(max_length=1, choices=CONTENT_TYPES,default = None)
+    content = models.CharField(max_length=200, default= None)
+    content_file = models.FileField(upload_to='uploads/%Y/%m/%d/', default = None)
+    module = models.ForeignKey(Module, on_delete=models.CASCADE, default = None)  # many-to-one
 
     def __str__(self):
         return self.name
