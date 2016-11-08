@@ -15,16 +15,16 @@
     {% if is_mine %}
     <div id="accordion">
       {% for module, components in modules.items %}
-          <h3 class="page-header" style="color: #686868;">
-              Module: {{module.name}}&nbsp;&nbsp;
+          <h2 class="page-header" style="color: #686868;">
+              Module {{ forloop.counter }}: {{module.name}}&nbsp;&nbsp;
               <a class="btn btn-sm btn-info" data-toggle="collapse" data-parent="#accordion" href="#collapse{{module.id}}">Collapse</a>&nbsp;
               {% if not is_open %}
               <a class="btn btn-sm btn-info" style="color:#FFFFFF" onclick="createComponent('{{module.id}}','{{module.name}}')">Add Component</a><br>
               {% endif %}
-          </h3>
+          </h2>
           <div id="collapse{{module.id}}" class="col-sm-12 panel-collapse collapse in">
             {% for component in components%}
-              <h4 class="page-header" style="color: #686868;">Component: {{component.name}}</h4>
+              <h4 class="page-header" style="color: #686868;">Component {{forloop.parentloop.counter}}.{{ forloop.counter }}: {{component.name}}</h4>
               <h5 class="panel-body">{{component.content}}</h5>
             {% endfor %}
           </div>

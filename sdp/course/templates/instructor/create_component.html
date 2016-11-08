@@ -1,4 +1,4 @@
-<form class="col-sm-12 contact-form bottom">
+<form class="contact-form bottom">
   <div class="form-group">
       <input type="text" id="component_create_name" class="form-control" required placeholder="Component Name">
   </div>
@@ -14,5 +14,8 @@
   </div>
   <div class="form-group">
       <input class="btn btn-warning" onclick="finishCreateComponent('{{module.id}}')" value="Submit">
+  </div>
+  <div class="form-group">
+      <input class="btn btn-warning" value="Back" onclick="getCourseInfo('{{course.id}}', '{{course.name}}')">
   </div>
 </form>

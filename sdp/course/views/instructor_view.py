@@ -39,7 +39,9 @@ def category_info(request):
     category_id = request.POST['category_id']
     parent_instructor = Instructor.objects.get(user__pk=request.user.id)
     parent_category = Category.objects.get(pk=category_id)
-    courses = Course.objects.filter(Q(category = parent_category, is_open = True) | Q(category = parent_category, is_open = False, instructor = parent_instructor))
+    mycourses = Course.objects.filter(instructor = parent_instructor, category = parent_category)
+    othercourses = Course.objects.filter(Q(category = parent_category, is_open= True) & ~Q(instructor = parent_instructor))
+    # courses = Course.objects.filter(Q(category = parent_category, is_open = True) | Q(category = parent_category, is_open = False, instructor = parent_instructor))
     return render_to_response('instructor/category_info.html', locals())
 
 
@@ -79,6 +81,7 @@ def create_module(request):
 def create_component(request):
     module_id = request.POST['module_id']
     module = Module.objects.get(pk=module_id)
+    course = module.course
     return render_to_response('instructor/create_component.html', locals())
 
 @login_required
@@ -137,4 +140,3 @@ def close_course(request):
     print ('close')
     instructor.closeCourse(course_id)
     return course_info(request, course_id)
-
