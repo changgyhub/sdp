@@ -145,9 +145,11 @@ class Instructor(Staff):
                 content_type = component_content_type, module = parent_module)
 
 class Administrator(Staff):
-
-    def toBeDeleted(self):
-        return "fake method, to be deleted, DO NOT add fake attributes"
+    def viewCategories(self):
+        menu = super(Administrator, self).viewCategories()
+        for c in Category.objects.all():
+            menu[c] = Course.objects.filter(category=c, is_open=True).count()
+        return menu
 
 class HR(Staff):
 

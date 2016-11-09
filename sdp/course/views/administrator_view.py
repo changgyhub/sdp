@@ -30,8 +30,20 @@ def index(request):
 
 @login_required
 def category(request):
+    admin = Administrator.objects.get(user__pk=request.user.id)
+    counts = admin.viewCategories()
     return render_to_response('administrator/category.html',locals())
 
 @login_required
 def priority(request):
     return render_to_response('administrator/priority.html',locals())
+
+@login_required
+def category_info(request):
+    category_id = request.POST['category_id']
+    parent_admin = Administrator.objects.get(user__pk=request.user.id)
+    parent_category = Category.objects.get(pk=category_id)
+    mycourses = Course.objects.filter(instructor = parent_admin, category = parent_category)
+    othercourses = Course.objects.filter(Q(category = parent_category, is_open= True) & ~Q(instructor = parent_admin))
+    # courses = Course.objects.filter(Q(category = parent_category, is_open = True) | Q(category = parent_category, is_open = False, instructor = parent_instructor))
+    return render_to_response('instructor/category_info.html', locals())
