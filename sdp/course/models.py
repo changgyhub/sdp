@@ -139,11 +139,15 @@ class Instructor(Staff):
         parent_course = Course.objects.get(pk = course_id)
         module = Module.objects.create(course = parent_course, name = module_name)
 
-    def createComponent(self, module_id, component_name, component_content_type, component_content):
+    def createComponent(self, module_id, component_name, component_content_type, component_content, content_file = None):
         parent_module = Module.objects.get(pk = module_id)
-        component = Component.objects.create(name = component_name, content = component_content,
-                content_type = component_content_type, module = parent_module)
-
+        if component_content_type == 2:
+            component = Component.objects.create(name = component_name, content = component_content,
+                    content_type = component_content_type, module = parent_module)
+        else:
+            component = Component.objects.create(name = component_name, content = component_content,
+                    content_file = component_content, content_type = component_content_type, module = parent_module)
+            return component
 class Administrator(Staff):
     def viewCategories(self):
         menu = super(Administrator, self).viewCategories()
@@ -212,8 +216,8 @@ class Component(models.Model):
         (u'3', u'Image'),
     )  # need to be changed later on
     content_type = models.CharField(max_length=1, choices=CONTENT_TYPES,default = None)
-    content = models.CharField(max_length=200, default= None)
-    content_file = models.FileField(upload_to='uploads/%Y/%m/%d/', default = None)
+    content = models.CharField(max_length=200, default= None, null=True)
+    content_file = models.FileField(upload_to='uploads/%Y/%m/%d/', null=True)
     module = models.ForeignKey(Module, on_delete=models.CASCADE, default = None)  # many-to-one
 
     def __str__(self):

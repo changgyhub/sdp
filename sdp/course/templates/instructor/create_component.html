@@ -1,49 +1,78 @@
-<form class="contact-form bottom">
-  <div class="form-group">
-      <input type="text" id="component_create_name" class="form-control" required placeholder="Component Name">
-  </div>
-  <div class="form-group" style="width:20%">
-    <select id="component_create_content_type" class="form-control">
+<form class="contact-form bottom" id='create_component_form'>
+    <div class="form-group">
+        <input type="text" id="component_create_name" class="form-control" required placeholder="Component Name">
+    </div>
+    <div class="form-group" style="width:20%">
+        <select id="component_create_content_type" class="form-control" onchange="prepare()">
       <option value="1">File</option>
       <option value="2" selected="selected">Text</option>
       <option value="3">Image</option>
     </select>
-  </div>
-  <div class="form-group" id="content">
-      <textarea type="text" rows="4" id="component_create_content" class="form-control" required placeholder="please put down text here..."></textarea>
-  </div>
-  <div class="form-group" id='submitbutton'>
-      <input class="btn btn-warning" onclick="finishCreateComponent('{{module.id}}')" value="Submit">
-  </div>
-  <div class="form-group">
-      <input class="btn btn-warning" value="Back" onclick="getCourseInfo('{{course.id}}', '{{course.name}}')">
-  </div>
+    </div>
+    <div class="form-group" id="component_create_content_div">
+        <textarea type="text" rows="4" id="component_create_content" class="form-control" required placeholder="please put down text here..."></textarea>
+    </div>
+    <div class="form-group" id='submitbutton'>
+        <input class="btn btn-warning" onclick="finishCreateComponent('{{module.id}}')" value="Submit">
+    </div>
+    <div class="form-group">
+        <input class="btn btn-warning" value="Back" onclick="getCourseInfo('{{course.id}}', '{{course.name}}')">
+    </div>
 </form>
-
+<div id="component_create_content_file">
+</div>
 <script>
-$('#component_create_content_type').change(function() {
+    var files;
+    function prepare() {
         var value = $('#component_create_content_type').val();
         // alert(value); 
-        if (value == 2){
-          $("#submitbutton").remove();
-          $("#content").html('<textarea  rows=\"4\" type=\"text\" id=\"component_create_content\" class=\"form-group form-control\" required placeholder=\"please put down text here...\"></textarea><div class=\"form-group\" id=\'submitbutton\'> <input class=\"btn btn-warning\" onclick=\"finishCreateComponent(\'{{module.id}}\')\" value=\"Submit\"> </div>');
-        }else{
-          $.ajax({
-              url : "/instructor/component/create/upload/", // the endpoint
-              type : "POST", // http method
-              data : {'module_id' : '#'}, // data sent with the post request
-              // handle a successful response
-              success : function(response) {
-                  $('#content').html(response);
-              },
-              // // handle a non-successful response
-              // error : function(xhr,errmsg,err) {
-              //     $('#results').html("<div class='alert-box alert radius' data-alert>Oops! We have encountered an error: "+errmsg+
-              //         " <a href='#' class='close'>&times;</a></div>"); // add the error to the dom
-              //     console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
-              // }
-          });
-        }          
+        if (value == 2) {
+            $("#component_create_content_file").html('');
+            $("#component_create_content_div").html(
+                '<textarea  rows=\"4\" type=\"text\" id=\"component_create_content\" class=\"form-group form-control\" required placeholder=\"please put down text here...\"></textarea>'
+            );
+        } else {
+            // alert('file');
+            $("#component_create_content_div").html(
+                '<textarea  rows=\"4\" type=\"text\" id=\"component_create_content\" class=\"form-group form-control\" required placeholder=\"please give a short discription\"></textarea>'
+            );
+            $('#component_create_content_file').html('<input type=\"file\" name=\"upload_file\">');
+            $('input[type=file]').on('change', prepareUpload);
+            $('#submitbutton').html('<input class=\"btn btn-warning\" onclick=\"finishCreateComponentFile(\'{{module.id}}\')\" value=\"Submit\">');
+            function prepareUpload(event) {
+                files = event.target.files;
+            }
+            
+        }
+
+    }
+    function finishCreateComponentFile(module_id){
+        // START A LOADING SPINNER HERE
+    
+        // Create a formdata object and add the files
+        var file_data = new FormData();
+        file_data.append('file', files[0]);
+        file_data.append('module_id', module_id);
+        file_data.append('component_create_name', $('#component_create_name').val());
+        file_data.append('component_create_content_type', $('#component_create_content_type').val());
+        file_data.append('component_create_content', $('#component_create_content').val());
+        $('#component_create_name').val()
         
-    });
+        $.ajax({
+            url: '/instructor/component/create/upload/',
+            type: "POST",
+            data: file_data,
+            processData: false, // Don't process the files
+            contentType: false, // Set content type to false as jQuery will tell the server its a query string request
+            success: function(data) {
+                  $("#component_create_content_div").html('gg');
+                
+            },
+            error: function() {
+                // Handle errors here
+                console.log('ERRORS: ');
+                // STOP LOADING SPINNER
+            }
+        });
+    }
 </script>
