@@ -1,19 +1,18 @@
 {% load static %}
 <div class="portfolio-item branded logos">
   <div class="portfolio-wrapper">
-    <h4 class="portfolio-info">
       <ul class="list-group">
-        <br>
-        <li><a class="btn btn-md btn-success" onclick="createCourse('{{parent_category.id}}','{{parent_category.name}}')">+ Create new course</a></li>
-        <br>
-        {% for course in courses %}
-        <li class="list-group-item"><a onclick="getCourseInfo('{{course.id}}', '{{course.name}}')">{{course.name}}</a>
-          {% if course.instructor == parent_instructor %}
-            &nbsp;-&nbsp;My Course&nbsp;-&nbsp;{% if course.is_open %}open{% else %}closed{% endif %}
-          {% endif %}
-        </li>
-      {% endfor %}
+        <br><li><a class="btn btn-md btn-success" onclick="createCourse('{{parent_category.id}}','{{parent_category.name}}')">+ Create new course</a></li>
+        <h2 class="page-header">My Courses</h2>
+        {% for course in mycourses %}
+        <h4><li class="list-group-item"><a onclick="getCourseInfo('{{course.id}}', '{{course.name}}')">{{course.name}}</a>
+          &nbsp;-&nbsp;{% if course.is_open %}open{% else %}closed{% endif %}
+        </li></h4>
+        {% endfor %}
+        <h2 class="page-header">Other Courses</h2>
+        {% for course in othercourses %}
+        <h4><li class="list-group-item"><a onclick="getCourseInfo('{{course.id}}', '{{course.name}}')">{{course.name}}</a></li></h4>
+        {% endfor %}
       </ul>
-    </h4>
   </div>
 </div>

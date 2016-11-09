@@ -25,3 +25,8 @@ class LoginForm(forms.Form):
             raise forms.ValidationError("You must input your username and password")
         else:
             cleaned_data = super(LoginForm, self).clean()
+            
+class DocumentForm(forms.Form):
+    docfile = forms.FileField(
+        label='Select a file'
+    )

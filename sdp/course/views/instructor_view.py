@@ -1,6 +1,7 @@
 import datetime as dt
 from django.db.models import Q
 from ..models import Category, Staff, Course, Instructor, Module
+from ..forms import DocumentForm
 from django.shortcuts import render_to_response,render, get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib import auth, messages
@@ -39,7 +40,9 @@ def category_info(request):
     category_id = request.POST['category_id']
     parent_instructor = Instructor.objects.get(user__pk=request.user.id)
     parent_category = Category.objects.get(pk=category_id)
-    courses = Course.objects.filter(Q(category = parent_category, is_open = True) | Q(category = parent_category, is_open = False, instructor = parent_instructor))
+    mycourses = Course.objects.filter(instructor = parent_instructor, category = parent_category)
+    othercourses = Course.objects.filter(Q(category = parent_category, is_open= True) & ~Q(instructor = parent_instructor))
+    # courses = Course.objects.filter(Q(category = parent_category, is_open = True) | Q(category = parent_category, is_open = False, instructor = parent_instructor))
     return render_to_response('instructor/category_info.html', locals())
 
 
@@ -79,6 +82,7 @@ def create_module(request):
 def create_component(request):
     module_id = request.POST['module_id']
     module = Module.objects.get(pk=module_id)
+    course = module.course
     return render_to_response('instructor/create_component.html', locals())
 
 @login_required
@@ -134,7 +138,15 @@ def open_course(request):
 def close_course(request):
     course_id = request.POST['course_id']
     instructor = Instructor.objects.get(user__pk=request.user.id)
-    print ('close')
     instructor.closeCourse(course_id)
     return course_info(request, course_id)
-
+@login_required
+def file_upload(request):
+    module_id = request.POST['module_id']
+    if module_id == '#':
+        form = DocumentForm()
+        return render_to_response('instructor/file_upload.html', locals())
+    else:
+        form = DocumentForm(request.POST, request.FILES)
+        if form.is_valid():
+            print('gg')

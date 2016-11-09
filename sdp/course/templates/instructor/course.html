@@ -95,7 +95,7 @@
     <section id="projects" class="padding-top">
         <div class="container">
             <div class="row">
-                <div class="col-lg-3 col-md-4 col-sm-5">
+                <div class="col-lg-3 col-md-4 col-sm-5" id="left_bar">
                   <div class="col-sm-12">
                     <div class="sidebar portfolio-sidebar">
                         <div class="sidebar-item categories" id="category_bar">
@@ -109,7 +109,7 @@
                     </div>
                   </div>
                 </div>
-                <div class="col-lg-9 col-md-8 col-sm-7">
+                <div class="col-lg-9 col-md-8 col-sm-7" id="right_bar">
                   <div class="col-sm-12">
                     <div class="row">
                         <h1 id="content-title">Welcome!</h1>
@@ -164,6 +164,7 @@
 
 
     function getCategoryInfo(category_id, category_name) {
+        $('#content-alert').html("");
         $('#content-title').html(category_name);
         $.ajax({
             url : "/instructor/category/info/", // the endpoint
@@ -183,6 +184,12 @@
     }
 
     function getCourseInfo(course_id, course_name) {
+        // $('#left_bar').removeClass("col-lg-3 col-md-4 col-sm-5");
+        // $('#left_bar').addClass("col-sm-1");
+        // $('#left_bar').html("< back");
+        // $('#right_bar').removeClass("col-lg-9 col-md-8 col-sm-7");
+        // $('#right_bar').addClass("col-sm-11");
+        $('#content-alert').html("");
         $('#content-title').html(course_name);
         $.ajax({
             url : "/instructor/course/info/", // the endpoint

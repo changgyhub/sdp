@@ -1,4 +1,4 @@
-<div class="col-sm-12 contact-form bottom">
+<div class="contact-form bottom">
     <div class="form-group">
         <input type="text" id="create_name" class="form-control" required placeholder="Course Name">
     </div>
@@ -13,5 +13,8 @@
     </div>
     <div class="form-group">
         <input class="btn btn-warning" value="Submit" onclick="finishCreateCourse('{{category.id}}', '{{category.name}}')">
+    </div>
+    <div class="form-group">
+        <input class="btn btn-warning" value="Back" onclick="getCategoryInfo('{{category.id}}', '{{category.name}}')">
     </div>
 </div>

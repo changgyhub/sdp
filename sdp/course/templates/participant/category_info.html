@@ -2,9 +2,12 @@
 <div class="portfolio-item branded logos">
   <div class="portfolio-wrapper">
     <h4 class="portfolio-info">
-      <ul class="list-group-item" class="list-group">
+      <ul class="list-group">
+        <h2 class="page-header">Currently Enrolled</h2>
+        <h2 class="page-header">Finshed Courses</h2>
+        <h2 class="page-header">Other Courses</h2>
         {% for course in courses %}
-        <li style="color: #686868;"><a onclick="getCourseInfo('{{course.id}}', '{{course.name}}')">{{course.name}} </a>by {{course.instructor}}</li>
+        <h4><li class="list-group-item"><a onclick="getCourseInfo('{{course.id}}', '{{course.name}}')">{{course.name}} </a>by {{course.instructor}}</li></h4>
         {% endfor %}
       </ul>
     </h4>
