@@ -171,7 +171,6 @@ def file_upload(request):
         module_id, component_name, component_type, component_content, request.FILES)
     myfile = request.FILES['file']
     component.content_file.save(myfile.name, myfile)
-    
     course_id = Module.objects.get(pk=module_id).course.id
     return course_info(request, course_id)
     
