@@ -148,6 +148,7 @@ class Instructor(Staff):
             component = Component.objects.create(name = component_name, content = component_content,
                     content_file = component_content, content_type = component_content_type, module = parent_module)
             return component
+
 class Administrator(Staff):
     def viewCategories(self):
         menu = super(Administrator, self).viewCategories()
@@ -160,27 +161,18 @@ class HR(Staff):
     def viewCategories(self):
         menu = super(HR, self).viewCategories()
         for c in Category.objects.all():
-            menu[c] = Course.objects.filter(category=c, is_open=True).count()
-        return menu
-
-    def viewCourse(self, course_id):
-        menu = dict()
-        for p in Participant.objects.all():
-            if Enrollment.objects.filter(course__pk=course_id).exists():
-                menu[p.user.first_name + " " + p.user.last_name] = p
+            menu[c] = Course.objects.filter(category=c).count()
         return menu
 
     def viewAllParticipants(self):
         menu = dict()
         for p in Participant.objects.all():
-            menu[p.user.first_name + " " + p.user.last_name] = p
-        sorted(menu)
+            menu[p.user.id] = p
         return menu
 
     def viewParticipant(self, participant_id):
         participant = Participant.objects.get(user__pk=participant_id)
         return participant
-
 
 class Category(models.Model):
     name = models.CharField(max_length=200)

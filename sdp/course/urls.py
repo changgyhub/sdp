@@ -48,7 +48,7 @@ urlpatterns = [
             url(r'^info/',hv.category_info, name='hr_category_info'),
         ])),
         url(r'^course/',include([
-            #url(r'^info/',hv.course_info, name='hr_course_info'),
+            url(r'^info/',hv.course_info, name='hr_course_info'),
             url(r'^$', hv.course, name='hr_course'),
         ])),
         url(r'^participant/',include([
