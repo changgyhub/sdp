@@ -1,9 +1,11 @@
 {% load static %}
-<div class="col-xs-6 col-sm-6 portfolio-item branded logos">
+<div class="col-xs-12 col-sm-12 col-md-9 col-lg-7 portfolio-item branded logos">
   <div class="portfolio-wrapper">
     <h4 class="portfolio-info">
       {% for course in courses %}
-      <li><a onclick="getCourseInfo('{{course.id}}', '{{course.name}}')">{{course.name}}</a></li><br>
+      <li class="list-group-item"><a onclick="getCourseInfo('{{course.id}}', '{{course.name}}')">{{course.name}}</a>
+        <span class="pull-right">by {{course.instructor}}</span>
+      </li><br>
       {% endfor %}
     </h4>
   </div>
