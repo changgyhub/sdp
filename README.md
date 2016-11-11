@@ -3,7 +3,7 @@
 A fast, elegant and robust course learning platform designed for Schools and Companies.
 
 ### Designer
-[Gao Chang, Ellison](hk.linkedin.com/in/irsisyphus "linkedin")<br>
+[Gao Chang, Ellison](http://hk.linkedin.com/in/irsisyphus "linkedin")<br>
 Huang Qingwei<br>
 Wang Haicheng, Bill<br>
 Yan Kai<br>
@@ -20,6 +20,6 @@ All static css, fonts, images and web templates are correctly referenced either 
 
 ### Reference
 #### Offline
-Triangle theme of [themeum](www.themeum.com "themeum").
+Triangle theme of [themeum](http://www.themeum.com "themeum").
 #### Online
-Fonts from [google](fonts.googleapis.com "googleapis").
+Fonts from [google](http://fonts.googleapis.com "googleapis").
