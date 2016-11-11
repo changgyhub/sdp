@@ -1,3 +1,25 @@
-# sdp
+# Staff Development Platform
 
-Bugs: 
+A fast, elegant and robust course learning platform designed for Schools and Companies.
+
+### Designer
+[Gao Chang, Ellison](hk.linkedin.com/in/irsisyphus "linkedin")<br>
+Huang Qingwei<br>
+Wang Haicheng, Bill<br>
+Yan Kai<br>
+
+
+### Disclaimer
+This is originally designed for the project of [Software Engineering Course, HKU](http://www.cs.hku.hk/programme/course_info.jsp?infile=2016/comp3297.html "HKU COMP3297 Introduction to Software Engineering"). The fake company name used in this project is _AB Credit (HK)_, and any resemblance to actual companies is purely coincidental.<br>
+
+We make no representations or warranties of any kind, express or implied, about the completeness, accuracy, reliability, suitability or availability with respect to the courses designed by any third parties using this platfrom. Any reliance you place on such information is therefore strictly at your own risk.<br>
+
+All static css, fonts, images and web templates are correctly referenced either in the header of the file or at the bottom of this README.<br>
+
+
+
+### Reference
+#### Offline
+Triangle theme of [themeum](www.themeum.com "themeum").
+#### Online
+Fonts from [google](fonts.googleapis.com "googleapis").
