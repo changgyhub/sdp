@@ -24,7 +24,12 @@
           </h2>
           <div id="collapse{{module.id}}" class="col-sm-12 panel-collapse collapse in">
             {% for component in components%}
-              <h4 class="page-header" style="color: #686868;">Component {{forloop.parentloop.counter}}.{{ forloop.counter }}: {{component.name}}</h4>
+              <h4 class="page-header" style="color: #686868;">
+                {% if component.content_type != '2'%}
+                <span class="glyphicons glyphicons-file"></span>
+                <a class="btn btn-sm btn-info" style="color:#FFFFFF" href="/instructor/component/download/?component_id={{component.id}}">File</a>&nbsp;
+                {% endif %}
+                Component {{forloop.parentloop.counter}}.{{ forloop.counter }}: {{component.name}}</h4>
               <h5 class="panel-body">{{component.content}}</h5>
             {% endfor %}
           </div>
@@ -38,3 +43,20 @@
     {% endif %}
 </div><!--/#accordion-container-->
 <a class="btn btn-sm btn-warning" onclick="getCategoryInfo('{{category.id}}', '{{category.name}}')">< Back</a>
+<script>
+function fileDownload(component_id) {
+    $.ajax({
+        url : "/instructor/component/download/", // the endpoint
+        type : "POST", // http method
+        data : { 'component_id' : component_id }, // data sent with the post request
+        // handle a successful response
+        success : function(response) {
+          var w = window.open();
+          // $(w.document.body).html(response);
+        },
+        // error:function(){
+        //     console.log('in error');
+        // }
+    });
+}
+</script>

@@ -325,6 +325,7 @@
         $('#content-alert').html("<div class=\"alert alert-danger fade in\"><button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-hidden=\"true\">×</button><h4>Submit Error</h4><p>Must fill in all input boxes.</p></div>");
         return;
       }
+      console.log($('#component_create_content_type').val());
       $.ajax({
           url : "/instructor/component/create/finish/", // the endpoint
           type : "POST", // http method
@@ -378,6 +379,7 @@
             // }
         });
     }
+    
     
   
     function logout(){

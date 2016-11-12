@@ -28,7 +28,9 @@ urlpatterns = [
                 url(r'^finish/', iv.finish_create_component, name='instructor_finish_create_component'),
                 url(r'^start/', iv.create_component, name='instructor_create_component'),
                 url(r'^upload/', iv.file_upload, name='instructor_file_upload'),
+                
             ])),
+            url(r'^download/', iv.file_download, name='instructor_file_download'),
         ])),
     ])),
 

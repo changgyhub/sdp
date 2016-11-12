@@ -36,7 +36,7 @@
             $("#component_create_content_div").html(
                 '<textarea  rows=\"4\" type=\"text\" id=\"component_create_content\" class=\"form-group form-control\" required placeholder=\"please give a short discription\"></textarea>'
             );
-            $('#component_create_content_file').html('<input type=\"file\" name=\"upload_file\">');
+            $('#component_create_content_file').html('<label class="myLabel"><input type=\"file\" name=\"upload_file\" required/></label>');
             $('input[type=file]').on('change', prepareUpload);
             $('#submitbutton').html('<input class=\"btn btn-warning\" onclick=\"finishCreateComponentFile(\'{{module.id}}\')\" value=\"Submit\">');
             function prepareUpload(event) {

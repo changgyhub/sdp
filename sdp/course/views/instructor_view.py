@@ -1,6 +1,6 @@
 import datetime as dt
 from django.db.models import Q
-from ..models import Category, Staff, Course, Instructor, Module
+from ..models import Category, Staff, Course, Instructor, Module, Component
 from django.shortcuts import render_to_response, render, get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib import auth, messages
@@ -133,6 +133,7 @@ def finish_create_component(request):
     component_type = request.POST['component_type']
     component_content = request.POST['component_content']
     instructor = Instructor.objects.get(user__pk=request.user.id)
+    print(component_type)
     instructor.createComponent(
         module_id, component_name, component_type, component_content)
     course_id = Module.objects.get(pk=module_id).course.id
@@ -160,11 +161,10 @@ def close_course(request):
 def file_upload(request):
     # if DEBUG:
     # print(request.POST)
-    print(request.FILES)
     module_id = request.POST['module_id'][0]
-    component_name = request.POST['component_create_name'][0]
+    component_name = request.POST['component_create_name']
     component_type = request.POST['component_create_content_type'][0]
-    component_content = request.POST['component_create_content'][0]
+    component_content = request.POST['component_create_content']
     content_file = request.FILES
     instructor = Instructor.objects.get(user__pk=request.user.id)
     component = instructor.createComponent(
@@ -173,4 +173,13 @@ def file_upload(request):
     component.content_file.save(myfile.name, myfile)
     course_id = Module.objects.get(pk=module_id).course.id
     return course_info(request, course_id)
-    
+
+@login_required
+def file_download(request):
+    component_id = request.GET['component_id']
+    component = Component.objects.get(pk=component_id)
+    filename = component.content_file.name
+    myfile = open(component.content_file.path,"rb")
+    response = HttpResponse(myfile, content_type='text/plain')
+    response['Content-Disposition'] = 'attachment; filename=%s' % filename
+    return response
