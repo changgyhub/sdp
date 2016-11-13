@@ -148,7 +148,9 @@ class Instructor(Staff):
             component = Component.objects.create(name = component_name, content = component_content,
                     content_file = component_content, content_type = component_content_type, module = parent_module)
             return component
-
+    def deleteComponent(self, component_id):
+        # assume that the course is already the instructor's
+        Component.objects.get(pk=component_id).delete()
 class Administrator(Staff):
     def viewCategories(self):
         menu = super(Administrator, self).viewCategories()

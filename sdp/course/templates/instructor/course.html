@@ -380,7 +380,26 @@
         });
     }
     
-    
+    function deleteComponent(course_id, component_id) {
+        var ask=confirm("Are you sure to delete this component?");
+        if (ask){
+          $.ajax({
+              url : "/instructor/component/delete/", // the endpoint
+              type : "POST", // http method
+              data : { 'course_id' : course_id,
+                       'component_id' : component_id }, // data sent with the post request
+              // handle a successful response
+              success : function(response) {
+              // unable the close regiestration button
+                  $('#content-main').html(response);
+              },
+              // error:function(){
+              //     console.log('in error');
+              // }
+          });
+        }
+        
+    }
   
     function logout(){
       window.location = "/logout";

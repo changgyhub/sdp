@@ -31,6 +31,8 @@ urlpatterns = [
                 
             ])),
             url(r'^download/', iv.file_download, name='instructor_file_download'),
+            url(r'^delete/', iv.delete_component, name='instructor_create_component'),
+            
         ])),
     ])),
 

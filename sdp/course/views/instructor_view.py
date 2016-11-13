@@ -133,13 +133,19 @@ def finish_create_component(request):
     component_type = request.POST['component_type']
     component_content = request.POST['component_content']
     instructor = Instructor.objects.get(user__pk=request.user.id)
-    print(component_type)
     instructor.createComponent(
         module_id, component_name, component_type, component_content)
     course_id = Module.objects.get(pk=module_id).course.id
     return course_info(request, course_id)
 
 
+@login_required
+def delete_component(request):
+    course_id = request.POST['course_id']
+    component_id = request.POST['component_id']
+    instructor = Instructor.objects.get(user__pk=request.user.id)
+    instructor.deleteComponent(component_id)
+    return course_info(request, course_id)
 @login_required
 def open_course(request):
     course_id = request.POST['course_id']
