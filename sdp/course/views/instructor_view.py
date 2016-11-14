@@ -133,8 +133,10 @@ def finish_create_component(request):
     component_type = request.POST['component_type']
     component_content = request.POST['component_content']
     instructor = Instructor.objects.get(user__pk=request.user.id)
+    numOfComponent = Component.objects.filter(module__pk = module_id).count()
+    print(numOfComponent)
     instructor.createComponent(
-        module_id, component_name, component_type, component_content)
+        module_id, component_name, component_type, component_content, localPosition = numOfComponent +1)
     course_id = Module.objects.get(pk=module_id).course.id
     return course_info(request, course_id)
 
@@ -189,3 +191,29 @@ def file_download(request):
     response = HttpResponse(myfile, content_type='text/plain')
     response['Content-Disposition'] = 'attachment; filename=%s' % filename
     return response
+    
+@login_required
+def moveup_component(request):
+    component_id = request.POST['component_id']
+    component = Component.objects.get(pk=component_id)
+    localPosition = component.localPosition
+    previous_component = Component.objects.get(module__id=component.module.pk, localPosition=localPosition-1)
+    component.localPosition = localPosition -1
+    previous_component.localPosition = localPosition
+    component.save()
+    previous_component.save()
+    course_id = Module.objects.get(pk=component.module.pk).course.id
+    return course_info(request, course_id)
+    
+@login_required
+def movedown_component(request):
+    component_id = request.POST['component_id']
+    component = Component.objects.get(pk=component_id)
+    localPosition = component.localPosition
+    next_component = Component.objects.get(module__id=component.module.pk, localPosition=localPosition+1)
+    component.localPosition = localPosition + 1
+    next_component.localPosition = localPosition
+    component.save()
+    next_component.save()
+    course_id = Module.objects.get(pk=component.module.pk).course.id
+    return course_info(request, course_id)

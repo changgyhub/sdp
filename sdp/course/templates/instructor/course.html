@@ -326,6 +326,8 @@
         return;
       }
       console.log($('#component_create_content_type').val());
+      alert(module_id);
+      
       $.ajax({
           url : "/instructor/component/create/finish/", // the endpoint
           type : "POST", // http method
@@ -400,7 +402,39 @@
         }
         
     }
-  
+  moveUpComponent
+  function moveUpComponent(component_id) {
+      $.ajax({
+          url : "/instructor/component/moveup/", // the endpoint
+          type : "POST", // http method
+          data : { 'component_id' : component_id }, // data sent with the post request
+          // handle a successful response
+          success : function(response) {
+          // unable the close regiestration button
+              $('#content-main').html(response);
+          },
+          // error:function(){
+          //     console.log('in error');
+          // }
+      });
+    
+  }
+  function moveDownComponent(component_id) {
+      $.ajax({
+          url : "/instructor/component/movedown/", // the endpoint
+          type : "POST", // http method
+          data : { 'component_id' : component_id }, // data sent with the post request
+          // handle a successful response
+          success : function(response) {
+          // unable the close regiestration button
+              $('#content-main').html(response);
+          },
+          // error:function(){
+          //     console.log('in error');
+          // }
+      });
+    
+  }
     function logout(){
       window.location = "/logout";
     }

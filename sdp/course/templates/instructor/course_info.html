@@ -23,14 +23,20 @@
               {% endif %}
           </h2>
           <div id="collapse{{module.id}}" class="col-sm-12 panel-collapse collapse in">
-            {% for component in components%}
+            {% for component in components|dictsort:"localPosition"%}
               <h4 class="page-header" style="color: #686868;">
                 {% if component.content_type != '2'%}
                 <span class="glyphicons glyphicons-file"></span>
                 <a class="btn btn-sm btn-info" style="color:#FFFFFF" href="/instructor/component/download/?component_id={{component.id}}">File</a>&nbsp;
                 {% endif %}
                 Component {{forloop.parentloop.counter}}.{{ forloop.counter }}: {{component.name}}
-                <a class="btn btn-sm btn-info" style="color:#FFFFFF" onclick="deleteComponent('{{course_id}}','{{component.id}}')">Delete</a></h4>
+                <a class="btn btn-sm btn-info" style="color:#FFFFFF" onclick="deleteComponent('{{course_id}}','{{component.id}}')">Delete</a>
+              {% if component.localPosition != 1%}
+              <a class="btn btn-sm btn-info" style="color:#FFFFFF" onclick="moveUpComponent('{{component.id}}')">up</a>
+              {% endif %}
+              {% if component.localPosition != components|length %}
+              <a class="btn btn-sm btn-info" style="color:#FFFFFF" onclick="moveDownComponent('{{component.id}}')">down</a></h4>
+              {% endif %}
               <h5 class="panel-body">{{component.content}}</h5>
             {% endfor %}
           </div>
