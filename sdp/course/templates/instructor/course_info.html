@@ -26,7 +26,7 @@
             {% for component in components|dictsort:"localPosition"%}
               <h4 class="page-header" style="color: #686868;">
                 {% if component.content_type != '2'%}
-                <span class="glyphicons glyphicons-file"></span>
+                <a class="btn btn-md"><i class="glyphicon glyphicon-save"></i></a>
                 <a class="btn btn-sm btn-info" style="color:#FFFFFF" href="/instructor/component/download/?component_id={{component.id}}">File</a>&nbsp;
                 {% endif %}
                 Component {{forloop.parentloop.counter}}.{{ forloop.counter }}: {{component.name}}

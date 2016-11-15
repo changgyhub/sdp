@@ -327,7 +327,7 @@
       }
       console.log($('#component_create_content_type').val());
       alert(module_id);
-      
+
       $.ajax({
           url : "/instructor/component/create/finish/", // the endpoint
           type : "POST", // http method
@@ -381,7 +381,7 @@
             // }
         });
     }
-    
+
     function deleteComponent(course_id, component_id) {
         var ask=confirm("Are you sure to delete this component?");
         if (ask){
@@ -400,7 +400,7 @@
               // }
           });
         }
-        
+
     }
   moveUpComponent
   function moveUpComponent(component_id) {
@@ -417,7 +417,7 @@
           //     console.log('in error');
           // }
       });
-    
+
   }
   function moveDownComponent(component_id) {
       $.ajax({
@@ -433,7 +433,7 @@
           //     console.log('in error');
           // }
       });
-    
+
   }
     function logout(){
       window.location = "/logout";
