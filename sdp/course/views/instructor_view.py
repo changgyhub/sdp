@@ -10,7 +10,7 @@ from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.contrib.auth.decorators import login_required
 from . import log_view as lv
 from django.core.files.storage import FileSystemStorage
-
+import collections
 
 @login_required
 def index(request):
@@ -65,9 +65,10 @@ def course_info(request, parent_course_id=None):
     description = menu['description']
     if 'module' in menu:
         is_mine = True
-        modules = menu['module']
+        modules = collections.OrderedDict(sorted(menu['module'].items(), key=lambda x: x[0].localPosition))
     else:
         is_mine = False
+    
     return render_to_response('instructor/course_info.html', locals())
 
 
@@ -122,7 +123,8 @@ def finish_create_module(request):
     course_id = request.POST['course_id']
     module_name = request.POST['module_name']
     instructor = Instructor.objects.get(user__pk=request.user.id)
-    instructor.createModule(course_id, module_name)
+    numOfModules = Module.objects.filter(course__pk=course_id).count()
+    instructor.createModule(course_id, module_name, numOfModules + 1)
     return course_info(request)
 
 
@@ -133,10 +135,10 @@ def finish_create_component(request):
     component_type = request.POST['component_type']
     component_content = request.POST['component_content']
     instructor = Instructor.objects.get(user__pk=request.user.id)
-    numOfComponent = Component.objects.filter(module__pk = module_id).count()
+    numOfComponent = Component.objects.filter(module__pk=module_id).count()
     print(numOfComponent)
     instructor.createComponent(
-        module_id, component_name, component_type, component_content, localPosition = numOfComponent +1)
+        module_id, component_name, component_type, component_content, localPosition=numOfComponent + 1)
     course_id = Module.objects.get(pk=module_id).course.id
     return course_info(request, course_id)
 
@@ -148,6 +150,8 @@ def delete_component(request):
     instructor = Instructor.objects.get(user__pk=request.user.id)
     instructor.deleteComponent(component_id)
     return course_info(request, course_id)
+
+
 @login_required
 def open_course(request):
     course_id = request.POST['course_id']
@@ -169,7 +173,7 @@ def close_course(request):
 def file_upload(request):
     # if DEBUG:
     # print(request.POST)
-    module_id = request.POST['module_id'][0]
+    module_id = request.POST['module_id']
     component_name = request.POST['component_create_name']
     component_type = request.POST['component_create_content_type'][0]
     component_content = request.POST['component_create_content']
@@ -182,38 +186,73 @@ def file_upload(request):
     course_id = Module.objects.get(pk=module_id).course.id
     return course_info(request, course_id)
 
+
 @login_required
 def file_download(request):
     component_id = request.GET['component_id']
     component = Component.objects.get(pk=component_id)
     filename = component.content_file.name
-    myfile = open(component.content_file.path,"rb")
+    myfile = open(component.content_file.path, "rb")
     response = HttpResponse(myfile, content_type='text/plain')
     response['Content-Disposition'] = 'attachment; filename=%s' % filename
     return response
-    
+
+
 @login_required
 def moveup_component(request):
     component_id = request.POST['component_id']
     component = Component.objects.get(pk=component_id)
     localPosition = component.localPosition
-    previous_component = Component.objects.get(module__id=component.module.pk, localPosition=localPosition-1)
-    component.localPosition = localPosition -1
+    previous_component = Component.objects.get(
+        module__id=component.module.pk, localPosition=localPosition - 1)
+    component.localPosition = localPosition - 1
     previous_component.localPosition = localPosition
     component.save()
     previous_component.save()
     course_id = Module.objects.get(pk=component.module.pk).course.id
     return course_info(request, course_id)
-    
+
+
 @login_required
 def movedown_component(request):
     component_id = request.POST['component_id']
     component = Component.objects.get(pk=component_id)
     localPosition = component.localPosition
-    next_component = Component.objects.get(module__id=component.module.pk, localPosition=localPosition+1)
+    next_component = Component.objects.get(
+        module__id=component.module.pk, localPosition=localPosition + 1)
     component.localPosition = localPosition + 1
     next_component.localPosition = localPosition
     component.save()
     next_component.save()
     course_id = Module.objects.get(pk=component.module.pk).course.id
     return course_info(request, course_id)
+
+
+@login_required
+def moveup_module(request):
+    module_id = request.POST['module_id']
+    module = Module.objects.get(pk=module_id)
+    localPosition = module.localPosition
+    previous_module = Module.objects.get(
+        course__id=module.course.pk, localPosition=localPosition - 1)
+    module.localPosition = localPosition - 1
+    previous_module.localPosition = localPosition
+    module.save()
+    previous_module.save()
+    return course_info(request, module.course.pk)
+
+
+@login_required
+def movedown_module(request):
+    module_id = request.POST['module_id']
+    print('a'*10 + str(module_id))
+    module = Module.objects.get(pk=module_id)
+    localPosition = module.localPosition
+    next_module = Module.objects.get(
+        course__id=module.course.pk, localPosition=localPosition + 1)
+    print('b'*10)
+    module.localPosition = localPosition + 1
+    next_module.localPosition = localPosition
+    module.save()
+    next_module.save()
+    return course_info(request, module.course.pk)

@@ -108,3 +108,7 @@ def login(request):
 def logout(request):
     auth.logout(request)
     return HttpResponseRedirect("/")
+
+@login_required
+def test(RequestContext):
+    return render_to_response('test.html')

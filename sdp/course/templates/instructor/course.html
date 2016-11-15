@@ -21,6 +21,7 @@
     <link rel="shortcut icon" sizes="114x114" href="{% static 'image/ico/apple-touch-icon-114-precomposed.png' %}" />
     <link rel="shortcut icon" sizes="72x72" href="{% static 'image/ico/apple-touch-icon-72-precomposed.png' %}" />
     <link rel="shortcut icon" href="{% static 'image/ico/apple-touch-icon-57-precomposed.png' %}" />
+ 
 </head><!--/head-->
 
 <body>
@@ -43,7 +44,6 @@
         <div class="navbar navbar-inverse" role="banner">
             <div class="container">
                 <div class="navbar-header">
-                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
                         <span class="sr-only">Toggle navigation</span>
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
@@ -154,6 +154,7 @@
     <!--/#footer-->
 
     <script type="text/javascript" src="{% static 'js/jquery.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/jquery.min.js' %}"></script>
     <script type="text/javascript" src="{% static 'js/bootstrap.min.js' %}"></script>
     <script type="text/javascript" src="{% static 'js/lightbox.min.js' %}"></script>
     <script type="text/javascript" src="{% static 'js/wow.min.js' %}"></script>
@@ -326,7 +327,6 @@
         return;
       }
       console.log($('#component_create_content_type').val());
-      alert(module_id);
       
       $.ajax({
           url : "/instructor/component/create/finish/", // the endpoint
@@ -402,7 +402,6 @@
         }
         
     }
-  moveUpComponent
   function moveUpComponent(component_id) {
       $.ajax({
           url : "/instructor/component/moveup/", // the endpoint
@@ -424,6 +423,39 @@
           url : "/instructor/component/movedown/", // the endpoint
           type : "POST", // http method
           data : { 'component_id' : component_id }, // data sent with the post request
+          // handle a successful response
+          success : function(response) {
+          // unable the close regiestration button
+              $('#content-main').html(response);
+          },
+          // error:function(){
+          //     console.log('in error');
+          // }
+      });
+    
+  }
+  function moveDownModule(module_id) {
+      $.ajax({
+          url : "/instructor/module/movedown/", // the endpoint
+          type : "POST", // http method
+          data : { 'module_id' : module_id }, // data sent with the post request
+          // handle a successful response
+          success : function(response) {
+          // unable the close regiestration button
+              $('#content-main').html(response);
+          },
+          // error:function(){
+          //     console.log('in error');
+          // }
+      });
+    
+  }
+  
+  function moveUpModule(module_id) {
+      $.ajax({
+          url : "/instructor/module/moveup/", // the endpoint
+          type : "POST", // http method
+          data : { 'module_id' : module_id }, // data sent with the post request
           // handle a successful response
           success : function(response) {
           // unable the close regiestration button
