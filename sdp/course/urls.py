@@ -77,7 +77,13 @@ urlpatterns = [
     ])),
 
     url(r'^administrator/', include([
-        url(r'^category/', av.category, name='administrator_category'),
-        url(r'^priority/', av.priority, name='administrator_priority'),
+        url(r'^category/', include([
+            url(r'^$', av.category, name='administrator_category'),
+            url(r'^create/', av.category_create, name='administrator_create_category'),
+            url(r'^createFinish/', av.category_create_finish, name='administrator_create_finish'),
+        ])),
+        url(r'^priority/', include([
+            url(r'^$', av.priority, name='administrator_priority'),
+        ])),
     ])),
 ]
