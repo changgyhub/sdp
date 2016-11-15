@@ -13,8 +13,8 @@
     <link rel="stylesheet" href="{% static 'css/main.css' %}" />
     <link rel="stylesheet" href="{% static 'css/responsive.css' %}" />
     <!--[if lt IE 9]>
-	    <script src="js/html5shiv.js"></script>
-	    <script src="js/respond.min.js"></script>
+      <script src="js/html5shiv.js"></script>
+      <script src="js/respond.min.js"></script>
     <![endif]-->
     <link rel="shortcut icon" href="{% static 'image/ico/favicon.ico' %}" />
     <link rel="shortcut icon" sizes="144x144" href="{% static 'image/ico/apple-touch-icon-144-precomposed.png' %}" />
@@ -24,7 +24,7 @@
 </head><!--/head-->
 
 <body>
-	<header id="header">
+  <header id="header">
         <div class="container">
             <div class="row">
                 <div class="col-sm-12 overflow">
@@ -51,15 +51,15 @@
                     </button>
 
                     <a class="navbar-brand">
-                    	<h1 style="font-size: 300%; color: #cf916f">AB Credit SDP</h1>
+                      <h1 style="font-size: 300%; color: #cf916f">AB Credit SDP</h1>
                     </a>
 
                 </div>
                 <div class="collapse navbar-collapse">
                     <ul class="nav navbar-nav navbar-right">
                         <li><a href="/">Home</a></li>
-                        <li class="active"><a href="administrator/category">Category</a></li>
-                        <li><a href="administrator/priority">Priority</a></li>
+                        <li class="active"><a href="/administrator/category">Category</a></li>
+                        <li><a href="/administrator/priority">Priority</a></li>
                         <li><a onclick="logout()">Logout</a></li>
                     </ul>
                 </div>
@@ -83,8 +83,8 @@
                 <div class="row">
                     <div class="action">
                         <div class="col-sm-12">
-                            <h1 class="title">View all courses here.</h1>
-                            <p>You can view information of other courses, or create and modify your courses.</p>
+                            <h1 class="title">View all categories here.</h1>
+                            <p>You can view all categories here, or create and delete categories.</p>
                         </div>
                     </div>
                 </div>
@@ -95,20 +95,26 @@
 
     <section id="projects" class="padding-top">
         <div class="container">
-            <div class="row">
-                <div class="col-lg-3 col-md-4 col-sm-5" id="left_bar">
-                  <div class="col-sm-12">
-                    <div class="sidebar portfolio-sidebar">
-                        <div class="sidebar-item categories" id="category_bar">
-                            <h3>Categories</h3>
+            <div class="row clearfix">
+                <div class="col-md-12 column">
+                    <div class="row clearfix">
+                        <div class="col-md-4 column">
+                        </div>
+                        <div class="col-md-4 column">
+                            <h2 class="text-center">
+                                Categories
+                            </h2>
                             <ul class="nav navbar-stacked">
                               {% for category, num in counts.items %}
-                                <li><a onclick="getCategoryInfo('{{category.id}}', '{{category.name}}')">{{category.name}}<span class="pull-right"></span></a></li>
+                                <li class="text-center"><a onclick="getCategoryInfo('{{category.id}}', '{{category.name}}')">{{category.name}}<span class="pull-right"></span></a></li>
                               {% endfor %}
                             </ul>
+                            <p></p>
+                            <p class="text-center" id="button-create"><button type="button" class="btn btn-default" onclick="createCategory()">Create new category</button></p>
+                        </div>
+                        <div class="col-md-4 column">
                         </div>
                     </div>
-                  </div>
                 </div>
             </div>
         </div>
@@ -160,201 +166,35 @@
         });
     }
 
-    function getCourseInfo(course_id, course_name) {
-        // $('#left_bar').removeClass("col-lg-3 col-md-4 col-sm-5");
-        // $('#left_bar').addClass("col-sm-1");
-        // $('#left_bar').html("< back");
-        // $('#right_bar').removeClass("col-lg-9 col-md-8 col-sm-7");
-        // $('#right_bar').addClass("col-sm-11");
-        $('#content-alert').html("");
-        $('#content-title').html(course_name);
+    function createCategory() {
         $.ajax({
-            url : "/instructor/course/info/", // the endpoint
-            type : "POST", // http method
-            data : { 'course_id' : course_id }, // data sent with the post request
-            // handle a successful response
-            success : function(response) {
-                $('#content-main').html(response);
-            },
-            // // handle a non-successful response
-            // error : function(xhr,errmsg,err) {
-            //     $('#results').html("<div class='alert-box alert radius' data-alert>Oops! We have encountered an error: "+errmsg+
-            //         " <a href='#' class='close'>&times;</a></div>"); // add the error to the dom
-            //     console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
-            // }
+            url : "/administrator/category/create/",
+            type : "POST",
+            data : {},
+
+            success : function (response) {
+                $('#button-create').html(response);
+            }
         });
     }
-
-    function createCourse(category_id) {
-        $('#content-title').html("Create your course");
+    function backToButton(){
+        $('#button-create').html("<button type=\"button\" class=\"btn btn-default\" onclick=\"createCategory()\">Create new category</button>");
+    }
+    function createCategoryFinish(){
         $.ajax({
-            url : "/instructor/course/create/start/", // the endpoint
-            type : "POST", // http method
-            data : { 'category_id' : category_id }, // data sent with the post request
-            // handle a successful response
-            success : function(response) {
-                $('#content-main').html(response);
+            url : "/administrator/category/createFinish/",
+            type : "POST",
+            data : {
+                'category_name' : $('#category_name').val(),
             },
-            // // handle a non-successful response
-            // error : function(xhr,errmsg,err) {
-            //     $('#results').html("<div class='alert-box alert radius' data-alert>Oops! We have encountered an error: "+errmsg+
-            //         " <a href='#' class='close'>&times;</a></div>"); // add the error to the dom
-            //     console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
-            // }
-        });
-    }
 
-    function finishCreateCourse(category_id, category_name){
-      if ($('#create_name').val() == "" | $('#create_description').val() == ""){
-        $('#content-alert').html("<div class=\"alert alert-danger fade in\"><button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-hidden=\"true\">×</button><h4>Submit Error</h4><p>Must fill in all input boxes.</p></div>");
-        return;
-      }
-      $.ajax({
-          url : "/instructor/course/create/finish/", // the endpoint
-          type : "POST", // http method
-          data : {
-            'category_id' : category_id,
-            'course_name' : $('#create_name').val(),
-            'course_description' : $('#create_description').val(),
-          }, // data sent with the post request
-          // handle a successful response
-          success : function(response) {
-              $('#category_bar').html(response);
-              $('#content-alert').html("");
-              getCategoryInfo(category_id, category_name);
-          },
-          // // handle a non-successful response
-          // error : function(xhr,errmsg,err) {
-          //     $('#results').html("<div class='alert-box alert radius' data-alert>Oops! We have encountered an error: "+errmsg+
-          //         " <a href='#' class='close'>&times;</a></div>"); // add the error to the dom
-          //     console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
-          // }
-      });
-    }
-
-    function createModule(course_id, course_name) {
-        $('#content-title').html("Create a new Module of "+course_name);
-        $.ajax({
-            url : "/instructor/module/create/start/", // the endpoint
-            type : "POST", // http method
-            data : { 'course_id' : course_id }, // data sent with the post request
-            // handle a successful response
-            success : function(response) {
-                $('#content-main').html(response);
-            },
-            // // handle a non-successful response
-            // error : function(xhr,errmsg,err) {
-            //     $('#results').html("<div class='alert-box alert radius' data-alert>Oops! We have encountered an error: "+errmsg+
-            //         " <a href='#' class='close'>&times;</a></div>"); // add the error to the dom
-            //     console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
-            // }
-        });
-    }
-
-    function finishCreateModule(course_id){
-      if ($('#module_create_name').val() == ""){
-        $('#content-alert').html("<div class=\"alert alert-danger fade in\"><button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-hidden=\"true\">×</button><h4>Submit Error</h4><p>Must fill in all input boxes.</p></div>");
-        return;
-      }
-      $.ajax({
-          url : "/instructor/module/create/finish/", // the endpoint
-          type : "POST", // http method
-          data : {
-            'course_id' : course_id,
-            'module_name' : $('#module_create_name').val(),
-          }, // data sent with the post request
-          // handle a successful response
-          success : function(response) {
-              $('#content-alert').html("");
-              $('#content-main').html(response);
-          },
-          // // handle a non-successful response
-          // error : function(xhr,errmsg,err) {
-          //     $('#results').html("<div class='alert-box alert radius' data-alert>Oops! We have encountered an error: "+errmsg+
-          //         " <a href='#' class='close'>&times;</a></div>"); // add the error to the dom
-          //     console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
-          // }
-      });
-    }
-
-    function createComponent(module_id, module_name) {
-        $('#content-title').html("Create a new Component of "+ module_name);
-        $.ajax({
-            url : "/instructor/component/create/start/", // the endpoint
-            type : "POST", // http method
-            data : { 'module_id' : module_id }, // data sent with the post request
-            // handle a successful response
-            success : function(response) {
-                $('#content-main').html(response);
-            },
-            // // handle a non-successful response
-            // error : function(xhr,errmsg,err) {
-            //     $('#results').html("<div class='alert-box alert radius' data-alert>Oops! We have encountered an error: "+errmsg+
-            //         " <a href='#' class='close'>&times;</a></div>"); // add the error to the dom
-            //     console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
-            // }
-        });
+            success : function (response){
+{#            do nothint#}
+            }
+        })
     }
 
 
-    function finishCreateComponent(module_id){
-      if ($('#component_create_name').val() == "" | $('#component_create_content').val() == ""){
-        $('#content-alert').html("<div class=\"alert alert-danger fade in\"><button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-hidden=\"true\">×</button><h4>Submit Error</h4><p>Must fill in all input boxes.</p></div>");
-        return;
-      }
-      $.ajax({
-          url : "/instructor/component/create/finish/", // the endpoint
-          type : "POST", // http method
-          data : {
-            'module_id' : module_id,
-            'component_name' : $('#component_create_name').val(),
-            'component_type' : $('#component_create_content_type').val(),
-            'component_content' : $('#component_create_content').val(),
-          }, // data sent with the post request
-          // handle a successful response
-          success : function(response) {
-              $('#content-alert').html("");
-              $('#content-main').html(response);
-          },
-          // // handle a non-successful response
-          // error : function(xhr,errmsg,err) {
-          //     $('#results').html("<div class='alert-box alert radius' data-alert>Oops! We have encountered an error: "+errmsg+
-          //         " <a href='#' class='close'>&times;</a></div>"); // add the error to the dom
-          //     console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
-          // }
-      });
-    }
-
-    function openCourse(course_id) {
-        $.ajax({
-            url : "/instructor/course/open/", // the endpoint
-            type : "POST", // http method
-            data : { 'course_id' : course_id }, // data sent with the post request
-            // handle a successful response
-            success : function(response) {
-                $('#content-main').html(response);
-            },
-            // error:function(){
-            //     console.log('in error');
-            // }
-        });
-    }
-
-    function closeCourse(course_id) {
-        $.ajax({
-            url : "/instructor/course/close/", // the endpoint
-            type : "POST", // http method
-            data : { 'course_id' : course_id }, // data sent with the post request
-            // handle a successful response
-            success : function(response) {
-            // unable the close regiestration button
-                $('#content-main').html(response);
-            },
-            // error:function(){
-            //     console.log('in error');
-            // }
-        });
-    }
     function logout(){
       window.location = "/logout";
     }

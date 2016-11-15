@@ -47,3 +47,15 @@ def category_info(request):
     othercourses = Course.objects.filter(Q(category = parent_category, is_open= True) & ~Q(instructor = parent_admin))
     # courses = Course.objects.filter(Q(category = parent_category, is_open = True) | Q(category = parent_category, is_open = False, instructor = parent_instructor))
     return render_to_response('instructor/category_info.html', locals())
+
+@login_required
+def category_create(request):
+    return render_to_response('administrator/create_category.html', locals())
+
+
+@login_required
+def category_create_finish(request):
+    category_name = request.POST['category_name']
+    admin = Administrator.objects.get(user__pk=request.user.id)
+    admin.createCategory(category_name)
+    return
