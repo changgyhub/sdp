@@ -1,14 +1,25 @@
 {% load static %}
-<div class="col-xs-6 col-sm-6 portfolio-item branded logos">
+<div class="col-xs-12 col-sm-12 portfolio-item branded logos">
   <div class="portfolio-wrapper">
-    <h4 class="portfolio-info">
-      <li>User ID: {{participant.user.pk}}</li>
-      <li>Current Enrollment: {{current}}</li>
-      <li>History Enrollment:&nbsp
+    <h2 class="page-header">User ID: {{participant.user.pk}}</h2>
+    <h2 class="page-header">Current Enrollment</h2>
+    <div class="panel-body">
+      <div class="col-lg-7 col-md-10 col-sm-12 col-xs-12">
+        <h4><li>{{current}}</li></h4>
+      </div>
+    </div>
+    <h2 class="page-header">History Enrollment</h2>
+    <div class="panel-body">
+      <div class="col-lg-7 col-md-10 col-sm-12 col-xs-12">
         {% for k, e in history.items %}
-        {{k}}</li>
+        <h4><li>{{k}}<span class="pull-right">{{e}}</span></li></h4>
         {% endfor %}
-      </li>
-    </h4>
+      </div>
+    </div>
   </div>
+  {% if course.id > 0 %}
+  <div>
+    <a class="btn btn-md btn-warning" onclick="getCourseInfo('{{course.id}}', '{{course.name}}')">Back to Course</a>
+  </div>
+  {% endif %}
 </div>

@@ -1,6 +1,6 @@
 import datetime as dt
 from django.db.models import Q
-from ..models import Category, Staff, Course, Instructor, Module, HR
+from ..models import Category, Staff, Course, Instructor, Module, HR, CurrentEnrollment, HistoryEnrollment
 from django.shortcuts import render_to_response,render, get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib import auth, messages
@@ -38,8 +38,22 @@ def category_info(request):
     category_id = request.POST['category_id']
     parent_hr = HR.objects.get(user__pk=request.user.id)
     parent_category = Category.objects.get(pk=category_id)
-    courses = Course.objects.filter(category = parent_category, is_open = True)
+    courses = Course.objects.filter(category = parent_category)
     return render_to_response('hr/category_info.html', locals())
+
+@login_required
+def course_info(request):
+    course_id = request.POST['course_id']
+    hr = HR.objects.get(user__pk=request.user.id)
+    menu = hr.viewCourse(course_id)
+    title = menu['name']
+    category = menu['category']
+    instructor = menu['instructor']
+    description = menu['description']
+    is_open = menu['is_open']
+    history = HistoryEnrollment.objects.filter(course__id = course_id)
+    current = CurrentEnrollment.objects.filter(course__id = course_id)
+    return render_to_response('hr/course_info.html', locals())
 
 @login_required
 def participant(request):
@@ -51,6 +65,9 @@ def participant(request):
 def participant_info(request):
     participant_id = request.POST['participant_id']
     hr_id = request.POST['hr_id']
+    course_id = request.POST['course_id']
+    if Course.objects.filter(pk=course_id).exists():
+        course = Course.objects.get(pk=course_id)
     hr = HR.objects.get(user__pk=hr_id)
     participant = hr.viewParticipant(participant_id)
     history = participant.getHistoryInfo()

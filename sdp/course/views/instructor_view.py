@@ -1,8 +1,7 @@
 import datetime as dt
 from django.db.models import Q
-from ..models import Category, Staff, Course, Instructor, Module
-from ..forms import DocumentForm
-from django.shortcuts import render_to_response,render, get_object_or_404
+from ..models import Category, Staff, Course, Instructor, Module, Component
+from django.shortcuts import render_to_response, render, get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib import auth, messages
 from django.template import RequestContext
@@ -10,6 +9,8 @@ from django.forms.formsets import formset_factory
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.contrib.auth.decorators import login_required
 from . import log_view as lv
+from django.core.files.storage import FileSystemStorage
+import collections
 
 @login_required
 def index(request):
@@ -28,6 +29,7 @@ def index(request):
     content = "Daily Notices:"
     return render_to_response('instructor/index.html', locals())
 
+
 @login_required
 def course(request):
     instructor = Instructor.objects.get(user__pk=request.user.id)
@@ -40,17 +42,19 @@ def category_info(request):
     category_id = request.POST['category_id']
     parent_instructor = Instructor.objects.get(user__pk=request.user.id)
     parent_category = Category.objects.get(pk=category_id)
-    mycourses = Course.objects.filter(instructor = parent_instructor, category = parent_category)
-    othercourses = Course.objects.filter(Q(category = parent_category, is_open= True) & ~Q(instructor = parent_instructor))
+    mycourses = Course.objects.filter(
+        instructor=parent_instructor, category=parent_category)
+    othercourses = Course.objects.filter(
+        Q(category=parent_category, is_open=True) & ~Q(instructor=parent_instructor))
     # courses = Course.objects.filter(Q(category = parent_category, is_open = True) | Q(category = parent_category, is_open = False, instructor = parent_instructor))
     return render_to_response('instructor/category_info.html', locals())
 
 
 @login_required
-def course_info(request, parent_course_id = None):
+def course_info(request, parent_course_id=None):
     if parent_course_id == None:
         course_id = request.POST['course_id']
-    else: # the case of finish creating component
+    else:  # the case of finish creating component
         course_id = parent_course_id
     instructor = Instructor.objects.get(user__pk=request.user.id)
     menu = instructor.viewCourse(course_id)
@@ -61,10 +65,12 @@ def course_info(request, parent_course_id = None):
     description = menu['description']
     if 'module' in menu:
         is_mine = True
-        modules = menu['module']
+        modules = collections.OrderedDict(sorted(menu['module'].items(), key=lambda x: x[0].localPosition))
     else:
         is_mine = False
+    
     return render_to_response('instructor/course_info.html', locals())
+
 
 @login_required
 def create_course(request):
@@ -72,11 +78,13 @@ def create_course(request):
     category = Category.objects.get(pk=category_id)
     return render_to_response('instructor/create_course.html', locals())
 
+
 @login_required
 def create_module(request):
     course_id = request.POST['course_id']
     course = Course.objects.get(pk=course_id)
     return render_to_response('instructor/create_module.html', locals())
+
 
 @login_required
 def create_component(request):
@@ -84,6 +92,7 @@ def create_component(request):
     module = Module.objects.get(pk=module_id)
     course = module.course
     return render_to_response('instructor/create_component.html', locals())
+
 
 @login_required
 def finish_create_course(request):
@@ -102,17 +111,22 @@ def finish_create_course(request):
         counts[c] = Course.objects.filter(category=c).count()
     returnHTML = "<h3>Categories</h3><ul class=\"nav navbar-stacked\">"
     for category, num in counts.items():
-        returnHTML += "<li><a onclick=\"getCategoryInfo(\'" + str(category.id) + "\', \'" + category.name + "\')\">" + category.name + "<span class=\"pull-right\">(" + str(num) + ")</span></a></li>"
+        returnHTML += "<li><a onclick=\"getCategoryInfo(\'" + str(category.id) + "\', \'" + category.name + \
+            "\')\">" + category.name + \
+            "<span class=\"pull-right\">(" + str(num) + ")</span></a></li>"
     returnHTML += "</ul>"
     return HttpResponse(returnHTML)
+
 
 @login_required
 def finish_create_module(request):
     course_id = request.POST['course_id']
     module_name = request.POST['module_name']
     instructor = Instructor.objects.get(user__pk=request.user.id)
-    instructor.createModule(course_id, module_name)
+    numOfModules = Module.objects.filter(course__pk=course_id).count()
+    instructor.createModule(course_id, module_name, numOfModules + 1)
     return course_info(request)
+
 
 @login_required
 def finish_create_component(request):
@@ -121,9 +135,22 @@ def finish_create_component(request):
     component_type = request.POST['component_type']
     component_content = request.POST['component_content']
     instructor = Instructor.objects.get(user__pk=request.user.id)
-    instructor.createComponent(module_id, component_name, component_type, component_content)
+    numOfComponent = Component.objects.filter(module__pk=module_id).count()
+    print(numOfComponent)
+    instructor.createComponent(
+        module_id, component_name, component_type, component_content, localPosition=numOfComponent + 1)
     course_id = Module.objects.get(pk=module_id).course.id
     return course_info(request, course_id)
+
+
+@login_required
+def delete_component(request):
+    course_id = request.POST['course_id']
+    component_id = request.POST['component_id']
+    instructor = Instructor.objects.get(user__pk=request.user.id)
+    instructor.deleteComponent(component_id)
+    return course_info(request, course_id)
+
 
 @login_required
 def open_course(request):
@@ -140,13 +167,92 @@ def close_course(request):
     instructor = Instructor.objects.get(user__pk=request.user.id)
     instructor.closeCourse(course_id)
     return course_info(request, course_id)
+
+
 @login_required
 def file_upload(request):
+    # if DEBUG:
+    # print(request.POST)
     module_id = request.POST['module_id']
-    if module_id == '#':
-        form = DocumentForm()
-        return render_to_response('instructor/file_upload.html', locals())
-    else:
-        form = DocumentForm(request.POST, request.FILES)
-        if form.is_valid():
-            print('gg')
+    component_name = request.POST['component_create_name']
+    component_type = request.POST['component_create_content_type'][0]
+    component_content = request.POST['component_create_content']
+    content_file = request.FILES
+    instructor = Instructor.objects.get(user__pk=request.user.id)
+    component = instructor.createComponent(
+        module_id, component_name, component_type, component_content, request.FILES)
+    myfile = request.FILES['file']
+    component.content_file.save(myfile.name, myfile)
+    course_id = Module.objects.get(pk=module_id).course.id
+    return course_info(request, course_id)
+
+
+@login_required
+def file_download(request):
+    component_id = request.GET['component_id']
+    component = Component.objects.get(pk=component_id)
+    filename = component.content_file.name
+    myfile = open(component.content_file.path, "rb")
+    response = HttpResponse(myfile, content_type='text/plain')
+    response['Content-Disposition'] = 'attachment; filename=%s' % filename
+    return response
+
+
+@login_required
+def moveup_component(request):
+    component_id = request.POST['component_id']
+    component = Component.objects.get(pk=component_id)
+    localPosition = component.localPosition
+    previous_component = Component.objects.get(
+        module__id=component.module.pk, localPosition=localPosition - 1)
+    component.localPosition = localPosition - 1
+    previous_component.localPosition = localPosition
+    component.save()
+    previous_component.save()
+    course_id = Module.objects.get(pk=component.module.pk).course.id
+    return course_info(request, course_id)
+
+
+@login_required
+def movedown_component(request):
+    component_id = request.POST['component_id']
+    component = Component.objects.get(pk=component_id)
+    localPosition = component.localPosition
+    next_component = Component.objects.get(
+        module__id=component.module.pk, localPosition=localPosition + 1)
+    component.localPosition = localPosition + 1
+    next_component.localPosition = localPosition
+    component.save()
+    next_component.save()
+    course_id = Module.objects.get(pk=component.module.pk).course.id
+    return course_info(request, course_id)
+
+
+@login_required
+def moveup_module(request):
+    module_id = request.POST['module_id']
+    module = Module.objects.get(pk=module_id)
+    localPosition = module.localPosition
+    previous_module = Module.objects.get(
+        course__id=module.course.pk, localPosition=localPosition - 1)
+    module.localPosition = localPosition - 1
+    previous_module.localPosition = localPosition
+    module.save()
+    previous_module.save()
+    return course_info(request, module.course.pk)
+
+
+@login_required
+def movedown_module(request):
+    module_id = request.POST['module_id']
+    print('a'*10 + str(module_id))
+    module = Module.objects.get(pk=module_id)
+    localPosition = module.localPosition
+    next_module = Module.objects.get(
+        course__id=module.course.pk, localPosition=localPosition + 1)
+    print('b'*10)
+    module.localPosition = localPosition + 1
+    next_module.localPosition = localPosition
+    module.save()
+    next_module.save()
+    return course_info(request, module.course.pk)
