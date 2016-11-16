@@ -71,5 +71,7 @@ def participant_info(request):
     hr = HR.objects.get(user__pk=hr_id)
     participant = hr.viewParticipant(participant_id)
     history = participant.getHistoryInfo()
+    if not history:
+        history = {'None': ''}
     current = participant.getCurrentInfo()
     return render_to_response('hr/participant_info.html', locals())
