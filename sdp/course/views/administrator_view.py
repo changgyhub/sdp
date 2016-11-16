@@ -59,3 +59,12 @@ def category_create_finish(request):
     admin = Administrator.objects.get(user__pk=request.user.id)
     admin.createCategory(category_name)
     return
+
+@login_required
+def category_delete(request):
+    category_name = request.POST['category_name']
+    admin = Administrator.objects.get(user__pk=request.user.id)
+    if admin.deleteCategory(category_name):
+        return render_to_response('administrator/delete_category_true.html', locals())
+    else:
+        return render_to_response('administrator/delete_category_false.html', locals())

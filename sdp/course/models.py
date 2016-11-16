@@ -160,6 +160,15 @@ class Administrator(Staff):
     def createCategory(self, category_name):
         category = Category.objects.create(name=category_name)
 
+    def deleteCategory(self, category_name):
+        category = Category.objects.get(name=category_name)
+        num = Course.objects.filter(category=category).count()
+        if num==0:
+            category.delete()
+            return True
+        else:
+            return False
+
 class HR(Staff):
 
     def viewCategories(self):
