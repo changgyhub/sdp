@@ -22,6 +22,8 @@ urlpatterns = [
                 url(r'^finish/', iv.finish_create_module, name='instructor_finish_create_module'),
                 url(r'^start/', iv.create_module, name='instructor_create_module'),
             ])),
+            url(r'^moveup/', iv.moveup_module, name='instructor_moveup_module'),
+            url(r'^movedown/', iv.movedown_module, name='instructor_movedown_module'),
         ])),
         url(r'^component/',include([
             url(r'^create/',include([

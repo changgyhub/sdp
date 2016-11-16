@@ -326,7 +326,6 @@
         return;
       }
       console.log($('#component_create_content_type').val());
-      alert(module_id);
 
       $.ajax({
           url : "/instructor/component/create/finish/", // the endpoint
@@ -402,7 +401,6 @@
         }
 
     }
-  moveUpComponent
   function moveUpComponent(component_id) {
       $.ajax({
           url : "/instructor/component/moveup/", // the endpoint
@@ -434,6 +432,39 @@
           // }
       });
 
+  }
+  function moveDownModule(module_id) {
+      $.ajax({
+          url : "/instructor/module/movedown/", // the endpoint
+          type : "POST", // http method
+          data : { 'module_id' : module_id }, // data sent with the post request
+          // handle a successful response
+          success : function(response) {
+          // unable the close regiestration button
+              $('#content-main').html(response);
+          },
+          // error:function(){
+          //     console.log('in error');
+          // }
+      });
+    
+  }
+  
+  function moveUpModule(module_id) {
+      $.ajax({
+          url : "/instructor/module/moveup/", // the endpoint
+          type : "POST", // http method
+          data : { 'module_id' : module_id }, // data sent with the post request
+          // handle a successful response
+          success : function(response) {
+          // unable the close regiestration button
+              $('#content-main').html(response);
+          },
+          // error:function(){
+          //     console.log('in error');
+          // }
+      });
+    
   }
     function logout(){
       window.location = "/logout";

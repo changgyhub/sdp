@@ -1,3 +1,4 @@
+
 <div id="accordion-container">
     <h2 class="page-header">General Info&nbsp;
       {% if is_mine and not is_open %}
@@ -19,23 +20,30 @@
               Module {{ forloop.counter }}: {{module.name}}&nbsp;&nbsp;
               <a class="btn btn-sm btn-info" data-toggle="collapse" data-parent="#accordion" href="#collapse{{module.id}}">Collapse</a>&nbsp;
               {% if not is_open %}
-              <a class="btn btn-sm btn-info" style="color:#FFFFFF" onclick="createComponent('{{module.id}}','{{module.name}}')">Add Component</a><br>
+              <a class="btn btn-sm btn-info" style="color:#FFFFFF" onclick="createComponent('{{module.id}}','{{module.name}}')">Add Component</a>
+              {% endif %}
+              {% if module.localPosition != 1%}
+              <a class="btn btn-md" onclick="moveUpModule('{{module.id}}')"><i class="glyphicon glyphicon-arrow-up"></i></a>
+              {% endif %}
+              {% if module.localPosition != modules|length %}
+              <a class="btn btn-md" onclick="moveDownModule('{{module.id}}')"><i class="glyphicon glyphicon-arrow-down"></i></a></h4>
               {% endif %}
           </h2>
           <div id="collapse{{module.id}}" class="col-sm-12 panel-collapse collapse in">
             {% for component in components|dictsort:"localPosition"%}
               <h4 class="page-header" style="color: #686868;">
                 {% if component.content_type != '2'%}
-                <a class="btn btn-md"><i class="glyphicon glyphicon-save"></i></a>
-                <a class="btn btn-sm btn-info" style="color:#FFFFFF" href="/instructor/component/download/?component_id={{component.id}}">File</a>&nbsp;
+                <a class="btn btn-md" href="/instructor/component/download/?component_id={{component.id}}"><i class="glyphicon glyphicon-save"></i></a>
                 {% endif %}
                 Component {{forloop.parentloop.counter}}.{{ forloop.counter }}: {{component.name}}
+              {% if not is_open %}
                 <a class="btn btn-sm btn-info" style="color:#FFFFFF" onclick="deleteComponent('{{course_id}}','{{component.id}}')">Delete</a>
-              {% if component.localPosition != 1%}
-              <a class="btn btn-sm btn-info" style="color:#FFFFFF" onclick="moveUpComponent('{{component.id}}')">up</a>
-              {% endif %}
-              {% if component.localPosition != components|length %}
-              <a class="btn btn-sm btn-info" style="color:#FFFFFF" onclick="moveDownComponent('{{component.id}}')">down</a></h4>
+                {% if component.localPosition != 1%}
+                <a class="btn btn-md" onclick="moveUpComponent('{{component.id}}')"><i class="glyphicon glyphicon-arrow-up"></i></a>
+                {% endif %}
+                {% if component.localPosition != components|length %}
+                <a class="btn btn-md" onclick="moveDownComponent('{{component.id}}')"><i class="glyphicon glyphicon-arrow-down"></i></a></h4>
+                {% endif %}
               {% endif %}
               <h5 class="panel-body">{{component.content}}</h5>
             {% endfor %}

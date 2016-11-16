@@ -135,9 +135,10 @@ class Instructor(Staff):
                 name=course_name, description=course_info, instructor = self)
                 # is_open = False as default
 
-    def createModule(self, course_id, module_name):
-        parent_course = Course.objects.get(pk = course_id)
-        module = Module.objects.create(course = parent_course, name = module_name)
+    def createModule(self, course_id, module_name, localPosition):
+        parent_course = Course.objects.get(pk=course_id)
+        module = Module.objects.create(
+            course=parent_course, name=module_name, localPosition=localPosition)
 
     def createComponent(self, module_id, component_name, component_content_type, component_content, content_file = None, localPosition = 0):
         parent_module = Module.objects.get(pk = module_id)
@@ -199,7 +200,7 @@ class Course(models.Model):
 class Module(models.Model):
     name = models.CharField(max_length=200)
     course = models.ForeignKey(Course, on_delete=models.CASCADE)  # many-to-one
-
+    localPosition = models.IntegerField(default=0)
     def __str__(self):
         return self.name
 
