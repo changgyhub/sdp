@@ -20,19 +20,20 @@
               Module {{ forloop.counter }}: {{module.name}}&nbsp;&nbsp;
               <a class="btn btn-sm btn-info" data-toggle="collapse" data-parent="#accordion" href="#collapse{{module.id}}">Collapse</a>&nbsp;
               {% if not is_open %}
-              <a class="btn btn-sm btn-info" style="color:#FFFFFF" onclick="createComponent('{{module.id}}','{{module.name}}')">Add Component</a>
+                <a class="btn btn-sm btn-info" style="color:#FFFFFF" onclick="createComponent('{{module.id}}','{{module.name}}')">Add Component</a>
+                {% if module.localPosition != 1%}
+                <a class="btn btn-md" onclick="moveUpModule('{{module.id}}')"><i class="glyphicon glyphicon-arrow-up"></i></a>
+                {% endif %}
+                {% if module.localPosition != modules|length %}
+                <a class="btn btn-md" onclick="moveDownModule('{{module.id}}')"><i class="glyphicon glyphicon-arrow-down"></i></a></h4>
+                {% endif %}
               {% endif %}
-              {% if module.localPosition != 1%}
-              <a class="btn btn-md" onclick="moveUpModule('{{module.id}}')"><i class="glyphicon glyphicon-arrow-up"></i></a>
-              {% endif %}
-              {% if module.localPosition != modules|length %}
-              <a class="btn btn-md" onclick="moveDownModule('{{module.id}}')"><i class="glyphicon glyphicon-arrow-down"></i></a></h4>
-              {% endif %}
+              
           </h2>
           <div id="collapse{{module.id}}" class="col-sm-12 panel-collapse collapse in">
             {% for component in components|dictsort:"localPosition"%}
               <h4 class="page-header" style="color: #686868;">
-                {% if component.content_type != '2'%}
+                {% if component.content_type != '2' %}
                 <a class="btn btn-md" href="/instructor/component/download/?component_id={{component.id}}"><i class="glyphicon glyphicon-save"></i></a>
                 {% endif %}
                 Component {{forloop.parentloop.counter}}.{{ forloop.counter }}: {{component.name}}
@@ -45,7 +46,13 @@
                 <a class="btn btn-md" onclick="moveDownComponent('{{component.id}}')"><i class="glyphicon glyphicon-arrow-down"></i></a></h4>
                 {% endif %}
               {% endif %}
-              <h5 class="panel-body">{{component.content}}</h5>
+              <h5 class="panel-body">{{component.content}}
+                {% if component.content_type == '3' %}
+                <!-- we load the image -->
+                <br>
+                <a>  <img src="image/?path={{ component.content_file.url }}" alt="Not found" width="400"></img></a>
+                {% endif %}
+              </h5>
             {% endfor %}
           </div>
       {% endfor %}

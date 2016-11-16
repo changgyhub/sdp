@@ -11,7 +11,7 @@ from django.contrib.auth.decorators import login_required
 from . import log_view as lv
 from django.core.files.storage import FileSystemStorage
 import collections
-
+import os
 @login_required
 def index(request):
     lv.assignType(request.user.id, "Instructor")
@@ -136,7 +136,6 @@ def finish_create_component(request):
     component_content = request.POST['component_content']
     instructor = Instructor.objects.get(user__pk=request.user.id)
     numOfComponent = Component.objects.filter(module__pk=module_id).count()
-    print(numOfComponent)
     instructor.createComponent(
         module_id, component_name, component_type, component_content, localPosition=numOfComponent + 1)
     course_id = Module.objects.get(pk=module_id).course.id
@@ -179,8 +178,9 @@ def file_upload(request):
     component_content = request.POST['component_create_content']
     content_file = request.FILES
     instructor = Instructor.objects.get(user__pk=request.user.id)
+    numOfComponent = Component.objects.filter(module__pk=module_id).count()
     component = instructor.createComponent(
-        module_id, component_name, component_type, component_content, request.FILES)
+        module_id, component_name, component_type, component_content, request.FILES, localPosition=numOfComponent + 1)
     myfile = request.FILES['file']
     component.content_file.save(myfile.name, myfile)
     course_id = Module.objects.get(pk=module_id).course.id
@@ -255,3 +255,10 @@ def movedown_module(request):
     module.save()
     next_module.save()
     return course_info(request, module.course.pk)
+
+@login_required
+def sendImage(request):
+    path = request.GET['path']
+    path = os.path.abspath(os.path.join(os.path.dirname( __file__ ), '..','..', path))
+    image_data = open(path, "rb").read()
+    return HttpResponse(image_data, content_type="image/png") 
