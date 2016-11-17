@@ -1,4 +1,6 @@
 import datetime as dt
+
+from django.core.serializers import json
 from django.db.models import Q
 from ..models import Category, Staff, Course, Instructor, Module, Participant, Administrator
 from django.shortcuts import render_to_response,render, get_object_or_404
@@ -88,5 +90,19 @@ def category_delete(request):
 @login_required
 def generate_user(request):
     i = request.POST['i']
-    allUsers = request.POST['allUsers']
+    i = int(i)
+    admin = Administrator.objects.get(user__pk=request.user.id)
+    all = admin.viewAllUsers()
+
+    allUD = dict()
+    allUsers = []
+    cnt = 0
+    allUsers.append(allUD)
+    for u in all:
+        allUsers[cnt][u.pk] = u.username
+        if len(allUsers[cnt]) == 10:
+            allUD = dict()
+            allUsers.append(allUD)
+            cnt += 1
+    allU = allUsers[i]
     return render_to_response('administrator/generateUsersForm.html', locals())
