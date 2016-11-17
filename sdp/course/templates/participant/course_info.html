@@ -1,24 +1,51 @@
 <div id="accordion-container">
     <h2 class="page-header">General Info&nbsp;
       {% if is_enrolled %}
-          <a class="btn btn-md btn-warning">Drop</a>
+          <a class="btn btn-sm btn-warning">Drop</a>
       {% endif %}
     </h2>
-    <h5 class="panel-body">{{description}}</h5>
+    <h4 class="panel-body">{{description}}</h4>
 
     {% if is_enrolled %}
+    <h2 class="page-header">Progress&nbsp;</h2>
+    <div class="progress">
+      <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="{{percentage}}" aria-valuemin="0" aria-valuemax="100" style="width: {{percentage}}%">
+            {{percentage}}% Complete
+        </div>
+    </div>
       <div id="accordion">
         {% for module, components in modules.items %}
-        <h3 class="page-header" style="color: #686868;">
-            Module {{ forloop.counter }}: {{module.name}}&nbsp;&nbsp;
-            <a class="btn btn-md btn-info" data-toggle="collapse" data-parent="#accordion" href="#collapse{{module.id}}">Collapse</a>&nbsp;
+        <h2 class="page-header" style="color: #686868;">
+            {% if enrollment.current_model_num >= forloop.counter%}
+              Module {{ forloop.counter }}: {{module.name}}&nbsp;&nbsp;
+              <a data-toggle="collapse" data-parent="#accordion" href="#collapse{{module.id}}">Collapse</a>&nbsp;
+            {% else %}
+              <div style="color: #C0C0C0;"> Module {{ forloop.counter }}: {{module.name}}&nbsp;&nbsp;</div>
+            {% endif %}
         </h3>
-        <div id="collapse{{module.id}}" class="col-sm-12 panel-collapse collapse in">
-          {% for component in components%}
-            <h4 class="page-header" style="color: #686868;">Component {{forloop.parentloop.counter}}.{{ forloop.counter }}: {{component.name}}</h4>
-            <h5 class="panel-body">{{component.content}}</h5>
+        <div id="collapse{{module.id}}" class="col-xs-12 panel-collapse collapse in">
+        {% if enrollment.current_model_num >= forloop.counter%}
+          {% for component in components|dictsort:"localPosition"%}
+            {% if enrollment.current_model_num == forloop.parentloop.counter and enrollment.current_component_num < forloop.counter %}
+              <h3 style="color: #C0C0C0;"> Component {{forloop.parentloop.counter}}.{{ forloop.counter }}: {{component.name}}&nbsp;&nbsp;</h3><p/>
+            {% else %}
+              <h3>Component {{forloop.parentloop.counter}}.{{ forloop.counter }}: {{component.name}}
+                &nbsp;<a>Finish</a>
+              </h3>
+              {% if component.content_type != '2' %}
+              <a class="btn btn-md" href="/participant/component/download/?component_id={{component.id}}"><i class="glyphicon glyphicon-save"></i></a>
+              {% endif %}
+              <h4 class="panel-body">
+                {% if component.content_type == '3' %}
+                <!-- we load the image -->
+                <a><img src="/participant/course/image/?path={{ component.content_file.url }}" alt="Not found" width="400"></img></a><p/>
+                {% endif %}
+                {{component.content}}<p/>
+              </h4>
+            {% endif %}
           {% endfor %}
-        </div>
+        {% endif %}
+      </div>
         {% endfor %}
       </div><!--/#accordion-->
     {% else %}
@@ -31,4 +58,4 @@
 {% if not is_enrolled %}
 <a class="btn btn-sm btn-info" onclick="enroll('{{course_id}}')">+ Enroll</a>
 {% endif %}
-<a class="btn btn-xs btn-warning" onclick="getCategoryInfo('{{category.id}}', '{{category.name}}')">< Back</a>
+<a class="btn btn-sm btn-warning" onclick="getCategoryInfo('{{category.id}}', '{{category.name}}')">< Back</a>

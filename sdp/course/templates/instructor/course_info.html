@@ -18,7 +18,7 @@
       {% for module, components in modules.items %}
           <h2 class="page-header" style="color: #686868;">
               Module {{ forloop.counter }}: {{module.name}}&nbsp;&nbsp;
-              <a class="btn btn-sm btn-info" data-toggle="collapse" data-parent="#accordion" href="#collapse{{module.id}}">Collapse</a>&nbsp;
+              <a data-toggle="collapse" data-parent="#accordion" href="#collapse{{module.id}}">Collapse</a>&nbsp;
               {% if not is_open %}
                 <a class="btn btn-sm btn-info" style="color:#FFFFFF" onclick="createComponent('{{module.id}}','{{module.name}}')">Add Component</a>
                 {% if module.localPosition != 1%}
@@ -28,15 +28,15 @@
                 <a class="btn btn-md" onclick="moveDownModule('{{module.id}}')"><i class="glyphicon glyphicon-arrow-down"></i></a></h4>
                 {% endif %}
               {% endif %}
-              
+
           </h2>
           <div id="collapse{{module.id}}" class="col-sm-12 panel-collapse collapse in">
             {% for component in components|dictsort:"localPosition"%}
               <h4 class="page-header" style="color: #686868;">
+                Component {{forloop.parentloop.counter}}.{{ forloop.counter }}: {{component.name}}
                 {% if component.content_type != '2' %}
                 <a class="btn btn-md" href="/instructor/component/download/?component_id={{component.id}}"><i class="glyphicon glyphicon-save"></i></a>
                 {% endif %}
-                Component {{forloop.parentloop.counter}}.{{ forloop.counter }}: {{component.name}}
               {% if not is_open %}
                 <a class="btn btn-sm btn-info" style="color:#FFFFFF" onclick="deleteComponent('{{course_id}}','{{component.id}}')">Delete</a>
                 {% if component.localPosition != 1%}
@@ -46,12 +46,12 @@
                 <a class="btn btn-md" onclick="moveDownComponent('{{component.id}}')"><i class="glyphicon glyphicon-arrow-down"></i></a></h4>
                 {% endif %}
               {% endif %}
-              <h5 class="panel-body">{{component.content}}
+              <h5 class="panel-body">
                 {% if component.content_type == '3' %}
                 <!-- we load the image -->
-                <br>
-                <a>  <img src="image/?path={{ component.content_file.url }}" alt="Not found" width="400"></img></a>
+                <a><img src="/instructor/course/image/?path={{ component.content_file.url }}" alt="Not found" width="400"></img></a><p/>
                 {% endif %}
+                {{component.content}}<p/>
               </h5>
             {% endfor %}
           </div>

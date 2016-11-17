@@ -30,7 +30,7 @@ class Staff(models.Model):
 class Participant(Staff):
     def register(self, username, password):
         user = User.objects.create_user(username = username, password = password)
-        g = Group.objects.get(name='Participant') 
+        g = Group.objects.get(name='Participant')
         g.user_set.add(user)
         Participant.objects.create(user= user, last_login_type = 'participants')
     def viewCategories(self):
@@ -78,7 +78,7 @@ class Participant(Staff):
             return False
         else:
             course = Course.objects.get(pk=course_id)
-            CurrentEnrollment.objects.create(course=course, participant=self, progress="0")
+            CurrentEnrollment.objects.create(course=course, participant=self)
             return True
 
 
@@ -156,6 +156,7 @@ class Instructor(Staff):
     def deleteComponent(self, component_id):
         # assume that the course is already the instructor's
         Component.objects.get(pk=component_id).delete()
+
 class Administrator(Staff):
     def viewCategories(self):
         menu = super(Administrator, self).viewCategories()
@@ -178,7 +179,6 @@ class Administrator(Staff):
         return User.objects.all()
 
 class HR(Staff):
-
     def viewCategories(self):
         menu = super(HR, self).viewCategories()
         for c in Category.objects.all():
@@ -220,16 +220,15 @@ class Module(models.Model):
     def __str__(self):
         return self.name
 
-
 class Component(models.Model):
     name = models.CharField(max_length=200)
+    content = models.CharField(max_length=200, default= None, null=True)
     CONTENT_TYPES = (
         (u'1', u'File'),
         (u'2', u'Text'),
         (u'3', u'Image'),
     )  # need to be changed later on
     content_type = models.CharField(max_length=1, choices=CONTENT_TYPES,default = None)
-    content = models.CharField(max_length=200, default= None, null=True)
     content_file = models.FileField(upload_to='uploads/%Y/%m/%d/', null=True)
     localPosition = models.IntegerField(default=0)
     module = models.ForeignKey(Module, on_delete=models.CASCADE, default = None)  # many-to-one
@@ -263,7 +262,7 @@ class HistoryEnrollment(Enrollment):
 
 
 class CurrentEnrollment(Enrollment):
-    progress = models.CharField(max_length=200)  # need to be changed later on
-
+    current_model_num = models.IntegerField(default=1)
+    current_component_num = models.IntegerField(default=1)
     def getInfo(self):
-        return self.progress
+        return str(self.current_model_num) + '.' + str(self.current_component_num)

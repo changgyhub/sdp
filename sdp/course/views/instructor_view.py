@@ -12,6 +12,7 @@ from . import log_view as lv
 from django.core.files.storage import FileSystemStorage
 import collections
 import os
+
 @login_required
 def index(request):
     lv.assignType(request.user.id, "Instructor")
@@ -257,8 +258,8 @@ def movedown_module(request):
     return course_info(request, module.course.pk)
 
 @login_required
-def sendImage(request):
+def getImage(request):
     path = request.GET['path']
     path = os.path.abspath(os.path.join(os.path.dirname( __file__ ), '..','..', path))
     image_data = open(path, "rb").read()
-    return HttpResponse(image_data, content_type="image/png") 
+    return HttpResponse(image_data, content_type="image/png")

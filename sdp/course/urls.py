@@ -16,7 +16,7 @@ urlpatterns = [
             url(r'^info/',iv.course_info, name='instructor_course_info'),
             url(r'^open/', iv.open_course, name= 'instructor_open_course'),
             url(r'^close/', iv.close_course, name= 'instructor_close_course'),
-            url(r'^image/', iv.sendImage, name='handle_image_get'),
+            url(r'^image/', iv.getImage, name='instructor_get_image'),
             url(r'^$', iv.course, name='instructor_course'),
         ])),
         url(r'^module/',include([
@@ -32,7 +32,7 @@ urlpatterns = [
                 url(r'^finish/', iv.finish_create_component, name='instructor_finish_create_component'),
                 url(r'^start/', iv.create_component, name='instructor_create_component'),
                 url(r'^upload/', iv.file_upload, name='instructor_file_upload'),
-                
+
             ])),
             url(r'^download/', iv.file_download, name='instructor_file_download'),
             url(r'^delete/', iv.delete_component, name='instructor_create_component'),
@@ -48,7 +48,11 @@ urlpatterns = [
         url(r'^course/',include([
             url(r'^enroll/',pv.enroll, name='participant_enroll'),
             url(r'^info/',pv.course_info, name='participant_course_info'),
+            url(r'^image/', pv.getImage, name='participant_get_image'),
             url(r'^$', pv.course, name='participant_course'),
+        ])),
+        url(r'^component/',include([
+            url(r'^download/', pv.file_download, name='participant_file_download'),
         ])),
     ])),
 
