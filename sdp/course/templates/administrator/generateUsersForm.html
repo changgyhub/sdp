@@ -1,0 +1,35 @@
+<table class="table table-hover">
+    <thead>
+    <tr>
+        <th>
+            id
+        </th>
+        <th>
+            username
+        </th>
+        <th>
+            type
+        </th>
+        <th>
+        </th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for id, username in allUsers.i.items %}
+        <tr>
+            <td>
+                {{ id }}
+            </td>
+            <td>
+                {{ username }}
+            </td>
+            <td>
+
+            </td>
+            <td>
+                <button type="button" class="btn btn-default" onclick="deleteCategory('{{ category.name }}')">designate</button>
+            </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
