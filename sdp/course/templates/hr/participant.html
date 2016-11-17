@@ -101,7 +101,7 @@
                         <div class="sidebar-item categories" id="category_bar">
                             <h3>Participants</h3>
                             <ul class="nav navbar-stacked">
-                              {% for k, e in participants.items %}
+                              {% for k, e in keylist%}
                                 <li><a onclick="getParticipantInfo('{{e.user.pk}}', '{{e}}', '{{hr.user.pk}}', '0')">{{e}}</a></li>
                               {% endfor %}
                             </ul>
