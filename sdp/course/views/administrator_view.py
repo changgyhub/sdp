@@ -36,6 +36,20 @@ def category(request):
 
 @login_required
 def priority(request):
+    admin = Administrator.objects.get(user__pk=request.user.id)
+    all = admin.viewAllUsers()
+
+    allUD = dict()
+    allUsers = []
+    cnt=0
+    allUsers.append(allUD)
+    for u in all:
+        allUsers[cnt][u.pk]=u.username
+        if len(allUsers[cnt])==10:
+            allUD = dict()
+            allUsers.append(allUD)
+            cnt+=1
+    num = range(len(allUsers))
     return render_to_response('administrator/priority.html',locals())
 
 @login_required
@@ -65,6 +79,14 @@ def category_delete(request):
     category_name = request.POST['category_name']
     admin = Administrator.objects.get(user__pk=request.user.id)
     if admin.deleteCategory(category_name):
+        counts = admin.viewCategories()
         return render_to_response('administrator/delete_category_true.html', locals())
     else:
+        counts = admin.viewCategories()
         return render_to_response('administrator/delete_category_false.html', locals())
+
+@login_required
+def generate_user(request):
+    i = request.POST['i']
+    allUsers = request.POST['allUsers']
+    return render_to_response('administrator/generateUsersForm.html', locals())

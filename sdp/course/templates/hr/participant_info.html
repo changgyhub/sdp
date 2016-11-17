@@ -1,24 +1,60 @@
 {% load static %}
 <div class="col-xs-12 col-sm-12 portfolio-item branded logos">
   <div class="portfolio-wrapper">
-    <h2 class="page-header">User ID: {{participant.user.pk}}</h2>
+    <h2 class="page-header">Participant Info</h2>
+      <div class="panel-body">
+        <div class="col-lg-7 col-md-10 col-sm-12 col-xs-12">
+          <li>User ID: {{participant.user.pk}}</li>
+        </div>
+      </div>
     <h2 class="page-header">Current Enrollment</h2>
+    {% if not current %}
+    <div class="panel-body">
+     None
+   </div>
+    {% endif %}
+    {% if current %}
     <div class="panel-body">
       <div class="col-lg-7 col-md-10 col-sm-12 col-xs-12">
-        <h4><li>{{current}}</li></h4>
+        <li>{{current}} by {{current.instructor}}</li>
       </div>
     </div>
-    <h2 class="page-header">History Enrollment</h2>
-    <div class="panel-body">
-      <div class="col-lg-7 col-md-10 col-sm-12 col-xs-12">
+    {% endif %}
+    <div id="accordion-container">
+      <h2 class="page-header">History Enrollment</h2>
+      {% if not history %}
+      <div class="panel-body">
+       None
+     </div>
+      {% endif %}
+      {% if history %}
+      <div class="panel-group" id="accordion">
         {% for k, e in history.items %}
-        <h4><li>{{k}}<span class="pull-right">{{e}}</span></li></h4>
-        {% endfor %}
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h4 class="panel-title">
+              <a data-toggle="collapse" data-parent="#accordion" href=#{{k}}>
+                  {{k}}
+              </a>
+            </h4>
+          </div>
+          <div id={{k}} class="panel-collapse collapse">
+            <div class="panel-body">
+              <ul>
+                <p>Instructor: {{k.instructor}}</p>
+                <p>Date of Completion: {{e}}</p>
+              </ul>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
       </div>
+    {% endif %}
     </div>
   </div>
   {% if course.id > 0 %}
   <div>
+    <h4 class="page-header"></h4>
     <a class="btn btn-md btn-warning" onclick="getCourseInfo('{{course.id}}', '{{course.name}}')">Back to Course</a>
   </div>
   {% endif %}

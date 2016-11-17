@@ -51,6 +51,8 @@ def course_info(request):
     instructor = menu['instructor']
     description = menu['description']
     is_open = menu['is_open']
+    has_history = HistoryEnrollment.objects.filter(course__id = course_id).exists()
+    has_current = CurrentEnrollment.objects.filter(course__id = course_id).exists()
     history = HistoryEnrollment.objects.filter(course__id = course_id)
     current = CurrentEnrollment.objects.filter(course__id = course_id)
     return render_to_response('hr/course_info.html', locals())
@@ -59,6 +61,11 @@ def course_info(request):
 def participant(request):
     hr = HR.objects.get(user__pk=request.user.id)
     participants = hr.viewAllParticipants()
+    keylist = []
+    for key, value in participants.items():
+        temp = [value.user.first_name + " " +value.user.last_name, value]
+        keylist.append(temp)
+    keylist.sort()
     return render_to_response('hr/participant.html', locals())
 
 @login_required
@@ -71,7 +78,5 @@ def participant_info(request):
     hr = HR.objects.get(user__pk=hr_id)
     participant = hr.viewParticipant(participant_id)
     history = participant.getHistoryInfo()
-    if not history:
-        history = {'None': ''}
     current = participant.getCurrentInfo()
     return render_to_response('hr/participant_info.html', locals())

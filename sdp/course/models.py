@@ -174,6 +174,9 @@ class Administrator(Staff):
         else:
             return False
 
+    def viewAllUsers(self):
+        return User.objects.all()
+
 class HR(Staff):
 
     def viewCategories(self):
