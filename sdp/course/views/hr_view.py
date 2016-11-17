@@ -65,8 +65,12 @@ def participant(request):
     for key, value in participants.items():
         temp = [value.user.first_name + " " +value.user.last_name, value]
         keylist.append(temp)
-    keylist.sort()
+    keylist.sort(key=getKey)
+    length = len(keylist)
     return render_to_response('hr/participant.html', locals())
+
+def getKey(item):
+    return item[0]
 
 @login_required
 def participant_info(request):
