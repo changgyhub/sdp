@@ -75,6 +75,7 @@ urlpatterns = [
         ])),
         url(r'^priority/', include([
             url(r'^$', av.priority, name='administrator_priority'),
+            url(r'^generate/', av.generate_user, name='administrator_generate'),
         ])),
     ])),
 ]
