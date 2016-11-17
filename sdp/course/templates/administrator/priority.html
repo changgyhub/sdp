@@ -148,7 +148,7 @@
                     </li>
                     {% for i in num %}
                         <li>
-                            <button type="button" class="btn btn-default" onclick="generate('{{ i }}','{{ allUsers }}')">{{ i|add:1 }}</button>
+                            <button type="button" class="btn btn-default" onclick="generate('{{ i }}')">{{ i|add:1 }}</button>
                         </li>
                     {% endfor %}
                     <li>
@@ -187,13 +187,12 @@
 
 <script>
 
-    function generate(i,allUsers){
+    function generate(i){
         $.ajax({
             url : "/administrator/priority/generate/",
             type : "POST",
             data : {
                 'i' : i,
-                'allUsers' : allUsers,
             },
 
             success : function (response){
