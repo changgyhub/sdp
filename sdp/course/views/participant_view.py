@@ -64,3 +64,4 @@ def enroll(request):
     else:
         # TODO: make it more like a warning
         return HttpResponse("You cannot enroll in two courses at the same time.")
+

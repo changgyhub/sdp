@@ -1,5 +1,5 @@
-from ..forms import LoginForm
-from django.shortcuts import render_to_response,render, get_object_or_404
+from ..forms import LoginForm, RegisterForm
+from django.shortcuts import render_to_response, render, get_object_or_404, redirect
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib import auth, messages
 from django.template import RequestContext
@@ -11,6 +11,8 @@ from ..models import Staff, Course, Instructor, Participant, Administrator, HR
 #from django.template.context_processors import csrf
 
 # detect the latest group type the current user choose to login
+
+
 def typeSelect(id):
     if Participant.objects.filter(user__pk=id).exists():
         return Participant.objects.get(user__pk=id).last_login_type
@@ -22,6 +24,7 @@ def typeSelect(id):
         return Administrator.objects.get(user__pk=id).last_login_type
     else:
         return "Staff"
+
 
 def assignType(id, login_type):
     if Participant.objects.filter(user__pk=id).exists():
@@ -59,7 +62,7 @@ def login(request):
                 return logout(request)
         else:
             form = LoginForm()
-            return render_to_response('login.html', RequestContext(request, {'form': form,}))
+            return render_to_response('login.html', RequestContext(request, {'form': form, }))
     else:
         form = LoginForm(request.POST)
         if form.is_valid():
@@ -69,6 +72,7 @@ def login(request):
             user = auth.authenticate(username=username, password=password)
             if user is not None and user.is_active:
                 if staff_type == "1":
+                    print('here')
                     auth.login(request, user)
                     if user.groups.filter(name='Participant').exists():
                         return pv.index(request)
@@ -96,15 +100,38 @@ def login(request):
                     else:
                         # TODO: wrong access
                         return logout(request)
-                else :
+                else:
                     # TODO: login for other users
-                    return render_to_response('login.html', RequestContext(request, {'form': form,}))
+                    return render_to_response('login.html', RequestContext(request, {'form': form, }))
             else:
-                return render_to_response('login.html', RequestContext(request, {'form': form,'password_is_wrong':True}))
+                return render_to_response('login.html', RequestContext(request, {'form': form, 'password_is_wrong': True, }))
         else:
-            return render_to_response('login.html', RequestContext(request, {'form': form,}))
+            return render_to_response('login.html', RequestContext(request, {'form': form, }))
+
 
 @login_required
 def logout(request):
     auth.logout(request)
     return HttpResponseRedirect("/")
+
+
+def participant_registration(request):
+    if request.method == 'GET':
+        form = RegisterForm()
+        return render_to_response('registration.html', RequestContext(request, {'form': form, }))
+    else:
+        from . import instructor_view as iv, participant_view as pv, administrator_view as av, hr_view as hv
+        form = RegisterForm(request.POST)
+        if form.is_valid():
+            username = request.POST.get('username', '')
+            password = request.POST.get('password', '')
+            passwordValidate = request.POST.get('password_again', '')
+            if Participant.objects.filter(user__username=username).exists():
+                return render_to_response('registration.html', RequestContext(request, {'form': form, 'duplicate_username': True}))
+            if password != passwordValidate:
+                return render_to_response('registration.html', RequestContext(request, {'form': form, 'password_is_wrong': True}))
+            participant_init = Participant.objects.get(user__username='0')
+            participant_init.register(username, password)
+            return render_to_response('registration.html', RequestContext(request, {'form': form, 'register_success' : True}))
+        else:
+            return render_to_response('registration.html', RequestContext(request, {'form': form, }))

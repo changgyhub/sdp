@@ -2,7 +2,7 @@ from django.db import models
 from django.db.models import Q
 from django.contrib.auth.models import User
 from django.core.exceptions import ObjectDoesNotExist
-
+from django.contrib.auth.models import Group
 class Staff(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)  # many-to-one
     last_login_type = models.CharField(max_length=20, default="Staff")
@@ -28,7 +28,11 @@ class Staff(models.Model):
         return menu
 
 class Participant(Staff):
-
+    def register(self, username, password):
+        user = User.objects.create_user(username = username, password = password)
+        g = Group.objects.get(name='Participant') 
+        g.user_set.add(user)
+        Participant.objects.create(user= user, last_login_type = 'participants')
     def viewCategories(self):
         menu = super(Participant, self).viewCategories()
         for c in Category.objects.all():
