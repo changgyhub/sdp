@@ -1,32 +1,69 @@
-<div id="accordion-container">
-  <div class="col-xs-12 col-sm-12 col-md-10 col-lg-8 portfolio-item branded logos">
-    <h2 class="page-header">General Info</h2>
-    <h4 class="panel-body">{{description}}</h4>
-    <h2 class="page-header">Category</h2>
-    <h4 class="panel-body">{{category.name}}</h4>
-    <h2 class="page-header">Instructor</h2>
-    <h4 class="panel-body">{{instructor}}</h4>
-    <h2 class="page-header">History Participants</h2>
-    <div class="panel-body"><h4>
-      {% if not has_history %}
-      <p>None</p>
-      {% endif %}
-      {% for h in history %}
-      <li class="list-group-item"><a onclick="getParticipantInfo('{{h.participant.user.pk}}', '{{h.participant}}', '{{hr.user.pk}}', '{{course_id}}')">{{h.participant}}</a>
-        <span class="pull-right">{{h.getInfo}}</span>
-      </li><br>
-      {% endfor %}
-    </h4></div>
-    <h2 class="page-header">Current Participants</h2>
-    <div class="panel-body"><h4>
-      {% if not has_current %}
-      <p>None</p>
-      {% endif %}
-      {% for c in current %}
-      <li class="list-group-item"><a onclick="getParticipantInfo('{{c.participant.user.pk}}', '{{c.participant}}', '{{hr.user.pk}}', '{{course_id}}')">{{c.participant}}</a></li><br>
-      {% endfor %}
-    </h4></div>
-    <h4 class="page-header"></h4>
-    <a class="btn btn-md btn-warning" onclick="getCategoryInfo('{{category.id}}', '{{category.name}}')">Back to Category</a>
-  </div>
-</div><!--/#accordion-container-->
+<div id="tab-container">
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-8 portfolio-item branded logos"><br>
+        <ul id="tab1" class="nav nav-tabs">
+            <li class="active"><a href="#tab1-item1" data-toggle="tab">Information</a></li>
+            <li><a href="#tab1-item2" data-toggle="tab">History</a></li>
+            <li><a href="#tab1-item3" data-toggle="tab">Current</a></li>
+        </ul>
+        <div class="tab-content">
+            <div class="tab-pane fade active in" id="tab1-item1">
+                <h2>General Information</h2>
+                <div class="panel-body">
+                    <h4>
+                        <p>Instructor: {{instructor}}</p><br>
+                        <p>Category: {{category.name}}</p><br>
+                        <p>{{description}}</p>
+                    </h4>
+                </div>
+            </div>
+            <div class="tab-pane fade" id="tab1-item2">
+              <div class="panel-body">
+                  <h3>
+                      {% if not has_history %}
+                      <p>None</p>
+                      {% endif %}
+                      {% if has_history %}
+                          {% if count_history > 10 %}
+                          <div id="" style="overflow-y:scroll; overflow-x:hidden; height:500px;">
+                          {% endif %}
+                          {% for h in history %}
+                          <!-- <li class="nav navbar-stacked"> -->
+                          <li class="list-group-item">
+                              <a onclick="getParticipantInfo('{{h.participant.user.pk}}', '{{h.participant}}', '{{hr.user.pk}}', '{{course_id}}')">{{h.participant}}</a>
+                              <span class="pull-right">{{h.getInfo}}</span>
+                          </li>
+                          {% endfor %}
+                          {% if count_history > 10 %}
+                          </div>
+                          {% endif %}
+                      {% endif %}
+                  </h3>
+              </div>
+            </div>
+            <div class="tab-pane fade" id="tab1-item3">
+              <div class="panel-body">
+                  <h3>
+                      {% if not has_current %}
+                      <p>None</p>
+                      {% endif %}
+                      {% if has_current %}
+                          {% if count_current > 10 %}
+                          <div id="" style="overflow-y:scroll; overflow-x:hidden; height:500px;">
+                          {% endif %}
+                          {% for c in current %}
+                          <li class="list-group-item">
+                              <a onclick="getParticipantInfo('{{c.participant.user.pk}}', '{{c.participant}}', '{{hr.user.pk}}', '{{course_id}}')">{{c.participant}}</a>
+                          </li>
+                          {% endfor %}
+                          {% if count_current > 10 %}
+                          </div>
+                          {% endif %}
+                      {% endif %}
+                  </h3>
+              </div>
+            </div>
+        </div>
+        <h4 class="page-header"></h4>
+        <a class="btn btn-md btn-warning" onclick="getCategoryInfo('{{category.id}}', '{{category.name}}')">Back to Category</a>
+    </div>
+</div>

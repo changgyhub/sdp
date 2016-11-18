@@ -1,45 +1,45 @@
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="">
-  <meta name="author" content="">
-  <title>AB Credit (HK) Staff Development Platform</title>
-  {% load static %}
-  <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}" />
-  <link rel="stylesheet" href="{% static 'css/font-awesome.min.css' %}" />
-  <link rel="stylesheet" href="{% static 'css/animate.min.css' %}" />
-  <link rel="stylesheet" href="{% static 'css/lightbox.css' %}" />
-  <link rel="stylesheet" href="{% static 'css/main.css' %}" />
-  <link rel="stylesheet" href="{% static 'css/responsive.css' %}" />
-    <!--[if lt IE 9]>
-	    <script src="js/html5shiv.js"></script>
-	    <script src="js/respond.min.js"></script>
-    <![endif]-->
-  <link rel="shortcut icon" href="{% static 'image/ico/favicon.ico' %}" />
-  <link rel="shortcut icon" sizes="144x144" href="{% static 'image/ico/apple-touch-icon-144-precomposed.png' %}" />
-  <link rel="shortcut icon" sizes="114x114" href="{% static 'image/ico/apple-touch-icon-114-precomposed.png' %}" />
-  <link rel="shortcut icon" sizes="72x72" href="{% static 'image/ico/apple-touch-icon-72-precomposed.png' %}" />
-  <link rel="shortcut icon" href="{% static 'image/ico/apple-touch-icon-57-precomposed.png' %}" />
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>AB Credit (HK) Staff Development Platform</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/font-awesome.min.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/animate.min.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/lightbox.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/main.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/responsive.css' %}" />
+      <!--[if lt IE 9]>
+  	    <script src="js/html5shiv.js"></script>
+  	    <script src="js/respond.min.js"></script>
+      <![endif]-->
+    <link rel="shortcut icon" href="{% static 'image/ico/favicon.ico' %}" />
+    <link rel="shortcut icon" sizes="144x144" href="{% static 'image/ico/apple-touch-icon-144-precomposed.png' %}" />
+    <link rel="shortcut icon" sizes="114x114" href="{% static 'image/ico/apple-touch-icon-114-precomposed.png' %}" />
+    <link rel="shortcut icon" sizes="72x72" href="{% static 'image/ico/apple-touch-icon-72-precomposed.png' %}" />
+    <link rel="shortcut icon" href="{% static 'image/ico/apple-touch-icon-57-precomposed.png' %}" />
 </head><!--/head-->
 
 <body>
-  <header id="header">
-    <div class="container">
-      <div class="row">
-        <div class="col-sm-12 overflow">
-          <div class="social-icons pull-right">
-            <ul class="nav nav-pills">
-              <li><a><i class="fa fa-facebook"></i></a></li>
-              <li><a><i class="fa fa-twitter"></i></a></li>
-              <li><a><i class="fa fa-google-plus"></i></a></li>
-              <li><a><i class="fa fa-dribbble"></i></a></li>
-              <li><a><i class="fa fa-linkedin"></i></a></li>
-            </ul>
-          </div>
+    <header id="header">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-12 overflow">
+                    <div class="social-icons pull-right">
+                        <ul class="nav nav-pills">
+                            <li><a><i class="fa fa-facebook"></i></a></li>
+                            <li><a><i class="fa fa-twitter"></i></a></li>
+                            <li><a><i class="fa fa-google-plus"></i></a></li>
+                            <li><a><i class="fa fa-dribbble"></i></a></li>
+                            <li><a><i class="fa fa-linkedin"></i></a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
-    </div>
         <div class="navbar navbar-inverse" role="banner">
             <div class="container">
                 <div class="navbar-header">
@@ -90,48 +90,37 @@
                 </div>
             </div>
         </div>
-   </section>
+    </section>
     <!--/#page-breadcrumb-->
 
     <section id="projects" class="padding-top">
         <div class="container">
             <div class="row">
                 <div class="col-lg-3 col-md-4 col-sm-5">
-                  <div class="col-sm-12">
-                    <div class="sidebar portfolio-sidebar">
-                        <div class="sidebar-item categories" id="category_bar">
-                            <h3>Categories</h3>
-                            <ul class="nav navbar-stacked">
-                              {% for category, num in counts.items %}
-                                <li><a onclick="getCategoryInfo('{{category.id}}', '{{category.name}}')">{{category.name}}<span class="pull-right">({{num}})</span></a></li>
-                              {% endfor %}
-                            </ul>
+                    <div class="col-sm-12">
+                        <div class="sidebar portfolio-sidebar">
+                            <div class="sidebar-item categories" id="category_bar">
+                                <h3>Categories</h3>
+                                <ul class="nav navbar-stacked">
+                                    {% for category, num in counts.items %}
+                                    <li>
+                                        <a onclick="getCategoryInfo('{{category.id}}', '{{category.name}}')">{{category.name}}
+                                            <span class="pull-right">({{num}})</span>
+                                        </a>
+                                    </li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
                         </div>
                     </div>
-                  </div>
                 </div>
                 <div class="col-lg-9 col-md-8 col-sm-7">
-                  <div class="col-sm-12">
-                    <div class="row">
-                        <h1 id="content-title">Welcome!</h1>
-                        <div id="content-main"/>
-                        <!-- <div class="portfolio-pagination">
-                            <ul class="pagination">
-                              <li><a href="#">left</a></li>
-                              <li><a href="#">1</a></li>
-                              <li><a href="#">2</a></li>
-                              <li class="active"><a href="#">3</a></li>
-                              <li><a href="#">4</a></li>
-                              <li><a href="#">5</a></li>
-                              <li><a href="#">6</a></li>
-                              <li><a href="#">7</a></li>
-                              <li><a href="#">8</a></li>
-                              <li><a href="#">9</a></li>
-                              <li><a href="#">right</a></li>
-                            </ul>
-                        </div> -->
+                    <div class="col-sm-12">
+                        <div class="row">
+                            <h1 id="content-title">Welcome!</h1>
+                            <div id="content-main"/></div>
+                        </div>
                     </div>
-                  </div>
                 </div>
             </div>
         </div>
