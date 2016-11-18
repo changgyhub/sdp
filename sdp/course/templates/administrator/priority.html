@@ -96,9 +96,10 @@
 <section id="projects" class="padding-top">
     <div class="container" id="deleteC">
         <div class="row clearfix">
-            <div class="col-md-4 column">
+            <div class="col-md-3 column">
             </div>
-            <div class="col-md-4 column" id="generate">
+            <div class="col-md-6 column" id="generate">
+                <p id="information"></p>
                 <table class="table table-hover">
                     <thead>
                     <tr>
@@ -112,6 +113,7 @@
                             type
                         </th>
                         <th>
+                            designate as Instructor
                         </th>
                     </tr>
                     </thead>
@@ -125,17 +127,17 @@
                                 {{ username }}
                             </td>
                             <td>
-
+                                {{ type|get_item:id }}
                             </td>
                             <td>
-                                <button type="button" class="btn btn-default" onclick="deleteCategory('{{ category.name }}')">designate</button>
+                                <button type="button" class="btn btn-default" onclick="designate('{{ id }}')">designate</button>
                             </td>
                         </tr>
                     {% endfor %}
                     </tbody>
                 </table>
             </div>
-            <div class="col-md-4 column">
+            <div class="col-md-3 column">
             </div>
         </div>
         <div class="row clearfix">
@@ -143,17 +145,11 @@
             </div>
             <div class="col-md-5 column">
                 <ul class="pagination">
-                    <li>
-                        <a href="#">Prev</a>
-                    </li>
                     {% for i in num %}
                         <li>
-                            <button type="button" class="btn btn-default" onclick="generate('{{ i }}')">{{ i|add:1 }}</button>
+                            <button type="button" class="btn btn-default" onclick="generate('{{ i }}', '{{ page }}')">{{ i|add:1 }}</button>
                         </li>
                     {% endfor %}
-                    <li>
-                        <a href="#">Next</a>
-                    </li>
                 </ul>
             </div>
             <div class="col-md-4 column">
@@ -200,7 +196,20 @@
             }
         })
     }
+    function designate(id, page) {
+        $.ajax({
+            url : "/administrator/priority/designate/",
+            type : "POST",
+            data : {
+                'id' : id,
+            },
 
+            success :function (response) {
+                $('#information').html(response)
+                window.setTimeout(function(){location.reload()},3000)
+            }
+        })
+    }
     function logout(){
         window.location = "/logout";
     }
