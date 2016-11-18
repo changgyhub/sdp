@@ -55,6 +55,8 @@ def course_info(request):
     has_current = CurrentEnrollment.objects.filter(course__id = course_id).exists()
     history = HistoryEnrollment.objects.filter(course__id = course_id)
     current = CurrentEnrollment.objects.filter(course__id = course_id)
+    count_history = len(history)
+    count_current = len(current)
     return render_to_response('hr/course_info.html', locals())
 
 @login_required
