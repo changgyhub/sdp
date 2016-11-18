@@ -1,5 +1,5 @@
 import datetime as dt
-
+from django.template.defaulttags import register
 from django.core.serializers import json
 from django.db.models import Q
 from ..models import Category, Staff, Course, Instructor, Module, Participant, Administrator
@@ -45,8 +45,32 @@ def priority(request):
     allUsers = []
     cnt=0
     allUsers.append(allUD)
+    type = dict()
+    page = 0
     for u in all:
         allUsers[cnt][u.pk]=u.username
+        str = ""
+        if u.groups.filter(name='Participant').exists():
+            if len(str)==0:
+                str+="Participant"
+            else:
+                str+="/Participant"
+        if u.groups.filter(name='Instructor').exists():
+            if len(str) == 0:
+                str += "Instructor"
+            else:
+                str += "/Instructor"
+        if u.groups.filter(name='HR').exists():
+            if len(str) == 0:
+                str += "HR"
+            else:
+                str += "/HR"
+        if u.groups.filter(name='Administrator').exists():
+            if len(str) == 0:
+                str += "Admin"
+            else:
+                str += "/Admin"
+        type[u.pk] = str
         if len(allUsers[cnt])==10:
             allUD = dict()
             allUsers.append(allUD)
@@ -54,6 +78,9 @@ def priority(request):
     num = range(len(allUsers))
     return render_to_response('administrator/priority.html',locals())
 
+@register.filter
+def get_item(dictionary, key):
+    return dictionary.get(key)
 @login_required
 def category_info(request):
     category_id = request.POST['category_id']
@@ -98,11 +125,46 @@ def generate_user(request):
     allUsers = []
     cnt = 0
     allUsers.append(allUD)
+    type = dict()
     for u in all:
         allUsers[cnt][u.pk] = u.username
+        str = ""
+        if u.groups.filter(name='Participant').exists():
+            if len(str) == 0:
+                str += "Participant"
+            else:
+                str += "/Participant"
+        if u.groups.filter(name='Instructor').exists():
+            if len(str) == 0:
+                str += "Instructor"
+            else:
+                str += "/Instructor"
+        if u.groups.filter(name='HR').exists():
+            if len(str) == 0:
+                str += "HR"
+            else:
+                str += "/HR"
+        if u.groups.filter(name='Administrator').exists():
+            if len(str) == 0:
+                str += "Admin"
+            else:
+                str += "/Admin"
+        type[u.pk] = str
         if len(allUsers[cnt]) == 10:
             allUD = dict()
             allUsers.append(allUD)
             cnt += 1
     allU = allUsers[i]
+    page = i
     return render_to_response('administrator/generateUsersForm.html', locals())
+
+@login_required
+def designate(request):
+    id = request.POST['id']
+    admin = Administrator.objects.get(user__pk=request.user.id)
+    user = admin.getUser(id)
+    if user.groups.filter(name='Instructor').exists():
+        return render_to_response('administrator/designate_false.html')
+    else:
+        admin.designateInstructor(user)
+        return render_to_response('administrator/designate_true.html')

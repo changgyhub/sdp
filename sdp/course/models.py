@@ -178,6 +178,14 @@ class Administrator(Staff):
     def viewAllUsers(self):
         return User.objects.all()
 
+    def getUser(self,id):
+        return User.objects.get(pk=id)
+
+    def designateInstructor(self,user):
+        g = Group.objects.get(name='Instructor')
+        g.user_set.add(user)
+        instructor = Instructor.objects.create(user=user)
+
 class HR(Staff):
     def viewCategories(self):
         menu = super(HR, self).viewCategories()

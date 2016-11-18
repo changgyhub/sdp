@@ -1,3 +1,4 @@
+<p id="information"></p>
 <table class="table table-hover">
     <thead>
     <tr>
@@ -11,6 +12,7 @@
             type
         </th>
         <th>
+            designate as Instructor
         </th>
     </tr>
     </thead>
@@ -24,10 +26,10 @@
                 {{ username }}
             </td>
             <td>
-
+                {{ type|get_item:id }}
             </td>
             <td>
-                <button type="button" class="btn btn-default" onclick="deleteCategory('{{ category.name }}')">designate</button>
+                <button type="button" class="btn btn-default" onclick="designate('{{ id }}')">designate</button>
             </td>
         </tr>
     {% endfor %}
