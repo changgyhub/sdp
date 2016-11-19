@@ -181,6 +181,13 @@ class Administrator(Staff):
     def getUser(self,id):
         return User.objects.get(pk=id)
 
+    def getUserByName(self,name):
+        try:
+            x = User.objects.get(username=name)
+            return x
+        except User.DoesNotExist:
+            x = None
+
     def designateInstructor(self,user):
         g = Group.objects.get(name='Instructor')
         g.user_set.add(user)
