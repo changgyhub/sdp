@@ -29,9 +29,16 @@
                 {{ type|get_item:id }}
             </td>
             <td>
-                <button type="button" class="btn btn-default" onclick="designate('{{ id }}')">designate</button>
+                <button type="button" class="btn btn-default" onclick="designate('{{ id }}','{{ type_now }}')">designate</button>
             </td>
         </tr>
     {% endfor %}
     </tbody>
 </table>
+<ul class="pagination">
+    {% for i in num %}
+        <li>
+            <button type="button" class="btn btn-default" onclick="generate('{{ i }}', '{{ type_now }}')">{{ i|add:1 }}</button>
+        </li>
+    {% endfor %}
+</ul>

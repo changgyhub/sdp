@@ -47,6 +47,7 @@ def priority(request):
     allUsers.append(allUD)
     type = dict()
     page = 0
+    type_now=0    #0=all, 1=instructor, 2=participant, 3=HR, 4=administrator
     for u in all:
         allUsers[cnt][u.pk]=u.username
         str = ""
@@ -117,6 +118,8 @@ def category_delete(request):
 @login_required
 def generate_user(request):
     i = request.POST['i']
+    type_now = request.POST['type_now']
+    type_now = int(type_now)
     i = int(i)
     admin = Administrator.objects.get(user__pk=request.user.id)
     all = admin.viewAllUsers()
@@ -127,7 +130,69 @@ def generate_user(request):
     allUsers.append(allUD)
     type = dict()
     for u in all:
-        allUsers[cnt][u.pk] = u.username
+        flag = 0
+        if type_now==0:
+            flag = 1
+        str = ""
+        if u.groups.filter(name='Participant').exists():
+            if type_now==2:
+                flag = 1
+            if len(str) == 0:
+                str += "Participant"
+            else:
+                str += "/Participant"
+        if u.groups.filter(name='Instructor').exists():
+            if type_now==1:
+                flag = 1
+            if len(str) == 0:
+                str += "Instructor"
+            else:
+                str += "/Instructor"
+        if u.groups.filter(name='HR').exists():
+            if type_now==3:
+                flag = 1
+            if len(str) == 0:
+                str += "HR"
+            else:
+                str += "/HR"
+        if u.groups.filter(name='Administrator').exists():
+            if type_now==4:
+                flag = 1
+            if len(str) == 0:
+                str += "Admin"
+            else:
+                str += "/Admin"
+        if flag==1:
+            type[u.pk] = str
+            allUsers[cnt][u.pk] = u.username
+        if len(allUsers[cnt]) == 10:
+            allUD = dict()
+            allUsers.append(allUD)
+            cnt += 1
+    allU = allUsers[i]
+    page = i
+    num = range(len(allUsers))
+    return render_to_response('administrator/generateUsersForm.html', locals())
+
+@login_required
+def designate(request):
+    id = request.POST['id']
+    admin = Administrator.objects.get(user__pk=request.user.id)
+    user = admin.getUser(id)
+    if user.groups.filter(name='Instructor').exists():
+        return render_to_response('administrator/designate_false.html')
+    else:
+        admin.designateInstructor(user)
+        return render_to_response('administrator/designate_true.html')
+
+@login_required
+def generate_by_name(request):
+    name = request.POST['name']
+    admin = Administrator.objects.get(user__pk=request.user.id)
+    u = admin.getUserByName(name)
+    if u != None:
+        username = u.username
+        id = u.pk
         str = ""
         if u.groups.filter(name='Participant').exists():
             if len(str) == 0:
@@ -149,22 +214,6 @@ def generate_user(request):
                 str += "Admin"
             else:
                 str += "/Admin"
-        type[u.pk] = str
-        if len(allUsers[cnt]) == 10:
-            allUD = dict()
-            allUsers.append(allUD)
-            cnt += 1
-    allU = allUsers[i]
-    page = i
-    return render_to_response('administrator/generateUsersForm.html', locals())
-
-@login_required
-def designate(request):
-    id = request.POST['id']
-    admin = Administrator.objects.get(user__pk=request.user.id)
-    user = admin.getUser(id)
-    if user.groups.filter(name='Instructor').exists():
-        return render_to_response('administrator/designate_false.html')
+        return render_to_response('administrator/generate_by_name.html',locals())
     else:
-        admin.designateInstructor(user)
-        return render_to_response('administrator/designate_true.html')
+        return render_to_response('administrator/not_found.html',locals())

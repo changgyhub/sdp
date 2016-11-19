@@ -1,0 +1,35 @@
+<p id="information"></p>
+<table class="table table-hover">
+    <thead>
+    <tr>
+        <th>
+            id
+        </th>
+        <th>
+            username
+        </th>
+        <th>
+            type
+        </th>
+        <th>
+            designate as Instructor
+        </th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td>
+            {{ id }}
+        </td>
+        <td>
+            {{ username }}
+        </td>
+        <td>
+            {{ str }}
+        </td>
+        <td>
+            <button type="button" class="btn btn-default" onclick="designate('{{ id }}')">designate</button>
+        </td>
+    </tr>
+    </tbody>
+</table>

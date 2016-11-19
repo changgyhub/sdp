@@ -81,6 +81,7 @@ urlpatterns = [
             url(r'^$', av.priority, name='administrator_priority'),
             url(r'^generate/', av.generate_user, name='administrator_generate'),
             url(r'^designate/', av.designate, name='administrator_designate'),
+            url(r'^generate_by_name/', av.generate_by_name, name='administrator_generate_by_name'),
         ])),
     ])),
 ]

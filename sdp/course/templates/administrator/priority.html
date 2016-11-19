@@ -97,6 +97,16 @@
     <div class="container" id="deleteC">
         <div class="row clearfix">
             <div class="col-md-3 column">
+                <div class="sidebar-item categories" id="category_bar">
+                    <h3>Type</h3>
+                    <ul class="nav navbar-stacked">
+                        <li><a onclick="generate('0','0')">All</a> </li>
+                        <li><a onclick="generate('0','1')">Instructor</a></li>
+                        <li><a onclick="generate('0','2')">Participant</a></li>
+                        <li><a onclick="generate('0','3')">HR</a></li>
+                        <li><a onclick="generate('0','4')">Administrator</a></li>
+                    </ul>
+                </div>
             </div>
             <div class="col-md-6 column" id="generate">
                 <p id="information"></p>
@@ -136,23 +146,22 @@
                     {% endfor %}
                     </tbody>
                 </table>
-            </div>
-            <div class="col-md-3 column">
-            </div>
-        </div>
-        <div class="row clearfix">
-            <div class="col-md-4 column">
-            </div>
-            <div class="col-md-5 column">
                 <ul class="pagination">
                     {% for i in num %}
                         <li>
-                            <button type="button" class="btn btn-default" onclick="generate('{{ i }}', '{{ page }}')">{{ i|add:1 }}</button>
+                            <button type="button" class="btn btn-default" onclick="generate('{{ i }}', '{{ type_now }}')">{{ i|add:1 }}</button>
                         </li>
                     {% endfor %}
                 </ul>
             </div>
-            <div class="col-md-4 column">
+            <div class="col-md-3 column">
+                <form class="navbar-form navbar-left">
+                    <div class="form-group">
+                        <input type="text" class="form-control" id="name"/>
+                    </div>
+                    <p></p>
+                    <button type="button" class="btn btn-default" onclick="generate_by_name()">Search by name</button>
+                </form>
             </div>
         </div>
     </div>
@@ -183,12 +192,13 @@
 
 <script>
 
-    function generate(i){
+    function generate(i,type_now){
         $.ajax({
             url : "/administrator/priority/generate/",
             type : "POST",
             data : {
                 'i' : i,
+                'type_now' : type_now,
             },
 
             success : function (response){
@@ -196,7 +206,20 @@
             }
         })
     }
-    function designate(id, page) {
+    function generate_by_name() {
+        $.ajax({
+            url : "/administrator/priority/generate_by_name/",
+            type : "POST",
+            data : {
+                'name' : $('#name').val()
+            },
+
+            success : function (response) {
+                $('#generate').html(response)
+            }
+        })
+    }
+    function designate(id) {
         $.ajax({
             url : "/administrator/priority/designate/",
             type : "POST",
