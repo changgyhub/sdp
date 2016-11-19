@@ -186,7 +186,6 @@ class Instructor(Staff):
     def deleteComponent(self, component_id):
         # assume that the course is already the instructor's
         Component.objects.get(pk=component_id).delete()
-
 class Administrator(Staff):
     def viewCategories(self):
         menu = super(Administrator, self).viewCategories()
@@ -264,6 +263,9 @@ class Module(models.Model):
     localPosition = models.IntegerField(default=0)
     def __str__(self):
         return self.name
+    def updateLocalPostion(self, newLocalPostion):
+        self.localPosition = newLocalPostion
+        self.save()
 
 class Component(models.Model):
     name = models.CharField(max_length=200)
@@ -279,7 +281,9 @@ class Component(models.Model):
     module = models.ForeignKey(Module, on_delete=models.CASCADE, default = None)  # many-to-one
     def __str__(self):
         return self.name
-
+    def updateLocalPostion(self, newLocalPostion):
+        self.localPosition = newLocalPostion
+        self.save()
 
 class Enrollment(models.Model):
     course = models.ForeignKey(Course, on_delete=models.CASCADE)  # many-to-one

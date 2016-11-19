@@ -206,10 +206,8 @@ def moveup_component(request):
     localPosition = component.localPosition
     previous_component = Component.objects.get(
         module__id=component.module.pk, localPosition=localPosition - 1)
-    component.localPosition = localPosition - 1
-    previous_component.localPosition = localPosition
-    component.save()
-    previous_component.save()
+    component.updateLocalPostion(localPosition - 1)
+    previous_component.updateLocalPostion(localPosition)
     course_id = Module.objects.get(pk=component.module.pk).course.id
     return course_info(request, course_id)
 
@@ -221,10 +219,8 @@ def movedown_component(request):
     localPosition = component.localPosition
     next_component = Component.objects.get(
         module__id=component.module.pk, localPosition=localPosition + 1)
-    component.localPosition = localPosition + 1
-    next_component.localPosition = localPosition
-    component.save()
-    next_component.save()
+    component.updateLocalPostion(localPosition + 1)
+    next_component.updateLocalPostion(localPosition)
     course_id = Module.objects.get(pk=component.module.pk).course.id
     return course_info(request, course_id)
 
@@ -236,10 +232,8 @@ def moveup_module(request):
     localPosition = module.localPosition
     previous_module = Module.objects.get(
         course__id=module.course.pk, localPosition=localPosition - 1)
-    module.localPosition = localPosition - 1
-    previous_module.localPosition = localPosition
-    module.save()
-    previous_module.save()
+    module.updateLocalPostion(localPosition - 1)
+    previous_module.updateLocalPostion(localPosition)
     return course_info(request, module.course.pk)
 
 
@@ -250,11 +244,8 @@ def movedown_module(request):
     localPosition = module.localPosition
     next_module = Module.objects.get(
         course__id=module.course.pk, localPosition=localPosition + 1)
-    print('b' * 10)
-    module.localPosition = localPosition + 1
-    next_module.localPosition = localPosition
-    module.save()
-    next_module.save()
+    module.updateLocalPostion(localPosition + 1)
+    next_module.updateLocalPostion(localPosition)
     return course_info(request, module.course.pk)
 
 @login_required
