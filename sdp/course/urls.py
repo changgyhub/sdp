@@ -46,6 +46,10 @@ urlpatterns = [
             url(r'^info/',pv.category_info, name='participant_category_info'),
         ])),
         url(r'^course/',include([
+            url(r'^finish/',include([
+                url(r'^component/', pv.finish_component, name='participant_finish_component'),
+            ])),
+            url(r'^drop/',pv.drop, name='participant_drop'),
             url(r'^enroll/',pv.enroll, name='participant_enroll'),
             url(r'^info/',pv.course_info, name='participant_course_info'),
             url(r'^image/', pv.getImage, name='participant_get_image'),

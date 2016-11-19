@@ -4,9 +4,15 @@
     <h4 class="portfolio-info">
       <ul class="list-group">
         <h2 class="page-header">Currently Enrolled</h2>
+        {% if has_current_course%}
+          <h4><li class="list-group-item"><a onclick="getCourseInfo('{{current_course.id}}', '{{current_course.name}}')">{{current_course.name}} </a>by {{current_course.instructor}}</li></h4>
+        {% endif %}
         <h2 class="page-header">Finshed Courses</h2>
+        {% for course in history_courses %}
+        <h4><li class="list-group-item"><a onclick="getCourseInfo('{{course.id}}', '{{course.name}}')">{{course.name}} </a>by {{course.instructor}}</li></h4>
+        {% endfor %}
         <h2 class="page-header">Other Courses</h2>
-        {% for course in courses %}
+        {% for course in all_courses %}
         <h4><li class="list-group-item"><a onclick="getCourseInfo('{{course.id}}', '{{course.name}}')">{{course.name}} </a>by {{course.instructor}}</li></h4>
         {% endfor %}
       </ul>

@@ -1,6 +1,6 @@
 import datetime as dt
 from django.db.models import Q
-from ..models import Category, Staff, Course, Instructor, Module, Participant, Component, CurrentEnrollment
+from ..models import Category, Staff, Course, Instructor, Module, Participant, Component, HistoryEnrollment, CurrentEnrollment
 from django.shortcuts import render_to_response,render, get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib import auth, messages
@@ -8,8 +8,7 @@ from django.template import RequestContext
 from django.forms.formsets import formset_factory
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.contrib.auth.decorators import login_required
-import collections
-import os
+import collections, os
 from . import log_view as lv
 
 @login_required
@@ -38,9 +37,17 @@ def course(request):
 @login_required
 def category_info(request):
     category_id = request.POST['category_id']
-    parent_participant = Participant.objects.get(user__pk=request.user.id)
+    participant_id = Participant.objects.get(user__pk=request.user.id).id
+    has_current_course = False
     parent_category = Category.objects.get(pk=category_id)
-    courses = Course.objects.filter(category = parent_category, is_open = True)
+    if CurrentEnrollment.objects.filter(participant__id = participant_id, course__category = parent_category, course__is_open = True).exists():
+        current_course = CurrentEnrollment.objects.get(participant__id = participant_id, course__category = parent_category, course__is_open = True).course
+        has_current_course = True
+    if HistoryEnrollment.objects.filter(participant__id = participant_id, course__category = parent_category, course__is_open = True).exists():
+        history_courses = []
+        for he in HistoryEnrollment.objects.filter(participant__id = participant_id, course__category = parent_category, course__is_open = True):
+            history_courses.append(he.course)
+    all_courses = Course.objects.filter(category = parent_category, is_open = True)
     return render_to_response('participant/category_info.html', locals())
 
 @login_required
@@ -49,6 +56,7 @@ def course_info(request):
     participant = Participant.objects.get(user__pk=request.user.id)
     menu = participant.viewCourse(course_id)
     is_enrolled = menu['is_enrolled']
+    has_finished = menu['has_finished']
     title = menu['name']
     category = menu['category']
     instructor = menu['instructor']
@@ -56,9 +64,13 @@ def course_info(request):
     if is_enrolled:
         enrollment = CurrentEnrollment.objects.get(participant=participant)
         modules = collections.OrderedDict(sorted(menu['module'].items(), key=lambda x: x[0].localPosition))
-        percentage = 100 * (enrollment.current_model_num - 1) *(1/len(modules))
-                    # + (enrollment.current_component_num-1)/len(modules[enrollment.current_model_num - 1])) \
-
+        modules_total_cnt = len(modules)
+        component_total_cnt = len(list(modules.items())[enrollment.current_module_num-1][1])
+        percentage = 100 * (enrollment.current_module_num - 1 + \
+            (enrollment.current_component_num-1)/component_total_cnt) *(1/modules_total_cnt)
+    if has_finished:
+        modules = collections.OrderedDict(sorted(menu['module'].items(), key=lambda x: x[0].localPosition))
+        percentage = 100
     return render_to_response('participant/course_info.html', locals())
 
 @login_required
@@ -70,6 +82,12 @@ def enroll(request):
     else:
         # TODO: make it more like a warning
         return HttpResponse("You cannot enroll in two courses at the same time.")
+
+@login_required
+def drop(request):
+    participant = Participant.objects.get(user__pk=request.user.id)
+    participant.drop()
+    return course_info(request)
 
 @login_required
 def file_download(request):
@@ -87,3 +105,29 @@ def getImage(request):
     path = os.path.abspath(os.path.join(os.path.dirname( __file__ ), '..','..', path))
     image_data = open(path, "rb").read()
     return HttpResponse(image_data, content_type="image/png")
+
+@login_required
+def finish_component(request):
+    enrollment = CurrentEnrollment.objects.get(pk=request.POST['enrollment_id'])
+    current_module_num = int(request.POST['current_module_num'])
+    current_component_num = int(request.POST['current_component_num'])
+    total_module_num = int(request.POST['total_module_num'])
+    total_component_num = int(request.POST['total_component_num'])
+
+    end_flag = False
+
+    if current_component_num < total_component_num:
+        enrollment.current_component_num = enrollment.current_component_num + 1
+    elif current_module_num < total_module_num:
+        enrollment.current_module_num = enrollment.current_module_num + 1
+        enrollment.current_component_num = 1
+    else:
+        end_flag = True
+        enrollment.current_component_num = enrollment.current_component_num + 1
+    enrollment.save()
+
+    if end_flag:
+        participant = Participant.objects.get(user__pk=request.user.id)
+        participant.finishCourse();
+
+    return course_info(request)

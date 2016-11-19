@@ -3,6 +3,8 @@ from django.db.models import Q
 from django.contrib.auth.models import User
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth.models import Group
+from datetime import date
+
 class Staff(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)  # many-to-one
     last_login_type = models.CharField(max_length=20, default="Staff")
@@ -41,10 +43,11 @@ class Participant(Staff):
 
     def viewCourse(self, course_id):
         # TODO: implement more in next iteration
-        try:
+        if CurrentEnrollment.objects.filter(participant=self, course__id = course_id).exists():
             currrentEnrollment = CurrentEnrollment.objects.get(participant=self, course__id = course_id)
             menu = super(Participant, self).viewCourse(course_id)
             menu['is_enrolled'] = True
+            menu['has_finished'] = False
             menu['module'] = dict()
             module_list = list()
             for module in Module.objects.filter(course__id = course_id):
@@ -55,9 +58,25 @@ class Participant(Staff):
                     if component.module.id == module.id:
                         menu['module'][module].append(component)
             return menu
-        except ObjectDoesNotExist:
+        elif HistoryEnrollment.objects.filter(participant=self, course__id = course_id).exists():
+            historyEnrollment = HistoryEnrollment.objects.get(participant=self, course__id = course_id)
             menu = super(Participant, self).viewCourse(course_id)
             menu['is_enrolled'] = False
+            menu['has_finished'] = True
+            menu['module'] = dict()
+            module_list = list()
+            for module in Module.objects.filter(course__id = course_id):
+                menu['module'][module] = list()
+                module_list.append(module)
+            for component in Component.objects.all():
+                for module in module_list:
+                    if component.module.id == module.id:
+                        menu['module'][module].append(component)
+            return menu
+        else:
+            menu = super(Participant, self).viewCourse(course_id)
+            menu['is_enrolled'] = False
+            menu['has_finished'] = False
             return menu
 
 
@@ -81,6 +100,17 @@ class Participant(Staff):
             CurrentEnrollment.objects.create(course=course, participant=self)
             return True
 
+    def drop(self):
+        if CurrentEnrollment.objects.filter(participant__id = self.pk).exists():
+            CurrentEnrollment.objects.get(participant__id = self.pk).delete()
+            return True
+        else:
+            return False
+
+    def finishCourse(self):
+        current = CurrentEnrollment.objects.get(participant__id = self.pk)
+        HistoryEnrollment.objects.create(course=current.course, participant=self, date_of_completion=date.today())
+        current.delete()
 
 class Instructor(Staff):
 
@@ -277,7 +307,7 @@ class HistoryEnrollment(Enrollment):
 
 
 class CurrentEnrollment(Enrollment):
-    current_model_num = models.IntegerField(default=1)
+    current_module_num = models.IntegerField(default=1)
     current_component_num = models.IntegerField(default=1)
     def getInfo(self):
         return str(self.current_model_num) + '.' + str(self.current_component_num)
