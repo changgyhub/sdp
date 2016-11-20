@@ -52,7 +52,7 @@ def category_info(request):
 
 
 @login_required
-def course_info(request, parent_course_id=None):
+def course_info(request, parent_course_id=None, success = None):
     if parent_course_id == None:
         course_id = request.POST['course_id']
     else:  # the case of finish creating component
@@ -64,6 +64,7 @@ def course_info(request, parent_course_id=None):
     category = menu['category']
     instructor = menu['instructor']
     description = menu['description']
+    success = success
     if 'module' in menu:
         is_mine = True
         modules = collections.OrderedDict(sorted(menu['module'].items(), key=lambda x: x[0].localPosition))
@@ -156,9 +157,8 @@ def delete_component(request):
 def open_course(request):
     course_id = request.POST['course_id']
     instructor = Instructor.objects.get(user__pk=request.user.id)
-    instructor.openCourse(course_id)
-    # TODO: need to change if there is any problem opening course
-    return course_info(request, course_id)
+    success = instructor.openCourse(course_id)
+    return course_info(request, course_id, success)
 
 
 @login_required

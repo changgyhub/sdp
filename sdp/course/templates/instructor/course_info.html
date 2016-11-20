@@ -1,17 +1,19 @@
 
 <div id="accordion-container">
     <h2 class="page-header">General Info&nbsp;
-      {% if is_mine and not is_open %}
-          <a class="btn btn-sm btn-success" onclick="createModule('{{course_id}}','{{title}}')">Add Module</a>
-      {% endif %}
-      {% if not is_open %}
-      <a id='registrationButton' class="btn btn-sm btn-info" style="color:#FFFFFF" onclick="openCourse('{{course_id}}')">Open Registration</a>
-      {% endif %}
-      {% if is_open %}
-      <a class="btn btn-sm btn-info" style="color:#FFFFFF" onclick="closeCourse('{{course_id}}')">Close Registration</a>
+      {% if is_mine%}
+        {% if not is_open %}
+            <a class="btn btn-sm btn-success" onclick="createModule('{{course_id}}','{{title}}')">Add Module</a>
+        {% endif %}
+        {% if not is_open %}
+        <a id='registrationButton' class="btn btn-sm btn-info" style="color:#FFFFFF" onclick="openCourse('{{course_id}}')">Open Registration</a>
+        {% endif %}
+        {% if is_open %}
+        <a class="btn btn-sm btn-info" style="color:#FFFFFF" onclick="closeCourse('{{course_id}}')">Close Registration</a>
+        {% endif %}
       {% endif %}
     </h2>
-
+    
     <h5 class="panel-body">{{description}}</h5>
     {% if is_mine %}
     <div id="accordion">
@@ -70,3 +72,8 @@
     {% endif %}
 </div><!--/#accordion-container-->
 <a class="btn btn-sm btn-warning" onclick="getCategoryInfo('{{category.id}}', '{{category.name}}')">< Back</a>
+{% if not success and success != None %}
+<script>
+  alert("open course failed!\nPlease check if the course has module\nand every module has valid components")
+</script>
+{% endif %} 

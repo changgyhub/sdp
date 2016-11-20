@@ -148,10 +148,18 @@ class Instructor(Staff):
 
 
     def openCourse(self, course_id):
+        # checking if opening course is valid, which means that a course must have at least 
+        # one module and every module must have at least one component
+        if Module.objects.filter(course__pk = course_id).count() == 0:
+            return False
+        for module in  Module.objects.filter(course__pk = course_id):
+            if Component.objects.filter(module__pk = module.id).count() == 0:
+                return False
         course = Course.objects.get(pk=course_id)
         if course.instructor.id == self.pk:
             course.is_open = True;
             course.save()
+            return True
         else:
             print ("TODO")
             # TODO: fail to open a course
