@@ -66,8 +66,8 @@ def course_info(request):
         modules = collections.OrderedDict(sorted(menu['module'].items(), key=lambda x: x[0].localPosition))
         modules_total_cnt = len(modules)
         component_total_cnt = len(list(modules.items())[enrollment.current_module_num-1][1])
-        percentage = 100 * (enrollment.current_module_num - 1 + \
-            (enrollment.current_component_num-1)/component_total_cnt) *(1/modules_total_cnt)
+        percentage = int(100 * (enrollment.current_module_num - 1 + \
+            (enrollment.current_component_num-1)/component_total_cnt) *(1/modules_total_cnt))
     if has_finished:
         modules = collections.OrderedDict(sorted(menu['module'].items(), key=lambda x: x[0].localPosition))
         percentage = 100
