@@ -12,7 +12,14 @@
                     <h4>
                         <p>Instructor: {{instructor}}</p><br>
                         <p>Category: {{category.name}}</p><br>
-                        <p>{{description}}</p>
+                        <p>Status:
+                            {% if is_open %}
+                            Open
+                            {% else %}
+                            Closed
+                            {% endif %}
+                        </p><br>
+                        <p>Description: {{description}}</p>
                     </h4>
                 </div>
             </div>
@@ -21,8 +28,7 @@
                     <h3>
                         {% if not has_history %}
                         <p>This course has no current participant.</p>
-                        {% endif %}
-                        {% if has_history %}
+                        {% else %}
                             {% if count_history > 10 %}
                             <div id="" style="overflow-y:scroll; overflow-x:hidden; height:500px;">
                             {% endif %}
@@ -44,8 +50,7 @@
                     <h3>
                         {% if not has_current %}
                         <p>This course has no history participant.</p>
-                        {% endif %}
-                        {% if has_current %}
+                        {% else %}
                             {% if count_current > 10 %}
                             <div id="" style="overflow-y:scroll; overflow-x:hidden; height:500px;">
                             {% endif %}
