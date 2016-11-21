@@ -10,19 +10,33 @@
         <h2 class="page-header">Current Enrollment</h2>
         {% if not current %}
         <div class="panel-body">
-            None
+            This participant has no current enrollment.
         </div>
         {% endif %}
         {% if current %}
-        <div class="panel-body">
-            {{current}} by {{current.instructor}}
+        <div class="panel-group" id="accordion">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4 class="panel-title">
+                        <a data-toggle="collapse" data-parent="#accordion" href=#{{current}}>{{current}}</a>
+                    </h4>
+                </div>
+                <div id={{current}} class="panel-collapse collapse">
+                    <div class="panel-body">
+                        <ul>
+                            <p>Instructor: {{current.instructor}}</p>
+                            <p>{{percentage}} Completed</p>
+                        </ul>
+                    </div>
+                </div>
+            </div>
         </div>
         {% endif %}
         <div id="accordion-container">
             <h2 class="page-header">History Enrollment</h2>
             {% if not history %}
             <div class="panel-body">
-                None
+                This participant has no history enrollment.
             </div>
             {% endif %}
             {% if history %}

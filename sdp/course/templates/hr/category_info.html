@@ -5,7 +5,7 @@
             {% for course in courses %}
             <li class="list-group-item">
                 <a onclick="getCourseInfo('{{course.id}}', '{{course.name}}')">{{course.name}}</a>
-                <span class="pull-right">by {{course.instructor}}</span>
+                by {{course.instructor}}
             </li><br>
             {% endfor %}
         </h4>
