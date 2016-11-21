@@ -1,6 +1,6 @@
 # Staff Development Platform
 
-A fast, elegant and robust course learning platform designed for Schools and Companies.
+A small, fast and elegant course learning platform designed for Schools and Companies.
 
 ### Designer
 [Gao Chang, Ellison](http://hk.linkedin.com/in/irsisyphus "linkedin")<br>
