@@ -28,7 +28,7 @@
 
 <body>
 	<header id="header">
-        <div class="container">
+        <!-- <div class="container">
             <div class="row">
                 <div class="col-sm-12 overflow">
                    <div class="social-icons pull-right">
@@ -42,7 +42,7 @@
                     </div>
                 </div>
              </div>
-        </div>
+        </div> -->
         <div class="navbar navbar-inverse" role="banner">
             <div class="container">
                 <div class="navbar-header">
@@ -53,7 +53,7 @@
                         <span class="icon-bar"></span>
                     </button>
 
-                    <a class="navbar-brand">
+                    <a class="navbar-brand" href="/">
                     	<h1 style="font-size: 300%; color: #cf916f">AB Credit SDP</h1>
                     </a>
 
@@ -65,14 +65,14 @@
                         <li><a onclick="logout()">Logout</a></li>
                     </ul>
                 </div>
-                <div class="search">
+                <!-- <div class="search">
                     <form role="form">
                         <i class="fa fa-search"></i>
                         <div class="field-toggle">
                             <input type="text" class="search-form" autocomplete="off" placeholder="Search">
                         </div>
                     </form>
-                </div>
+                </div> -->
             </div>
         </div>
     </header>
@@ -83,8 +83,8 @@
             <div class="main-slider">
                 <div class="slide-text">
                     <h1>{{title}}</h1>
-                    <p>{{content}}</p>
-                    <a class="btn btn-common">A BUTTON</a>
+                    <!-- <p>{{content}}</p> -->
+                    <a class="btn btn-common" href="participant/course/">GO DIRECTLY TO COURSE</a>
                 </div>
                 <img src="{% static 'image/home/slider/slide1/house.png' %}" class="img-responsive slider-house" alt="slider image">
                 <img src="{% static 'image/home/slider/slide1/circle1.png' %}" class="slider-circle1" alt="slider image">
