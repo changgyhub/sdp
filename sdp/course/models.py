@@ -192,8 +192,13 @@ class Instructor(Staff):
                     content_file = component_content, content_type = component_content_type, module = parent_module, localPosition = localPosition)
             return component
     def deleteComponent(self, component_id):
+        # firstly change all components below itself, make their localPosition-1
+        component = Component.objects.get(pk=component_id)
+        for component in Component.objects.filter(module__id = component.module.id, localPosition__gt=component.localPosition):
+            component.localPosition -= 1
+            component.save()
         # assume that the course is already the instructor's
-        Component.objects.get(pk=component_id).delete()
+        component.delete()
 class Administrator(Staff):
     def viewCategories(self):
         menu = super(Administrator, self).viewCategories()
