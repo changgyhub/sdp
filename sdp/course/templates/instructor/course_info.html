@@ -20,15 +20,15 @@
       {% for module, components in modules.items %}
           <h2 class="page-header" style="color: #686868;">
               Module {{ forloop.counter }}: {{module.name}}&nbsp;&nbsp;
-              <a data-toggle="collapse" data-parent="#accordion" href="#collapse{{module.id}}">Collapse</a>&nbsp;
+                <a data-toggle="collapse" data-parent="#accordion" href="#collapse{{module.id}}">Collapse</a>&nbsp;
               {% if not is_open %}
                 <a class="btn btn-sm btn-info" style="color:#FFFFFF" onclick="createComponent('{{module.id}}','{{module.name}}')">Add Component</a>
-                <div align="right">
+                <div align="right" id="right-indent">
                 {% if module.localPosition != 1%}
                   <a class="btn btn-md" onclick="moveUpModule('{{module.id}}')"><i class="glyphicon glyphicon-arrow-up"></i></a>
                 {% endif %}
                 {% if module.localPosition != modules|length %}
-                <a class="btn btn-md" onclick="moveDownModule('{{module.id}}')"><i class="glyphicon glyphicon-arrow-down"></i></a></h4>
+                <a class="btn btn-md" onclick="moveDownModule('{{module.id}}')"><i class="glyphicon glyphicon-arrow-down"></i></a>
                 {% endif %}
                 </div>
                 
@@ -39,24 +39,22 @@
             {% for component in components|dictsort:"localPosition"%}
               <h4 class="page-header" style="color: #686868;">
                 Component {{forloop.parentloop.counter}}.{{ forloop.counter }}: {{component.name}}
-                {% if component.content_type != '2' %}
+                {% if component.content_type == '1' %}
                 <a class="btn btn-md" href="/instructor/component/download/?component_id={{component.id}}"><i class="glyphicon glyphicon-save"></i></a>
                 {% endif %}
               {% if not is_open %}
                 <a class="btn btn-sm btn-info" style="color:#FFFFFF" onclick="deleteComponent('{{course_id}}','{{component.id}}')">Delete</a>
-                <div align="right">
                 {% if component.localPosition != 1%}
                 <a class="btn btn-md" onclick="moveUpComponent('{{component.id}}')"><i class="glyphicon glyphicon-arrow-up"></i></a>
                 {% endif %}
                 {% if component.localPosition != components|length %}
                 <a class="btn btn-md" onclick="moveDownComponent('{{component.id}}')"><i class="glyphicon glyphicon-arrow-down"></i></a></h4>
                 {% endif %}
-                </div>
               {% endif %}
               <h5 class="panel-body">
                 {% if component.content_type == '3' %}
                 <!-- we load the image -->
-                <a><img src="/instructor/course/image/?path={{ component.content_file.url }}" alt="Not found" width="400"></img></a><p/>
+                <a href="/instructor/course/image/?path={{ component.content_file.url }}" target="_blank"><img src="/instructor/course/image/?path={{ component.content_file.url }}" alt="Not found" width="400"></img></a><p/>
                 {% endif %}
                 {{component.content}}<p/>
               </h5>
