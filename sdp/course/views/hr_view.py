@@ -52,12 +52,22 @@ def course_info(request):
     instructor = menu['instructor']
     description = menu['description']
     is_open = menu['is_open']
-    has_history = HistoryEnrollment.objects.filter(course__id = course_id).exists()
-    has_current = CurrentEnrollment.objects.filter(course__id = course_id).exists()
     history = HistoryEnrollment.objects.filter(course__id = course_id)
     current = CurrentEnrollment.objects.filter(course__id = course_id)
-    count_history = len(history)
-    count_current = len(current)
+    if history:
+        count_history = len(history)
+        historyList = []
+        for h in history:
+            temp = [h.participant.user.first_name + " " + h.participant.user.last_name, h]
+            historyList.append(temp)
+        historyList.sort(key=getKey)
+    if current:
+        count_current = len(current)
+        currentList = []
+        for c in current:
+            temp = [c.participant.user.first_name + " " + c.participant.user.last_name, c]
+            currentList.append(temp)
+        currentList.sort(key=getKey)
     return render_to_response('hr/course_info.html', locals())
 
 @login_required
