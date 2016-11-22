@@ -123,15 +123,22 @@ def participant_registration(request):
         from . import instructor_view as iv, participant_view as pv, administrator_view as av, hr_view as hv
         form = RegisterForm(request.POST)
         if form.is_valid():
-            username = request.POST.get('username', '')
-            password = request.POST.get('password', '')
+            username = request.POST.get('username', ' ')
+            password = request.POST.get('password', ' ')
+            first_name = request.POST.get('first_name', 'not set')
+            last_name = request.POST.get('last_name', 'not set')
+            if first_name == ' ':
+                first_name = 'not set'
+            if last_name == ' ':
+                last_name = 'not set'
             passwordValidate = request.POST.get('password_again', '')
             if Participant.objects.filter(user__username=username).exists():
                 return render_to_response('registration.html', RequestContext(request, {'form': form, 'duplicate_username': True}))
             if password != passwordValidate:
                 return render_to_response('registration.html', RequestContext(request, {'form': form, 'password_is_wrong': True}))
             participant_init = Participant.objects.get(user__username='0')
-            participant_init.register(username, password)
+            
+            participant_init.register(username, password, first_name=first_name, last_name = last_name)
             return render_to_response('registration.html', RequestContext(request, {'form': form, 'register_success' : True}))
         else:
             return render_to_response('registration.html', RequestContext(request, {'form': form, }))

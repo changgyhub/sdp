@@ -30,8 +30,9 @@ class Staff(models.Model):
         return menu
 
 class Participant(Staff):
-    def register(self, username, password):
-        user = User.objects.create_user(username = username, password = password)
+    def register(self, username, password,first_name, last_name):
+        user = User.objects.create_user(username = username, password = password
+            , first_name = first_name, last_name = last_name)
         g = Group.objects.get(name='Participant')
         g.user_set.add(user)
         Participant.objects.create(user= user, last_login_type = 'participants')

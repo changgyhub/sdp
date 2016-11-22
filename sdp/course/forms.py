@@ -48,9 +48,29 @@ class RegisterForm(forms.Form):
     )
     password_again = forms.CharField(
         required=True,
-        label="PasswordAgain",
-        error_messages={'required': 'Please reinput password'},
+        label="PasswordConfirm",
+        error_messages={'required': 'Please confirm your password'},
         widget=forms.PasswordInput(
+            attrs={
+            }
+        ),
+    )
+    
+    first_name = forms.CharField(
+        required=False,
+        label="FirstName",
+        # error_messages={'required': 'Please reinput password'},
+        widget=forms.TextInput(
+            attrs={
+            }
+        ),
+    )
+    
+    last_name = forms.CharField(
+        required=False,
+        label="LastName",
+        # error_messages={'required': 'Please reinput password'},
+        widget=forms.TextInput(
             attrs={
             }
         ),
