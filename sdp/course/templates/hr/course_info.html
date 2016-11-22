@@ -26,13 +26,13 @@
             <div class="tab-pane fade" id="tab1-item2">
                 <div class="panel-body">
                     <h3>
-                        {% if not has_history %}
+                        {% if not history %}
                         <p>This course has no current participant.</p>
                         {% else %}
                             {% if count_history > 10 %}
                             <div id="" style="overflow-y:scroll; overflow-x:hidden; height:500px;">
                             {% endif %}
-                            {% for h in history %}
+                            {% for k, h in historyList %}
                             <li class="list-group-item">
                                 <a onclick="getParticipantInfo('{{h.participant.user.pk}}', '{{h.participant}}', '{{hr.user.pk}}', '{{course_id}}')">{{h.participant}}</a>
                                 <span class="pull-right">{{h.getInfo}}</span>
@@ -48,13 +48,13 @@
             <div class="tab-pane fade" id="tab1-item3">
                 <div class="panel-body">
                     <h3>
-                        {% if not has_current %}
+                        {% if not current %}
                         <p>This course has no history participant.</p>
                         {% else %}
                             {% if count_current > 10 %}
                             <div id="" style="overflow-y:scroll; overflow-x:hidden; height:500px;">
                             {% endif %}
-                            {% for c in current %}
+                            {% for k, c in currentList %}
                             <li class="list-group-item">
                                 <a onclick="getParticipantInfo('{{c.participant.user.pk}}', '{{c.participant}}', '{{hr.user.pk}}', '{{course_id}}')">{{c.participant}}</a>
                             </li>
