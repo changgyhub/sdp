@@ -72,7 +72,7 @@ def course_info(request):
     return render_to_response('hr/course_info.html', locals())
 
 @login_required
-def participant(request):
+def getAllParticipants(request):
     hr = HR.objects.get(user__pk=request.user.id)
     participants = hr.viewAllParticipants()
     keylist = []
