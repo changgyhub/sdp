@@ -1,3 +1,4 @@
+
 from django.conf.urls import include, url
 from .views import log_view as lv, instructor_view as iv, participant_view as pv, hr_view as hv, administrator_view as av
 urlpatterns = [
@@ -70,7 +71,7 @@ urlpatterns = [
         ])),
         url(r'^participant/',include([
             url(r'^info/',hv.participant_info, name='hr_participant_info'),
-            url(r'^$', hv.participant, name='hr_participant'),
+            url(r'^$', hv.getAllParticipants, name='hr_allParticipants'),
         ])),
     ])),
 
