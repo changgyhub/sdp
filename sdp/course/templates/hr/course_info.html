@@ -24,47 +24,78 @@
                 </div>
             </div>
             <div class="tab-pane fade" id="tab1-item2">
+                <h2>History Participants</h2>
                 <div class="panel-body">
-                    <h3>
-                        {% if not history %}
+                    {% if not history %}
                         <p>This course has no history participant.</p>
-                        {% else %}
-                            {% if count_history > 10 %}
+                    {% else %}
+                        {% if count_history > 10 %}
                             <div id="" style="overflow-y:scroll; overflow-x:hidden; height:500px;">
-                            {% endif %}
-                            {% for k, h in historyList %}
-                            <li class="list-group-item">
-                                <a onclick="getParticipantInfo('{{h.participant.user.pk}}', '{{h.participant}}', '{{hr.user.pk}}', '{{course_id}}')">{{h.participant}}</a>
-                                <span class="pull-right">{{h.getInfo}}</span>
-                            </li>
-                            {% endfor %}
-                            {% if count_history > 10 %}
-                            </div>
-                            {% endif %}
                         {% endif %}
-                    </h3>
+                        <div class="panel-group" id="accordion">
+                            {% for k, h in historyList %}
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h4 class="panel-title">
+                                        <a data-toggle="collapse" data-parent="#accordion" href=#{{h.participant.user.id}}>{{k}}</a>
+                                    </h4>
+                                </div>
+                                <div id={{h.participant.user.id}} class="panel-collapse collapse">
+                                    <div class="panel-body">
+                                        <ul>
+                                            Date of Completion: {{h.date_of_completion}}
+                                            <span class="pull-right">
+                                                <a class="btn btn-md btn-warning" onclick="getParticipantInfo('{{h.participant.user.pk}}', '{{h.participant}}', '{{hr.user.pk}}', '{{course_id}}')">More</a>
+                                            </span>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                        {% if count_history > 10 %}
+                            </div>
+                        {% endif %}
+                    {% endif %}
                 </div>
             </div>
             <div class="tab-pane fade" id="tab1-item3">
+                <h2>Current Participants</h2>
+                <div id="accordion-container">
                 <div class="panel-body">
-                    <h3>
-                        {% if not current %}
+                    {% if not current %}
                         <p>This course has no current participant.</p>
-                        {% else %}
-                            {% if count_current > 10 %}
+                    {% else %}
+                        {% if count_current > 10 %}
                             <div id="" style="overflow-y:scroll; overflow-x:hidden; height:500px;">
-                            {% endif %}
-                            {% for k, c in currentList %}
-                            <li class="list-group-item">
-                                <a onclick="getParticipantInfo('{{c.participant.user.pk}}', '{{c.participant}}', '{{hr.user.pk}}', '{{course_id}}')">{{c.participant}}</a>
-                            </li>
-                            {% endfor %}
-                            {% if count_current > 10 %}
-                            </div>
-                            {% endif %}
                         {% endif %}
-                    </h3>
+                        <div class="panel-group" id="accordion">
+                            {% for k, c, progress in currentList %}
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        <h4 class="panel-title">
+                                            <a data-toggle="collapse" data-parent="#accordion" href=#{{c.participant.user.id}}>{{k}}</a>
+                                        </h4>
+                                    </div>
+                                    <div id={{c.participant.user.id}} class="panel-collapse collapse">
+                                        <div class="panel-body">
+                                            <ul>
+                                                {{progress}}% Completed.
+                                                <span class="pull-right">
+                                                    <a class="btn btn-md btn-warning" onclick="getParticipantInfo('{{c.participant.user.pk}}', '{{c.participant}}', '{{hr.user.pk}}', '{{course_id}}')">More</a>
+                                                </span>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                        {% if count_current > 10 %}
+                            </div>
+                        {% endif %}
+                    {% endif %}
                 </div>
+              </div>
             </div>
         </div>
         <h4 class="page-header"></h4>
