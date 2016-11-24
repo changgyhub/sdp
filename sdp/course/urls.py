@@ -2,7 +2,7 @@ from django.conf.urls import include, url
 from .views import log_view as lv, instructor_view as iv, participant_view as pv, hr_view as hv, administrator_view as av
 urlpatterns = [
     url(r'^$', lv.login, name='login'),
-    url(r'registration/', lv.participant_registration, name='participant_registration'),
+    url(r'^registration/', lv.participant_registration, name='participant_registration'),
     url(r'^logout/', lv.logout, name='logout'),
     url(r'^instructor/',include([
         url(r'^category/',include([

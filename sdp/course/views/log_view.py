@@ -1,12 +1,11 @@
-from ..forms import LoginForm, RegisterForm
 from django.shortcuts import render_to_response, render, get_object_or_404, redirect
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib import auth, messages
 from django.template import RequestContext
-from django.forms.formsets import formset_factory
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.contrib.auth.decorators import login_required
 from ..models import Staff, Course, Instructor, Participant, Administrator, HR
+from . import instructor_view as iv, participant_view as pv, administrator_view as av, hr_view as hv
 #from django.views.decorators.csrf import csrf_protect, csrf_exempt
 #from django.template.context_processors import csrf
 
@@ -46,7 +45,6 @@ def assignType(id, login_type):
 
 
 def login(request):
-    from . import instructor_view as iv, participant_view as pv, administrator_view as av, hr_view as hv
     if request.method == 'GET':
         if request.user.is_authenticated():
             last_login_type = typeSelect(request.user.id)
@@ -61,52 +59,44 @@ def login(request):
             else:
                 return logout(request)
         else:
-            form = LoginForm()
-            return render_to_response('login.html', RequestContext(request, {'form': form, }))
+            return render_to_response('login.html')
     else:
-        form = LoginForm(request.POST)
-        if form.is_valid():
-            username = request.POST.get('username', '')
-            password = request.POST.get('password', '')
-            staff_type = request.POST.get('staff_type')
-            user = auth.authenticate(username=username, password=password)
-            if user is not None and user.is_active:
-                if staff_type == "1":
-                    print('here')
-                    auth.login(request, user)
-                    if user.groups.filter(name='Participant').exists():
-                        return pv.index(request)
-                    else:
-                        # TODO: wrong access
-                        return logout(request)
-                elif staff_type == '2':
-                    auth.login(request, user)
-                    if user.groups.filter(name='Instructor').exists():
-                        return iv.index(request)
-                    else:
-                        # TODO: wrong access
-                        return logout(request)
-                elif staff_type == '3':
-                    auth.login(request, user)
-                    if user.groups.filter(name='HR').exists():
-                        return hv.index(request)
-                    else:
-                        # TODO: wrong access
-                        return logout(request)
-                elif staff_type == '4':
-                    auth.login(request, user)
-                    if user.groups.filter(name='Administrator').exists():
-                        return av.index(request)
-                    else:
-                        # TODO: wrong access
-                        return logout(request)
+        username = request.POST['username']
+        password = request.POST['password']
+        staff_type = request.POST['staff_type']
+        user = auth.authenticate(username=username, password=password)
+        if user is not None and user.is_active:
+            if staff_type == "1":
+                auth.login(request, user)
+                if user.groups.filter(name='Participant').exists():
+                    return pv.index(request)
                 else:
-                    # TODO: login for other users
-                    return render_to_response('login.html', RequestContext(request, {'form': form, }))
-            else:
-                return render_to_response('login.html', RequestContext(request, {'form': form, 'password_is_wrong': True, }))
+                    # TODO: wrong access
+                    return logout(request)
+            elif staff_type == '2':
+                auth.login(request, user)
+                if user.groups.filter(name='Instructor').exists():
+                    return iv.index(request)
+                else:
+                    # TODO: wrong access
+                    return logout(request)
+            elif staff_type == '3':
+                auth.login(request, user)
+                if user.groups.filter(name='HR').exists():
+                    return hv.index(request)
+                else:
+                    # TODO: wrong access
+                    return logout(request)
+            elif staff_type == '4':
+                auth.login(request, user)
+                if user.groups.filter(name='Administrator').exists():
+                    return av.index(request)
+                else:
+                    # TODO: wrong access
+                    return logout(request)
         else:
-            return render_to_response('login.html', RequestContext(request, {'form': form, }))
+            # TODO: password wrong
+            return render_to_response('login.html')
 
 
 @login_required
@@ -114,31 +104,19 @@ def logout(request):
     auth.logout(request)
     return HttpResponseRedirect("/")
 
-
 def participant_registration(request):
-    if request.method == 'GET':
-        form = RegisterForm()
-        return render_to_response('registration.html', RequestContext(request, {'form': form, }))
-    else:
-        from . import instructor_view as iv, participant_view as pv, administrator_view as av, hr_view as hv
-        form = RegisterForm(request.POST)
-        if form.is_valid():
-            username = request.POST.get('username', ' ')
-            password = request.POST.get('password', ' ')
-            first_name = request.POST.get('first_name', 'not set')
-            last_name = request.POST.get('last_name', 'not set')
-            if first_name == ' ':
-                first_name = 'not set'
-            if last_name == ' ':
-                last_name = 'not set'
-            passwordValidate = request.POST.get('password_again', '')
-            if Participant.objects.filter(user__username=username).exists():
-                return render_to_response('registration.html', RequestContext(request, {'form': form, 'duplicate_username': True}))
-            if password != passwordValidate:
-                return render_to_response('registration.html', RequestContext(request, {'form': form, 'password_is_wrong': True}))
-            participant_init = Participant.objects.get(user__username='0')
-            
-            participant_init.register(username, password, first_name=first_name, last_name = last_name)
-            return render_to_response('registration.html', RequestContext(request, {'form': form, 'register_success' : True}))
-        else:
-            return render_to_response('registration.html', RequestContext(request, {'form': form, }))
+    username = request.POST['username']
+    password = request.POST['password']
+    firstname = request.POST['firstname']
+    lastname = request.POST['lastname']
+    # if Participant.objects.filter(user__username=username).exists():
+    #     return render_to_response('registration.html', RequestContext(request, {'form': form, 'duplicate_username': True}))
+    # if password != passwordValidate:
+    #     return render_to_response('registration.html', RequestContext(request, {'form': form, 'password_is_wrong': True}))
+
+    try:
+        participant_init = Participant.objects.get(user__username='0')
+        participant_init.register(username, password, first_name=firstname, last_name = lastname)
+        return HttpResponse("0")
+    except Exception as e:
+        return HttpResponse(e)

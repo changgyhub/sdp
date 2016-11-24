@@ -149,7 +149,7 @@ class Instructor(Staff):
 
 
     def openCourse(self, course_id):
-        # checking if opening course is valid, which means that a course must have at least 
+        # checking if opening course is valid, which means that a course must have at least
         # one module and every module must have at least one component
         if Module.objects.filter(course__pk = course_id).count() == 0:
             return False

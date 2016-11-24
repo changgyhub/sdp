@@ -23,22 +23,112 @@
         alert("Wrong password. Please try again.");
       </script>
   {% endif %}
-    <div class="form">
+    <div class="form" id="login-from">
         <h1>AB Credit (HK) Staff Development Platform</h1><br><br>
-        <form action="" method="post">
           <!-- {% csrf_token %} -->
-          {{form}}
-          <select name="staff_type">
+          Username: <input id="username" style="width: 70%;"></input><br/>
+          Password: <input id="password" type="password" style="width: 70%;"></input><br/>
+          <select id="staff_type">
             <option value="1">Participant</option>
             <option value="2">Instructor</option>
             <option value="3">HR</option>
             <option value="4">Administrator</option>
           </select>
-          <button type="submit"><b>Login</b></button>
+          <button onclick="login()"><b>Login</b></button>
           <!-- <a href="#"><button><b>Forget Password</b></button></a> -->
-        </form>
-        <p><a href="registration/"><button ><b>New Staff</b></button></a></p>
-
+        <button onclick="register()"><b>New Staff</b></button>
     </div>
+
+    <div class="form" id="register-from" style="display:none;">
+        <h1>AB Credit (HK) Staff Development Platform</h1><br><br>
+          <!-- {% csrf_token %} -->
+          Username: <input id="reg-username" style="width: 70%;"></input><br/>
+          Password: <input id="reg-password1" type="password" style="width: 70%;"></input><br/>
+          &nbsp;&nbsp;Confirm:&nbsp;&nbsp;<input id="reg-password2" type="password" style="width: 70%;"></input><br/>
+          &nbsp;Name:&nbsp;&nbsp;<input id="reg-firstname" style="width: 35%;" placeholder="First"></input>
+          <input id="reg-lastname" style="width: 35%;" placeholder="Last"></input><br/>
+          <button onclick="finishRegister()"><b>Finish</b></button>
+          <!-- <a href="#"><button><b>Forget Password</b></button></a> -->
+        <button onclick="backToLogin()"><b>Back to Login</b></button>
+    </div>
+
+ <script type="text/javascript" src="{% static 'js/jquery.js' %}"></script>
+ <script>
+    function login(){
+      if ($('#username').val() == "" | $('#password').val() == "" | $('#staff_type').val() == ""){
+        alert("Must Input All Blocks.");
+        return;
+      }
+      $.ajax({
+          url : "", // the endpoint
+          type : "POST", // http method
+          data : {
+            'username' : $('#username').val(),
+            'password' : $('#password').val(),
+            'staff_type' : $('#staff_type').val()
+          }, // data sent with the post request
+          // handle a successful response
+          success : function(response) {
+            window.location = '/';
+          },
+          // // handle a non-successful response
+          // error : function(xhr,errmsg,err) {
+          //     $('#results').html("<div class='alert-box alert radius' data-alert>Oops! We have encountered an error: "+errmsg+
+          //         " <a href='#' class='close'>&times;</a></div>"); // add the error to the dom
+          //     console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
+          // }
+      });
+    }
+
+    function finishRegister(){
+      if ($('#reg-username').val() == "" | $('#reg-password1').val() == "" | $('#reg-password2').val() == "" || $('#reg-firstname').val() == "" ||$('#reg-lastname').val() == ""){
+        alert("Must Input All Blocks.");
+        return;
+      }
+      if ($('#reg-password1').val() != $('#reg-password2').val()){
+        alert("Different Passwords.");
+        return;
+      }
+      $.ajax({
+          url : "/registration/", // the endpoint
+          type : "POST", // http method
+          data : {
+            'username' : $('#reg-username').val(),
+            'password' : $('#reg-password1').val(),
+            'firstname' : $('#reg-firstname').val(),
+            'lastname' : $('#reg-lastname').val()
+          }, // data sent with the post request
+          // handle a successful response
+          success : function(data) {
+            if (data == "0"){
+              // success
+              alert("Finish Registration! Please Login Again.");
+              window.location = '/';
+            } else {
+              // something went wrong
+              alert(data);
+            }
+          },
+          // // handle a non-successful response
+          // error : function(xhr,errmsg,err) {
+          //     $('#results').html("<div class='alert-box alert radius' data-alert>Oops! We have encountered an error: "+errmsg+
+          //         " <a href='#' class='close'>&times;</a></div>"); // add the error to the dom
+          //     console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
+          // }
+      });
+    }
+
+    function register(){
+      $('#login-from').css("display", "none");
+      $('#register-from').css("display", "");
+    }
+    function backToLogin(){
+      $('#login-from').css("display", "");
+      $('#register-from').css("display", "none");
+    }
+
+
+  </script>
+
 </body>
 </html>
