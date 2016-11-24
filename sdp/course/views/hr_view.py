@@ -65,7 +65,8 @@ def course_info(request):
         count_current = len(current)
         currentList = []
         for c in current:
-            temp = [c.participant.user.first_name + " " + c.participant.user.last_name, c]
+            progress = getProgress(c.participant, c.course)
+            temp = [c.participant.user.first_name + " " + c.participant.user.last_name, c, progress]
             currentList.append(temp)
         currentList.sort(key=getKey)
     return render_to_response('hr/course_info.html', locals())
@@ -97,11 +98,15 @@ def participant_info(request):
     history = participant.getHistoryInfo()
     current = participant.getCurrentInfo()
     if current:
-        currentEnrollment = CurrentEnrollment.objects.get(participant = participant)
-        menu = participant.viewCourse(current.pk)
-        modules = collections.OrderedDict(sorted(menu['module'].items(), key=lambda x: x[0].localPosition))
-        modules_total_cnt = len(modules)
-        component_total_cnt = len(list(modules.items())[currentEnrollment.current_module_num-1][1])
-        percentage = 100 * (currentEnrollment.current_module_num - 1 + \
-            (currentEnrollment.current_component_num-1)/component_total_cnt) *(1/modules_total_cnt)
+        percentage = getProgress(participant, current)
     return render_to_response('hr/participant_info.html', locals())
+
+def getProgress(participant, current):
+    currentEnrollment = CurrentEnrollment.objects.get(participant = participant)
+    menu = participant.viewCourse(current.pk)
+    modules = collections.OrderedDict(sorted(menu['module'].items(), key=lambda x: x[0].localPosition))
+    modules_total_cnt = len(modules)
+    component_total_cnt = len(list(modules.items())[currentEnrollment.current_module_num-1][1])
+    percentage = 100 * (currentEnrollment.current_module_num - 1 + \
+        (currentEnrollment.current_component_num-1)/component_total_cnt) *(1/modules_total_cnt)
+    return percentage
