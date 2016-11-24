@@ -103,7 +103,14 @@
             if (data == "0"){
               // success
               alert("Finish Registration! Please Login Again.");
-              window.location = '/';
+              var new_username = $('#reg-username').val();
+              $('#reg-username').val("");
+              $('#reg-password1').val("");
+              $('#reg-password2').val("");
+              $('#reg-firstname').val("");
+              $('#reg-lastname').val("");
+              backToLogin();
+              $('#username').val(new_username);
             } else {
               // something went wrong
               alert(data);
