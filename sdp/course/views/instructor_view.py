@@ -254,3 +254,12 @@ def getImage(request):
     path = os.path.abspath(os.path.join(os.path.dirname( __file__ ), '..','..', path))
     image_data = open(path, "rb").read()
     return HttpResponse(image_data, content_type="image/png")
+
+
+@login_required
+def delete_module(request):
+    module_id = request.POST['module_id']
+    course_id = Module.objects.get(pk=module_id).course.id
+    instructor = Instructor.objects.get(user__pk=request.user.id)
+    instructor.deleteModule(module_id)
+    return course_info(request, course_id)

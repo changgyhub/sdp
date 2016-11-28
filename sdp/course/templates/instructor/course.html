@@ -466,6 +466,25 @@
       });
 
   }
+
+  function deleteModule(module_id) {
+      var ask=confirm("Are you sure to delete this module?");
+      if (ask){
+        $.ajax({
+            url : "/instructor/module/delete/", // the endpoint
+            type : "POST", // http method
+            data : { 'module_id' : module_id }, // data sent with the post request
+            // handle a successful response
+            success : function(response) {
+            // unable the close regiestration button
+                $('#content-main').html(response);
+            },
+            // error:function(){
+            //     console.log('in error');
+            // }
+        });
+      }
+  }
     function logout(){
       window.location = "/logout";
     }

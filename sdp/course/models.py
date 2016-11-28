@@ -195,11 +195,18 @@ class Instructor(Staff):
     def deleteComponent(self, component_id):
         # firstly change all components below itself, make their localPosition-1
         component = Component.objects.get(pk=component_id)
-        for component in Component.objects.filter(module__id = component.module.id, localPosition__gt=component.localPosition):
-            component.localPosition -= 1
-            component.save()
+        for component_ in Component.objects.filter(module__id = component.module.id, localPosition__gt=component.localPosition):
+            component_.localPosition -= 1
+            component_.save()
         # assume that the course is already the instructor's
         component.delete()
+
+    def deleteModule(self, module_id):
+        module = Module.objects.get(pk=module_id)
+        for module_ in Module.objects.filter(course__id = module.course.id, localPosition__gt=module.localPosition):
+            module_.localPosition -= 1
+            module_.save()
+        module.delete()
 class Administrator(Staff):
     def viewCategories(self):
         menu = super(Administrator, self).viewCategories()

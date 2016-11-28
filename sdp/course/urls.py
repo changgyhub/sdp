@@ -27,6 +27,7 @@ urlpatterns = [
             ])),
             url(r'^moveup/', iv.moveup_module, name='instructor_moveup_module'),
             url(r'^movedown/', iv.movedown_module, name='instructor_movedown_module'),
+            url(r'^delete/', iv.delete_module, name='instructor_delete_module'),
         ])),
         url(r'^component/',include([
             url(r'^create/',include([
@@ -36,7 +37,7 @@ urlpatterns = [
 
             ])),
             url(r'^download/', iv.file_download, name='instructor_file_download'),
-            url(r'^delete/', iv.delete_component, name='instructor_create_component'),
+            url(r'^delete/', iv.delete_component, name='instructor_delete_component'),
             url(r'^moveup/', iv.moveup_component, name='instructor_moveup_component'),
             url(r'^movedown/', iv.movedown_component, name='instructor_movedown_component'),
         ])),

@@ -13,7 +13,7 @@
         {% endif %}
       {% endif %}
     </h2>
-    
+
     <h5 class="panel-body">{{description}}</h5>
     {% if is_mine %}
     <div id="accordion">
@@ -23,6 +23,7 @@
                 <a data-toggle="collapse" data-parent="#accordion" href="#collapse{{module.id}}">Collapse</a>&nbsp;
               {% if not is_open %}
                 <a class="btn btn-sm btn-info" style="color:#FFFFFF" onclick="createComponent('{{module.id}}','{{module.name}}')">Add Component</a>
+                <a class="btn btn-sm btn-info" style="color:#FFFFFF" onclick="deleteModule('{{module.id}}')">Delete</a>
                 <div align="right" id="right-indent">
                 {% if module.localPosition != 1%}
                   <a class="btn btn-md" onclick="moveUpModule('{{module.id}}')"><i class="glyphicon glyphicon-arrow-up"></i></a>
@@ -31,7 +32,6 @@
                 <a class="btn btn-md" onclick="moveDownModule('{{module.id}}')"><i class="glyphicon glyphicon-arrow-down"></i></a>
                 {% endif %}
                 </div>
-                
               {% endif %}
 
           </h2>
@@ -74,4 +74,4 @@
 <script>
   alert("open course failed!\nPlease check if the course has module\nand every module has valid components")
 </script>
-{% endif %} 
+{% endif %}
