@@ -211,7 +211,7 @@ class Administrator(Staff):
     def viewCategories(self):
         menu = super(Administrator, self).viewCategories()
         for c in Category.objects.all():
-            menu[c] = Course.objects.filter(category=c, is_open=True).count()
+            menu[c] = Course.objects.filter(category=c).count()
         return menu
     def createCategory(self, category_name):
         category = Category.objects.create(name=category_name)
