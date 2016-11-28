@@ -85,12 +85,18 @@ def get_item(dictionary, key):
 @login_required
 def category_info(request):
     category_id = request.POST['category_id']
-    parent_admin = Administrator.objects.get(user__pk=request.user.id)
+    category_name = request.POST['category_name']
     parent_category = Category.objects.get(pk=category_id)
-    mycourses = Course.objects.filter(instructor = parent_admin, category = parent_category)
-    othercourses = Course.objects.filter(Q(category = parent_category, is_open= True) & ~Q(instructor = parent_admin))
+    mycourses = Course.objects.filter(category = parent_category)
+    courses = []
+    cnt = 0
+    for i in mycourses:
+        courses.append(i)
+        cnt+=1
+        if cnt>4:
+            break
     # courses = Course.objects.filter(Q(category = parent_category, is_open = True) | Q(category = parent_category, is_open = False, instructor = parent_instructor))
-    return render_to_response('instructor/category_info.html', locals())
+    return render_to_response('administrator/category_info.html', locals())
 
 @login_required
 def category_create(request):

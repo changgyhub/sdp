@@ -78,6 +78,7 @@ urlpatterns = [
     url(r'^administrator/', include([
         url(r'^category/', include([
             url(r'^$', av.category, name='administrator_category'),
+            url(r'^info',av.category_info, name='administrator_category_info'),
             url(r'^create/', av.category_create, name='administrator_create_category'),
             url(r'^createFinish/', av.category_create_finish, name='administrator_create_finish'),
             url(r'^delete/',av.category_delete, name='administrator_delete_category'),
