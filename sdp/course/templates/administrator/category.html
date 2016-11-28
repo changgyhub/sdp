@@ -84,30 +84,22 @@
             <div class="col-md-12 column">
                 <div class="row clearfix">
                     <div class="col-md-4 column">
-                    </div>
-                    <div class="col-md-4 column">
                         <p  id="deleteC"></p>
-                        <h2 class="text-center">
+                        <h1 class="text-center">
                             Categories
-                        </h2>
-                        <div class="panel-group" id="panel-410208">
+                        </h1>
+                        <ul class="nav navbar-stacked">
                             {% for category, num in counts.items %}
-                                <div class="panel panel-default">
-                                    <div class="panel-heading">
-                                        <a class="panel-title collapsed" data-toggle="collapse" data-parent="#panel-410208" href="#panel-element-{{category.name.split|join:"_"}}">{{category.name}}</a>
-                                    </div>
-                                    <div id="panel-element-{{category.name.split|join:"_"}}" class="panel-collapse collapse">
-                                        <div class="panel-body">
-                                            <button type="button" class="btn btn-default" onclick="deleteCategory('{{ category.name }}')">Delete</button>
-                                        </div>
-                                    </div>
-                                </div>
+                                <li><a onclick="getCategoryInfo('{{category.id}}', '{{category.name}}')">{{category.name}}<span class="pull-right">({{num}})</span></a></li>
                             {% endfor %}
-                        </div>
+                        </ul>
                         <p></p>
                         <p class="text-center" id="button-create"><button type="button" class="btn btn-default" onclick="createCategory()">Create new category</button></p>
                     </div>
-                    <div class="col-md-4 column">
+                    <div class="col-md-8 column">
+                        <h1 id="content-title">Welcome!</h1>
+                        <div><div id="content-alert"></div></div>
+                        <div><div id="content-main"></div></div>
                     </div>
                 </div>
             </div>
@@ -147,7 +139,9 @@
         $.ajax({
             url : "/administrator/category/info/", // the endpoint
             type : "POST", // http method
-            data : { 'category_id' : category_id }, // data sent with the post request
+            data : { 'category_id' : category_id,
+                     'category_name' : category_name,
+            }, // data sent with the post request
             // handle a successful response
             success : function(response) {
                 $('#content-main').html(response);
