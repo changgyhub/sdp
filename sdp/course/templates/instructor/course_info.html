@@ -56,7 +56,16 @@
                 <!-- we load the image -->
                 <a href="/instructor/course/image/?path={{ component.content_file.url }}" target="_blank"><img src="/instructor/course/image/?path={{ component.content_file.url }}" alt="Not found" width="400"></img></a><p/>
                 {% endif %}
-                {{component.content}}<p/>
+                {% if component.content_type == '4' %}
+                <div id="video-container">
+                      <!-- <div class="col-md-6"> -->
+                          <iframe src="https://www.youtube.com/embed/{{component.content}}" ></iframe>
+                      <!-- </div> -->
+                </div><!--/#video-container-->
+                {% endif %}
+                {% if component.content_type != '4' %}
+                  {{component.content}}<p/>
+                {% endif %}
               </h5>
             {% endfor %}
           </div>

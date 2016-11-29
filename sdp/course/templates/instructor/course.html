@@ -326,6 +326,16 @@
         return;
       }
       console.log($('#component_create_content_type').val());
+      if ($('#component_create_content_type').val() == 4){
+        component_content = youtube_parser($('#component_create_content').val());
+        if (component_content == false){
+          alert('invalid youtube url');
+          return;
+        }
+        alert(component_content);
+      } else {
+        component_content = $('#component_create_content').val();
+      }
 
       $.ajax({
           url : "/instructor/component/create/finish/", // the endpoint
@@ -334,7 +344,7 @@
             'module_id' : module_id,
             'component_name' : $('#component_create_name').val(),
             'component_type' : $('#component_create_content_type').val(),
-            'component_content' : $('#component_create_content').val(),
+            'component_content' : component_content,
           }, // data sent with the post request
           // handle a successful response
           success : function(response) {
@@ -488,6 +498,12 @@
     function logout(){
       window.location = "/logout";
     }
+    // auxiliary function to get youtube video id
+    function youtube_parser(url){
+      var regExp = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#\&\?]*).*/;
+      var match = url.match(regExp);
+      return (match&&match[7].length==11)? match[7] : false;
+  }
 
     </script>
 
