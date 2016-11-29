@@ -81,21 +81,21 @@
 <section id="projects" class="padding-top">
     <div class="container" id="deleteC">
         <div class="row clearfix">
-            <div class="col-md-3 column">
+            <div class="col-xs-2 column">
                 <div class="sidebar-item categories" id="category_bar">
                     <h3>Type</h3>
                     <ul class="nav navbar-stacked">
-                        <li><a onclick="generate('0','0')">All</a> </li>
-                        <li><a onclick="generate('0','1')">Instructor</a></li>
-                        <li><a onclick="generate('0','2')">Participant</a></li>
-                        <li><a onclick="generate('0','3')">HR</a></li>
-                        <li><a onclick="generate('0','4')">Administrator</a></li>
+                        <li><a onclick="generate('0','0')">All Staffs</a> </li>
+                        <li><a onclick="generate('0','1')">Instructors</a></li>
+                        <li><a onclick="generate('0','2')">Participants</a></li>
+                        <li><a onclick="generate('0','3')">Human Resources</a></li>
+                        <li><a onclick="generate('0','4')">Administrators</a></li>
                     </ul>
                 </div>
             </div>
-            <div class="col-md-6 column" id="generate">
+            <div class="col-xs-8 column" id="generate">
                 <p id="information"></p>
-                <table class="table table-hover">
+                <table class="table table-hover" style="color: #686868;">
                     <thead>
                     <tr>
                         <th>
@@ -139,13 +139,13 @@
                     {% endfor %}
                 </ul>
             </div>
-            <div class="col-md-3 column">
+            <div class="col-xs-2 column">
                 <form class="navbar-form navbar-left">
                     <div class="form-group">
                         <input type="text" class="form-control" id="name"/>
                     </div>
                     <p></p>
-                    <button type="button" class="btn btn-default" onclick="generate_by_name()">Search by name</button>
+                    <button type="button" style="color: #686868;" class="btn btn-default" onclick="generate_by_name()">Search by name</button>
                 </form>
             </div>
         </div>

@@ -1,13 +1,12 @@
 {% load static %}
-<div class="col-xs-12 col-sm-12 col-md-9 col-lg-7 portfolio-item branded logos">
-    <div class="portfolio-wrapper">
-        <h4 class="portfolio-info">
-            {% for course in courses %}
-            <li class="list-group-item">
-                <a onclick="getCourseInfo('{{course.id}}', '{{course.name}}')">{{course.name}}</a>
-                by {{course.instructor}}
-            </li><br>
-            {% endfor %}
-        </h4>
-    </div>
+<div class="portfolio-item branded logos">
+  <div class="portfolio-wrapper">
+    <h4 class="portfolio-info">
+      <ul class="list-group">
+        {% for course in courses %}
+        <h4><li class="list-group-item"><a onclick="getCourseInfo('{{course.id}}', '{{course.name}}')">{{course.name}} </a>by {{course.instructor}}</li></h4>
+        {% endfor %}
+      </ul>
+    </h4>
+  </div>
 </div>

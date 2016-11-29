@@ -1,12 +1,12 @@
 {% load static %}
-<button type="button" class="btn btn-default" onclick="deleteCategory('{{ category_name }}')">Delete</button>
-<div class="col-xs-6 col-sm-6 portfolio-item branded logos">
-    <div class="portfolio-wrapper">
-        <h4 class="portfolio-info">
-            {% for course in courses %}
-                <li>{{ course.name }}</li><br>
-            {% endfor %}
-            <big>......</big>
-        </h4>
-    </div>
+<div class="portfolio-item branded logos">
+  <div class="portfolio-wrapper">
+    <h4 class="portfolio-info">
+      <ul class="list-group">
+        {% for course in courses %}
+        <h4><li class="list-group-item">{{course.name}} </a>by {{course.instructor}}</li></h4>
+        {% endfor %}
+      </ul>
+    </h4>
+  </div>
 </div>
