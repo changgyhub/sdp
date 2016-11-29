@@ -5,6 +5,8 @@ from django.template import RequestContext
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.contrib.auth.decorators import login_required
 from ..models import Staff, Course, Instructor, Participant, Administrator, HR
+from django.contrib.auth.models import User
+from django.contrib.auth.models import Group
 from . import instructor_view as iv, participant_view as pv, administrator_view as av, hr_view as hv
 #from django.views.decorators.csrf import csrf_protect, csrf_exempt
 #from django.template.context_processors import csrf
@@ -104,19 +106,17 @@ def logout(request):
     auth.logout(request)
     return HttpResponseRedirect("/")
 
+
 def participant_registration(request):
     username = request.POST['username']
     password = request.POST['password']
-    firstname = request.POST['firstname']
-    lastname = request.POST['lastname']
-    # if Participant.objects.filter(user__username=username).exists():
-    #     return render_to_response('registration.html', RequestContext(request, {'form': form, 'duplicate_username': True}))
-    # if password != passwordValidate:
-    #     return render_to_response('registration.html', RequestContext(request, {'form': form, 'password_is_wrong': True}))
-
-    try:
-        participant_init = Participant.objects.get(user__username='0')
-        participant_init.register(username, password, first_name=firstname, last_name = lastname)
-        return HttpResponse("0")
-    except Exception as e:
-        return HttpResponse(e)
+    first_name = request.POST['firstname']
+    last_name = request.POST['lastname']
+    if Participant.objects.filter(user__username=username).exists():
+        return render_to_response('registration.html', RequestContext(request, {'form': form, 'duplicate_username': True}))
+    user = User.objects.create_user(
+        username=username, password=password, first_name=first_name, last_name=last_name)
+    g = Group.objects.get(name='Participant')
+    g.user_set.add(user)
+    Participant.objects.create(user=user, last_login_type='participants')
+    return HttpResponse("0")

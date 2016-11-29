@@ -138,8 +138,12 @@ def finish_create_component(request):
     component_content = request.POST['component_content']
     instructor = Instructor.objects.get(user__pk=request.user.id)
     numOfComponent = Component.objects.filter(module__pk=module_id).count()
-    instructor.createComponent(
-        module_id, component_name, component_type, component_content, localPosition=numOfComponent + 1)
+    if contentType != "YouTube":
+        instructor.createComponent(
+            module_id, component_name, component_type, component_content, localPosition=numOfComponent + 1)
+    else:
+        instructor.createComponent(
+            module_id, component_name, component_type, component_content, localPosition=numOfComponent + 1)
     course_id = Module.objects.get(pk=module_id).course.id
     return course_info(request, course_id)
 

@@ -7,6 +7,7 @@
       <option value="1">File</option>
       <option value="2" selected="selected">Text</option>
       <option value="3">Image</option>
+      <option value="4">YouTube</option>
     </select>
     </div>
     <div class="form-group" id="component_create_content_div">
@@ -23,14 +24,21 @@
 </div>
 <script>
     var files;
+
     function prepare() {
         var value = $('#component_create_content_type').val();
-        // alert(value); 
+        // alert(value);
         if (value == 2) {
             $("#component_create_content_file").html('');
             $("#component_create_content_div").html(
                 '<textarea  rows=\"4\" type=\"text\" id=\"component_create_content\" class=\"form-group form-control\" required placeholder=\"please put down text here...\"></textarea>'
             );
+        } else if {
+          $("#component_create_content_file").html('');
+          $("#component_create_content_div").html(
+              '<textarea  rows=\"1\" type=\"YouTube\" id=\"component_create_content\" class=\"form-group form-control\" required placeholder=\"youtube url\"></textarea>'
+          );
+
         } else {
             // alert('file');
             $("#component_create_content_div").html(
@@ -39,16 +47,18 @@
             $('#component_create_content_file').html('<label class="myLabel"><input type=\"file\" name=\"upload_file\" required/></label>');
             $('input[type=file]').on('change', prepareUpload);
             $('#submitbutton').html('<input class=\"btn btn-warning\" onclick=\"finishCreateComponentFile(\'{{module.id}}\')\" value=\"Submit\">');
+
             function prepareUpload(event) {
                 files = event.target.files;
             }
-            
+
         }
 
     }
-    function finishCreateComponentFile(module_id){
+
+    function finishCreateComponentFile(module_id) {
         // START A LOADING SPINNER HERE
-    
+
         // Create a formdata object and add the files
         var file_data = new FormData();
         file_data.append('file', files[0]);
@@ -57,7 +67,7 @@
         file_data.append('component_create_content_type', $('#component_create_content_type').val());
         file_data.append('component_create_content', $('#component_create_content').val());
         $('#component_create_name').val()
-        
+
         $.ajax({
             url: '/instructor/component/create/upload/',
             type: "POST",
@@ -65,8 +75,8 @@
             processData: false, // Don't process the files
             contentType: false, // Set content type to false as jQuery will tell the server its a query string request
             success: function(data) {
-                  $("#content-main").html(data);
-                
+                $("#content-main").html(data);
+
             },
             error: function() {
                 // Handle errors here

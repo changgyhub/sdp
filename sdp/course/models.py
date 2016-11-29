@@ -30,12 +30,6 @@ class Staff(models.Model):
         return menu
 
 class Participant(Staff):
-    def register(self, username, password,first_name, last_name):
-        user = User.objects.create_user(username = username, password = password
-            , first_name = first_name, last_name = last_name)
-        g = Group.objects.get(name='Participant')
-        g.user_set.add(user)
-        Participant.objects.create(user= user, last_login_type = 'participants')
     def viewCategories(self):
         menu = super(Participant, self).viewCategories()
         for c in Category.objects.all():
@@ -295,6 +289,7 @@ class Component(models.Model):
         (u'1', u'File'),
         (u'2', u'Text'),
         (u'3', u'Image'),
+        (u'4', u'YouTube'),
     )  # need to be changed later on
     content_type = models.CharField(max_length=1, choices=CONTENT_TYPES,default = None)
     content_file = models.FileField(upload_to='uploads/%Y/%m/%d/', null=True)
