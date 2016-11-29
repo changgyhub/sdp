@@ -78,7 +78,14 @@
                 {% if component.content_type == '3' %}
                 <a><img src="/participant/course/image/?path={{ component.content_file.url }}" alt="Not found" width="400"></img></a><p/>
                 {% endif %}
-                {{component.content}}<p/>
+                {% if component.content_type == '4' %}
+                <div id="video-container">
+                  <iframe src="https://www.youtube.com/embed/{{component.content}}" allowfullscreen="allowfullscreen" mozallowfullscreen="mozallowfullscreen" msallowfullscreen="msallowfullscreen" oallowfullscreen="oallowfullscreen" webkitallowfullscreen="webkitallowfullscreen"></iframe>
+                </div><!--/#video-container-->
+                {% endif %}
+                {% if component.content_type != '4' %}
+                  {{component.content}}<p/>
+                {% endif %}
               </h5>
           {% endfor %}
       </div>
