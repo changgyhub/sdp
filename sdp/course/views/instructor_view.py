@@ -13,6 +13,7 @@ from django.core.files.storage import FileSystemStorage
 import collections
 import os
 
+
 @login_required
 def index(request):
     lv.assignType(request.user.id, "Instructor")
@@ -52,7 +53,7 @@ def category_info(request):
 
 
 @login_required
-def course_info(request, parent_course_id=None, success = None):
+def course_info(request, parent_course_id=None, success=None):
     if parent_course_id == None:
         course_id = request.POST['course_id']
     else:  # the case of finish creating component
@@ -67,7 +68,8 @@ def course_info(request, parent_course_id=None, success = None):
     success = success
     if 'module' in menu:
         is_mine = True
-        modules = collections.OrderedDict(sorted(menu['module'].items(), key=lambda x: x[0].localPosition))
+        modules = collections.OrderedDict(
+            sorted(menu['module'].items(), key=lambda x: x[0].localPosition))
     else:
         is_mine = False
     return render_to_response('instructor/course_info.html', locals())
@@ -120,7 +122,6 @@ def finish_create_course(request):
 
 
 @login_required
-
 def finish_create_module(request):
     course_id = request.POST['course_id']
     module_name = request.POST['module_name']
@@ -252,10 +253,12 @@ def movedown_module(request):
     next_module.updateLocalPostion(localPosition)
     return course_info(request, module.course.pk)
 
+
 @login_required
 def getImage(request):
     path = request.GET['path']
-    path = os.path.abspath(os.path.join(os.path.dirname( __file__ ), '..','..', path))
+    path = os.path.abspath(os.path.join(
+        os.path.dirname(__file__), '..', '..', path))
     image_data = open(path, "rb").read()
     return HttpResponse(image_data, content_type="image/png")
 

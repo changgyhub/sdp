@@ -5,6 +5,86 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth.models import Group
 from datetime import date
 
+# auxiliary class
+# for encapsulate all direct operaions in database
+
+
+class StaffControl():
+
+    class Meta:
+        abstract = True
+
+    @staticmethod
+    def getUser(id):
+        return User.objects.get(pk=id)
+
+    @staticmethod
+    def getUserByName(name):
+        try:
+            x = User.objects.get(username=name)
+            return x
+        except User.DoesNotExist:
+            return None
+
+
+class ParticipantControl(StaffControl):
+
+    @staticmethod
+    def viewAllParticipants():
+        menu = dict()
+        for p in Participant.objects.all():
+            menu[p.user.id] = p
+        return menu
+
+    @staticmethod
+    def viewParticipant(participant_id):
+        participant = Participant.objects.get(user__pk=participant_id)
+        return participant
+    # @staticmethod
+    # def viewHistoryEnrollment(course_id):
+    #     return HistoryEnrollment.objects.filter(course__id = course_id)
+
+
+class InstructorControl(StaffControl):
+
+    @staticmethod
+    def viewAllStaffs():
+        return User.objects.all()
+
+    @staticmethod
+    def designate(user):
+        g = Group.objects.get(name='Instructor')
+        g.user_set.add(user)
+        instructor = Instructor.objects.create(user=user)
+
+
+class CategoryControl():
+
+    @staticmethod
+    def addCategory(category_name):
+        category = Category.objects.create(name=category_name)
+
+    @staticmethod
+    def viewCategories(type, instance):
+        if type == 'Administrator':
+            menu = super(Administrator, instance).viewCategories()
+        elif type == 'HR':
+            menu = super(HR, instance).viewCategories()
+        for c in Category.objects.all():
+            menu[c] = Course.objects.filter(category=c).count()
+        return menu
+
+    @staticmethod
+    def deleteCategory(category_name):
+        category = Category.objects.get(name=category_name)
+        num = Course.objects.filter(category=category).count()
+        if num == 0:
+            category.delete()
+            return True
+        else:
+            return False
+
+
 class Staff(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)  # many-to-one
     last_login_type = models.CharField(max_length=20, default="Staff")
@@ -20,7 +100,7 @@ class Staff(models.Model):
         return menu
 
     def viewCourse(self, course_id):
-        course = Course.objects.get(pk = course_id)
+        course = Course.objects.get(pk=course_id)
         menu = dict()
         menu['name'] = course.name
         menu['category'] = course.category
@@ -29,7 +109,9 @@ class Staff(models.Model):
         menu['is_open'] = course.is_open
         return menu
 
+
 class Participant(Staff):
+
     def viewCategories(self):
         menu = super(Participant, self).viewCategories()
         for c in Category.objects.all():
@@ -38,14 +120,15 @@ class Participant(Staff):
 
     def viewCourse(self, course_id):
         # TODO: implement more in next iteration
-        if CurrentEnrollment.objects.filter(participant=self, course__id = course_id).exists():
-            currrentEnrollment = CurrentEnrollment.objects.get(participant=self, course__id = course_id)
+        if CurrentEnrollment.objects.filter(participant=self, course__id=course_id).exists():
+            currrentEnrollment = CurrentEnrollment.objects.get(
+                participant=self, course__id=course_id)
             menu = super(Participant, self).viewCourse(course_id)
             menu['is_enrolled'] = True
             menu['has_finished'] = False
             menu['module'] = dict()
             module_list = list()
-            for module in Module.objects.filter(course__id = course_id):
+            for module in Module.objects.filter(course__id=course_id):
                 menu['module'][module] = list()
                 module_list.append(module)
             for component in Component.objects.all():
@@ -53,14 +136,15 @@ class Participant(Staff):
                     if component.module.id == module.id:
                         menu['module'][module].append(component)
             return menu
-        elif HistoryEnrollment.objects.filter(participant=self, course__id = course_id).exists():
-            historyEnrollment = HistoryEnrollment.objects.get(participant=self, course__id = course_id)
+        elif HistoryEnrollment.objects.filter(participant=self, course__id=course_id).exists():
+            historyEnrollment = HistoryEnrollment.objects.get(
+                participant=self, course__id=course_id)
             menu = super(Participant, self).viewCourse(course_id)
             menu['is_enrolled'] = False
             menu['has_finished'] = True
             menu['module'] = dict()
             module_list = list()
-            for module in Module.objects.filter(course__id = course_id):
+            for module in Module.objects.filter(course__id=course_id):
                 menu['module'][module] = list()
                 module_list.append(module)
             for component in Component.objects.all():
@@ -74,21 +158,21 @@ class Participant(Staff):
             menu['has_finished'] = False
             return menu
 
-
     def getHistoryInfo(self):
         menu = dict()
-        for history in HistoryEnrollment.objects.filter(participant__id = self.pk):
+        for history in HistoryEnrollment.objects.filter(participant__id=self.pk):
             menu[history.getCourse()] = history.getInfo()
         return menu
 
     def getCurrentInfo(self):
-        if CurrentEnrollment.objects.filter(participant__id = self.pk).exists():
-            currentEnrollment = CurrentEnrollment.objects.get(participant__id = self.pk)
+        if CurrentEnrollment.objects.filter(participant__id=self.pk).exists():
+            currentEnrollment = CurrentEnrollment.objects.get(
+                participant__id=self.pk)
             return currentEnrollment.course
         return None
 
     def enroll(self, course_id):
-        if CurrentEnrollment.objects.filter(participant__id = self.pk).exists():
+        if CurrentEnrollment.objects.filter(participant__id=self.pk).exists():
             return False
         else:
             course = Course.objects.get(pk=course_id)
@@ -96,23 +180,26 @@ class Participant(Staff):
             return True
 
     def drop(self):
-        if CurrentEnrollment.objects.filter(participant__id = self.pk).exists():
-            CurrentEnrollment.objects.get(participant__id = self.pk).delete()
+        if CurrentEnrollment.objects.filter(participant__id=self.pk).exists():
+            CurrentEnrollment.objects.get(participant__id=self.pk).delete()
             return True
         else:
             return False
 
     def finishCourse(self):
-        current = CurrentEnrollment.objects.get(participant__id = self.pk)
-        HistoryEnrollment.objects.create(course=current.course, participant=self, date_of_completion=date.today())
+        current = CurrentEnrollment.objects.get(participant__id=self.pk)
+        HistoryEnrollment.objects.create(
+            course=current.course, participant=self, date_of_completion=date.today())
         current.delete()
+
 
 class Instructor(Staff):
 
     def viewCategories(self):
         menu = super(Instructor, self).viewCategories()
         for c in Category.objects.all():
-            menu[c] = Course.objects.filter(Q(category=c) & (Q(is_open=True) | Q(instructor=self))).count()
+            menu[c] = Course.objects.filter(Q(category=c) & (
+                Q(is_open=True) | Q(instructor=self))).count()
         return menu
 
     def viewCourse(self, course_id):
@@ -124,7 +211,7 @@ class Instructor(Staff):
             menu = super(Instructor, self).viewCourse(course_id)
             menu['module'] = dict()
             module_list = list()
-            for module in Module.objects.filter(course__id = course_id):
+            for module in Module.objects.filter(course__id=course_id):
                 menu['module'][module] = list()
                 module_list.append(module)
             for component in Component.objects.all():
@@ -137,59 +224,61 @@ class Instructor(Staff):
         menu = dict()
         for category in Category.objects.all():
             menu[category.name] = list()
-        for course in Course.objects.filter(instructor__id = self.pk):
+        for course in Course.objects.filter(instructor__id=self.pk):
             menu[course.category.name].append(course)
         return menu
-
 
     def openCourse(self, course_id):
         # checking if opening course is valid, which means that a course must have at least
         # one module and every module must have at least one component
-        if Module.objects.filter(course__pk = course_id).count() == 0:
+        if Module.objects.filter(course__pk=course_id).count() == 0:
             return False
-        for module in  Module.objects.filter(course__pk = course_id):
-            if Component.objects.filter(module__pk = module.id).count() == 0:
+        for module in Module.objects.filter(course__pk=course_id):
+            if Component.objects.filter(module__pk=module.id).count() == 0:
                 return False
         course = Course.objects.get(pk=course_id)
         if course.instructor.id == self.pk:
-            course.is_open = True;
+            course.is_open = True
             course.save()
             return True
         else:
-            print ("TODO")
+            print("TODO")
             # TODO: fail to open a course
             #       this should not happen actually
+
     def closeCourse(self, course_id):
         course = Course.objects.get(pk=course_id)
         if course.instructor.id == self.pk:
-            course.is_open = False;
+            course.is_open = False
             course.save()
         else:
-            print ("TODO")
+            print("TODO")
 
     def createCourse(self, course_name, course_info, course_category):
-        course = Course.objects.create(category = course_category,
-                name=course_name, description=course_info, instructor = self)
-                # is_open = False as default
+        course = Course.objects.create(category=course_category,
+                                       name=course_name, description=course_info, instructor=self)
+        # is_open = False as default
 
     def createModule(self, course_id, module_name, localPosition):
         parent_course = Course.objects.get(pk=course_id)
         module = Module.objects.create(
             course=parent_course, name=module_name, localPosition=localPosition)
 
-    def createComponent(self, module_id, component_name, component_content_type, component_content, content_file = None, localPosition = 0):
-        parent_module = Module.objects.get(pk = module_id)
+    def createComponent(self, module_id, component_name, component_content_type, component_content, content_file=None, localPosition=0):
+        parent_module = Module.objects.get(pk=module_id)
         if component_content_type == 2:
-            component = Component.objects.create(name = component_name, content = component_content,
-                    content_type = component_content_type, module = parent_module, localPosition = localPosition)
+            component = Component.objects.create(name=component_name, content=component_content,
+                                                 content_type=component_content_type, module=parent_module, localPosition=localPosition)
         else:
-            component = Component.objects.create(name = component_name, content = component_content,
-                    content_file = component_content, content_type = component_content_type, module = parent_module, localPosition = localPosition)
+            component = Component.objects.create(name=component_name, content=component_content,
+                                                 content_file=component_content, content_type=component_content_type, module=parent_module, localPosition=localPosition)
             return component
+
     def deleteComponent(self, component_id):
-        # firstly change all components below itself, make their localPosition-1
+        # firstly change all components below itself, make their
+        # localPosition-1
         component = Component.objects.get(pk=component_id)
-        for component_ in Component.objects.filter(module__id = component.module.id, localPosition__gt=component.localPosition):
+        for component_ in Component.objects.filter(module__id=component.module.id, localPosition__gt=component.localPosition):
             component_.localPosition -= 1
             component_.save()
         # assume that the course is already the instructor's
@@ -197,68 +286,74 @@ class Instructor(Staff):
 
     def deleteModule(self, module_id):
         module = Module.objects.get(pk=module_id)
-        for module_ in Module.objects.filter(course__id = module.course.id, localPosition__gt=module.localPosition):
+        for module_ in Module.objects.filter(course__id=module.course.id, localPosition__gt=module.localPosition):
             module_.localPosition -= 1
             module_.save()
         module.delete()
+
+
 class Administrator(Staff):
+
     def viewCategories(self):
-        menu = super(Administrator, self).viewCategories()
-        for c in Category.objects.all():
-            menu[c] = Course.objects.filter(category=c).count()
-        return menu
+        # menu = super(Administrator, self).viewCategories()
+        # for c in Category.objects.all():
+        #     menu[c] = Course.objects.filter(category=c).count()
+        # return menu
+        return CategoryControl.viewCategories('Administrator', self)
+
     def createCategory(self, category_name):
-        category = Category.objects.create(name=category_name)
+        # category = Category.objects.create(name=category_name)
+        CategoryControl.createCategory(category_name)
 
     def deleteCategory(self, category_name):
-        category = Category.objects.get(name=category_name)
-        num = Course.objects.filter(category=category).count()
-        if num==0:
-            category.delete()
-            return True
-        else:
-            return False
+        # category = Category.objects.get(name=category_name)
+        # num = Course.objects.filter(category=category).count()
+        # if num == 0:
+        #     category.delete()
+        #     return True
+        # else:
+        #     return False
+        return CategoryControl.deleteCategory(category_name)
 
     def viewAllUsers(self):
-        return User.objects.all()
+        # return User.objects.all()
+        return InstructorControl.viewAllStaffs()
 
-    def getUser(self,id):
-        return User.objects.get(pk=id)
+    def getUser(self, id):
+        # return User.objects.get(pk=id)
+        return StaffControl.getUser(id)
 
-    def getUserByName(self,name):
-        try:
-            x = User.objects.get(username=name)
-            return x
-        except User.DoesNotExist:
-            x = None
+    def getUserByName(self, name):
+        # try:
+        #     x = User.objects.get(username=name)
+        #     return x
+        # except User.DoesNotExist:
+        #     x = None
+        return StaffControl.getUserByName(name)
 
-    def designateInstructor(self,user):
-        g = Group.objects.get(name='Instructor')
-        g.user_set.add(user)
-        instructor = Instructor.objects.create(user=user)
+    def designateInstructor(self, user):
+        InstructorControl.designate(user)
+
 
 class HR(Staff):
+
     def viewCategories(self):
-        menu = super(HR, self).viewCategories()
-        for c in Category.objects.all():
-            menu[c] = Course.objects.filter(category=c).count()
-        return menu
+        return CategoryControl.viewCategories('HR', self)
 
     def viewAllParticipants(self):
-        menu = dict()
-        for p in Participant.objects.all():
-            menu[p.user.id] = p
-        return menu
+
+        return ParticipantControl.viewAllParticipants()
 
     def viewParticipant(self, participant_id):
-        participant = Participant.objects.get(user__pk=participant_id)
-        return participant
+        return ParticipantControl.viewParticipant(participant_id)
+
 
 class Category(models.Model):
     name = models.CharField(max_length=200)
 
     def __str__(self):
         return self.name
+
 
 class Course(models.Model):
     name = models.CharField(max_length=200)
@@ -272,34 +367,47 @@ class Course(models.Model):
     def __str__(self):
         return self.name
 
+
 class Module(models.Model):
     name = models.CharField(max_length=200)
     course = models.ForeignKey(Course, on_delete=models.CASCADE)  # many-to-one
     localPosition = models.IntegerField(default=0)
+
     def __str__(self):
         return self.name
+
     def updateLocalPostion(self, newLocalPostion):
         self.localPosition = newLocalPostion
         self.save()
 
+
 class Component(models.Model):
     name = models.CharField(max_length=200)
-    content = models.CharField(max_length=200, default= None, null=True)
+    content = models.CharField(max_length=200, default=None, null=True)
     CONTENT_TYPES = (
         (u'1', u'File'),
         (u'2', u'Text'),
         (u'3', u'Image'),
         (u'4', u'YouTube'),
     )  # need to be changed later on
-    content_type = models.CharField(max_length=1, choices=CONTENT_TYPES,default = None)
+    content_type = models.CharField(
+        max_length=1, choices=CONTENT_TYPES, default=None)
     content_file = models.FileField(upload_to='uploads/%Y/%m/%d/', null=True)
     localPosition = models.IntegerField(default=0)
-    module = models.ForeignKey(Module, on_delete=models.CASCADE, default = None)  # many-to-one
+    module = models.ForeignKey(
+        Module, on_delete=models.CASCADE, default=None)  # many-to-one
+
     def __str__(self):
         return self.name
+
     def updateLocalPostion(self, newLocalPostion):
         self.localPosition = newLocalPostion
         self.save()
+
+
+class Text(models.Model):
+    content = models.CharField(max_length=200, default=None, null=True)
+
 
 class Enrollment(models.Model):
     course = models.ForeignKey(Course, on_delete=models.CASCADE)  # many-to-one
@@ -329,5 +437,6 @@ class HistoryEnrollment(Enrollment):
 class CurrentEnrollment(Enrollment):
     current_module_num = models.IntegerField(default=1)
     current_component_num = models.IntegerField(default=1)
+
     def getInfo(self):
         return str(self.current_model_num) + '.' + str(self.current_component_num)

@@ -136,7 +136,7 @@
 
     function getCategoryInfo(category_id, category_name) {
         $('#content-alert').html("");
-        $('#content-title').html(category_name+"&nbsp;&nbsp;<button type=\"button\" class=\"btn btn-default\" onclick=\"deleteCategory(\'{{ category_name }}\')\">Delete</button>");
+        $('#content-title').html(category_name+"&nbsp;&nbsp;<button type=\"button\" class=\"btn btn-default\" onclick=\"deleteCategory(\'"+category_name+"\')\">Delete</button>");
         $.ajax({
             url : "/administrator/category/info/", // the endpoint
             type : "POST", // http method
@@ -184,6 +184,7 @@
         })
     }
     function deleteCategory(category_name) {
+        alert(category_name);
         $.ajax({
             url : "/administrator/category/delete/",
             type : "POST",
