@@ -139,12 +139,8 @@ def finish_create_component(request):
     component_content = request.POST['component_content']
     instructor = Instructor.objects.get(user__pk=request.user.id)
     numOfComponent = Component.objects.filter(module__pk=module_id).count()
-    if component_type != '4':
-        instructor.createComponent(
-            module_id, component_name, component_type, component_content, localPosition=numOfComponent + 1)
-    else:
-        instructor.createComponent(
-            module_id, component_name, component_type, component_content, localPosition=numOfComponent + 1)
+    instructor.createComponent(
+        module_id, component_name, component_type, component_content, localPosition=numOfComponent + 1)
     course_id = Module.objects.get(pk=module_id).course.id
     return course_info(request, course_id)
 
@@ -176,8 +172,6 @@ def close_course(request):
 
 @login_required
 def file_upload(request):
-    # if DEBUG:
-    # print(request.POST)
     module_id = request.POST['module_id']
     component_name = request.POST['component_create_name']
     component_type = request.POST['component_create_content_type'][0]
@@ -186,9 +180,9 @@ def file_upload(request):
     instructor = Instructor.objects.get(user__pk=request.user.id)
     numOfComponent = Component.objects.filter(module__pk=module_id).count()
     component = instructor.createComponent(
-        module_id, component_name, component_type, component_content, request.FILES, localPosition=numOfComponent + 1)
+        module_id, component_name, component_type, component_content, request.FILES['file'], localPosition=numOfComponent + 1)
     myfile = request.FILES['file']
-    component.content_file.save(myfile.name, myfile)
+    component.content_object.content_file.save(myfile.name, myfile)
     course_id = Module.objects.get(pk=module_id).course.id
     return course_info(request, course_id)
 
@@ -197,8 +191,8 @@ def file_upload(request):
 def file_download(request):
     component_id = request.GET['component_id']
     component = Component.objects.get(pk=component_id)
-    filename = component.content_file.name
-    myfile = open(component.content_file.path, "rb")
+    filename = component.content_object.content_file.name
+    myfile = open(component.content_object.content_file.path, "rb")
     response = HttpResponse(myfile, content_type='text/plain')
     response['Content-Disposition'] = 'attachment; filename=%s' % filename
     return response

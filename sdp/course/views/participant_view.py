@@ -93,8 +93,8 @@ def drop(request):
 def file_download(request):
     component_id = request.GET['component_id']
     component = Component.objects.get(pk=component_id)
-    filename = component.content_file.name
-    myfile = open(component.content_file.path, "rb")
+    filename = component.content_object.content_file.name
+    myfile = open(component.content_object.content_file.path, "rb")
     response = HttpResponse(myfile, content_type='text/plain')
     response['Content-Disposition'] = 'attachment; filename=%s' % filename
     return response

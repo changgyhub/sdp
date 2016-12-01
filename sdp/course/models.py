@@ -4,6 +4,9 @@ from django.contrib.auth.models import User
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth.models import Group
 from datetime import date
+from django.contrib.contenttypes.fields import GenericForeignKey
+from django.contrib.contenttypes.models import ContentType
+from django.contrib.contenttypes.fields import GenericRelation
 
 # auxiliary class
 # for encapsulate all direct operaions in database
@@ -40,9 +43,6 @@ class ParticipantControl(StaffControl):
     def viewParticipant(participant_id):
         participant = Participant.objects.get(user__pk=participant_id)
         return participant
-    # @staticmethod
-    # def viewHistoryEnrollment(course_id):
-    #     return HistoryEnrollment.objects.filter(course__id = course_id)
 
 
 class InstructorControl(StaffControl):
@@ -75,8 +75,8 @@ class CategoryControl():
         return menu
 
     @staticmethod
-    def deleteCategory(category_name):
-        category = Category.objects.get(name=category_name)
+    def deleteCategory(category_id):
+        category = Category.objects.get(id=category_id)
         num = Course.objects.filter(category=category).count()
         if num == 0:
             category.delete()
@@ -266,12 +266,26 @@ class Instructor(Staff):
 
     def createComponent(self, module_id, component_name, component_content_type, component_content, content_file=None, localPosition=0):
         parent_module = Module.objects.get(pk=module_id)
-        if component_content_type == 2:
-            component = Component.objects.create(name=component_name, content=component_content,
-                                                 content_type=component_content_type, module=parent_module, localPosition=localPosition)
-        else:
-            component = Component.objects.create(name=component_name, content=component_content,
-                                                 content_file=component_content, content_type=component_content_type, module=parent_module, localPosition=localPosition)
+        if component_content_type == '2':
+            text = Text.objects.create(content=component_content)
+            component = Component.objects.create(name=component_name, localPosition=localPosition,
+                                                 module=parent_module, content_type=component_content_type, content_object=text)
+        elif component_content_type == '4':
+            youtube = YouTube.objects.create(content=component_content)
+            component = Component.objects.create(name=component_name, localPosition=localPosition,
+                                                 module=parent_module, content_type=component_content_typef, content_object=youtube)
+        elif component_content_type == '1':
+            _file = File.objects.create(
+                content=component_content, content_file=content_file)
+            component = Component.objects.create(name=component_name, localPosition=localPosition,
+                                                 module=parent_module, content_type=component_content_type, content_object=_file)
+            return component
+
+        elif component_content_type == '3':
+            image = Image.objects.create(
+                content=component_content, content_file=content_file)
+            component = Component.objects.create(name=component_name, localPosition=localPosition,
+                                                 module=parent_module, content_type=component_content_type, content_object=image)
             return component
 
     def deleteComponent(self, component_id):
@@ -281,7 +295,6 @@ class Instructor(Staff):
         for component_ in Component.objects.filter(module__id=component.module.id, localPosition__gt=component.localPosition):
             component_.localPosition -= 1
             component_.save()
-        # assume that the course is already the instructor's
         component.delete()
 
     def deleteModule(self, module_id):
@@ -295,40 +308,21 @@ class Instructor(Staff):
 class Administrator(Staff):
 
     def viewCategories(self):
-        # menu = super(Administrator, self).viewCategories()
-        # for c in Category.objects.all():
-        #     menu[c] = Course.objects.filter(category=c).count()
-        # return menu
         return CategoryControl.viewCategories('Administrator', self)
 
     def createCategory(self, category_name):
-        # category = Category.objects.create(name=category_name)
         CategoryControl.addCategory(category_name)
 
-    def deleteCategory(self, category_name):
-        # category = Category.objects.get(name=category_name)
-        # num = Course.objects.filter(category=category).count()
-        # if num == 0:
-        #     category.delete()
-        #     return True
-        # else:
-        #     return False
-        return CategoryControl.deleteCategory(category_name)
+    def deleteCategory(self, category_id):
+        return CategoryControl.deleteCategory(category_id)
 
     def viewAllUsers(self):
-        # return User.objects.all()
         return InstructorControl.viewAllStaffs()
 
     def getUser(self, id):
-        # return User.objects.get(pk=id)
         return StaffControl.getUser(id)
 
     def getUserByName(self, name):
-        # try:
-        #     x = User.objects.get(username=name)
-        #     return x
-        # except User.DoesNotExist:
-        #     x = None
         return StaffControl.getUserByName(name)
 
     def designateInstructor(self, user):
@@ -383,19 +377,21 @@ class Module(models.Model):
 
 class Component(models.Model):
     name = models.CharField(max_length=200)
-    content = models.CharField(max_length=200, default=None, null=True)
+    localPosition = models.IntegerField(default=0)
+    module = models.ForeignKey(
+        Module, on_delete=models.CASCADE, default=None)  # many-to-one
     CONTENT_TYPES = (
         (u'1', u'File'),
         (u'2', u'Text'),
         (u'3', u'Image'),
         (u'4', u'YouTube'),
-    )  # need to be changed later on
+    )
     content_type = models.CharField(
         max_length=1, choices=CONTENT_TYPES, default=None)
-    content_file = models.FileField(upload_to='uploads/%Y/%m/%d/', null=True)
-    localPosition = models.IntegerField(default=0)
-    module = models.ForeignKey(
-        Module, on_delete=models.CASCADE, default=None)  # many-to-one
+    # Below the mandatory fields for generic relation
+    _content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
+    object_id = models.PositiveIntegerField()
+    content_object = GenericForeignKey('_content_type', 'object_id')
 
     def __str__(self):
         return self.name
@@ -406,6 +402,26 @@ class Component(models.Model):
 
 
 class Text(models.Model):
+    # component = GenericRelation(Component)
+    content = models.CharField(max_length=200, default=None, null=True)
+
+
+class File(models.Model):
+    # component = GenericRelation(Component)
+    content = models.CharField(max_length=200, default=None, null=True)
+    content_file = models.FileField(
+        upload_to='uploads/files/%Y/%m/%d/', null=True)
+
+
+class Image(models.Model):
+    # component = GenericRelation(Component)
+    content = models.CharField(max_length=200, default=None, null=True)
+    content_file = models.FileField(
+        upload_to='uploads/images/%Y/%m/%d/', null=True)
+
+
+class YouTube(models.Model):
+    # component = GenericRelation(Component)
     content = models.CharField(max_length=200, default=None, null=True)
 
 

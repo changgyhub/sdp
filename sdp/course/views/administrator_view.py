@@ -112,9 +112,9 @@ def category_create_finish(request):
 
 @login_required
 def category_delete(request):
-    category_name = request.POST['category_name']
+    category_id = request.POST['category_id']
     admin = Administrator.objects.get(user__pk=request.user.id)
-    if admin.deleteCategory(category_name):
+    if admin.deleteCategory(category_id):
         counts = admin.viewCategories()
         return render_to_response('administrator/delete_category_true.html', locals())
     else:

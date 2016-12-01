@@ -41,15 +41,15 @@
               </h3>
               <h5 class="panel-body">
                 {% if component.content_type == '3' %}
-                <a><img src="/participant/course/image/?path={{ component.content_file.url }}" alt="Not found" width="400"></img></a><p/>
+                <a href="/instructor/course/image/?path={{ component.content_object.content_file.url }}"><img src="/participant/course/image/?path={{ component.content_object.content_file.url }}" alt="Not found" width="400"></img></a><p/>
                 {% endif %}
                 {% if component.content_type == '4' %}
                 <div id="video-container">
-                    <iframe src="https://www.youtube.com/embed/{{component.content}}" allowfullscreen="allowfullscreen" mozallowfullscreen="mozallowfullscreen" msallowfullscreen="msallowfullscreen" oallowfullscreen="oallowfullscreen" webkitallowfullscreen="webkitallowfullscreen"></iframe>
+                    <iframe src="https://www.youtube.com/embed/{{component.content_object.content}}" allowfullscreen="allowfullscreen" mozallowfullscreen="mozallowfullscreen" msallowfullscreen="msallowfullscreen" oallowfullscreen="oallowfullscreen" webkitallowfullscreen="webkitallowfullscreen"></iframe>
                 </div><!--/#video-container-->
                 {% endif %}
                 {% if component.content_type != '4' %}
-                  {{component.content}}<p/>
+                  {{component.content_object.content}}<p/>
                 {% endif %}
               </h5>
             {% endif %}
@@ -83,15 +83,15 @@
               </h3>
               <h5 class="panel-body">
                 {% if component.content_type == '3' %}
-                <a><img src="/participant/course/image/?path={{ component.content_file.url }}" alt="Not found" width="400"></img></a><p/>
+                <a href="/instructor/course/image/?path={{ component.content_object.content_file.url }}"><img src="/participant/course/image/?path={{ component.content_object.content_file.url }}" alt="Not found" width="400"></img></a><p/>
                 {% endif %}
                 {% if component.content_type == '4' %}
                 <div id="video-container">
-                    <iframe src="https://www.youtube.com/embed/{{component.content}}" allowfullscreen="allowfullscreen" mozallowfullscreen="mozallowfullscreen" msallowfullscreen="msallowfullscreen" oallowfullscreen="oallowfullscreen" webkitallowfullscreen="webkitallowfullscreen"></iframe>
+                    <iframe src="https://www.youtube.com/embed/{{component.content_object.content}}" allowfullscreen="allowfullscreen" mozallowfullscreen="mozallowfullscreen" msallowfullscreen="msallowfullscreen" oallowfullscreen="oallowfullscreen" webkitallowfullscreen="webkitallowfullscreen"></iframe>
                 </div><!--/#video-container-->
                 {% endif %}
                 {% if component.content_type != '4' %}
-                  {{component.content}}<p/>
+                  {{component.content_object.content}}<p/>
                 {% endif %}
               </h5>
           {% endfor %}
