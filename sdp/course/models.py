@@ -273,7 +273,7 @@ class Instructor(Staff):
         elif component_content_type == '4':
             youtube = YouTube.objects.create(content=component_content)
             component = Component.objects.create(name=component_name, localPosition=localPosition,
-                                                 module=parent_module, content_type=component_content_typef, content_object=youtube)
+                                                 module=parent_module, content_type=component_content_type, content_object=youtube)
         elif component_content_type == '1':
             _file = File.objects.create(
                 content=component_content, content_file=content_file)
