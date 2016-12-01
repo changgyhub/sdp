@@ -99,6 +99,12 @@ def participant_info(request):
     current = participant.getCurrentInfo()
     if current:
         percentage = getProgress(participant, current)
+    if history:
+        historyList = []
+        for p, e in history.items():
+            temp = [p.name, p, e]
+            historyList.append(temp)
+        historyList.sort(key=getKey)
     return render_to_response('hr/participant_info.html', locals())
 
 def getProgress(participant, current):

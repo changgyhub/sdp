@@ -50,20 +50,20 @@
             </div>
             {% else %}
             <div class="panel-group" id="accordion">
-                {% for k, e in history.items %}
+                {% for k, p, e in historyList %}
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <h4 class="panel-title">
-                            <a data-toggle="collapse" data-parent="#accordion" href=#{{k}}>{{k}}
+                            <a data-toggle="collapse" data-parent="#accordion" href=#{{p.id}}>{{k}}
                                 <span class="pull-right">{{e}}</span>
                             </a>
                         </h4>
                     </div>
-                    <div id={{k}} class="panel-collapse collapse">
+                    <div id={{p.id}} class="panel-collapse collapse">
                         <div class="panel-body">
                             <ul>
-                                <p>Instructor: {{k.instructor}}</p>
-                                <p>Category: {{k.category}}</p>
+                                <p>Instructor: {{p.instructor}}</p>
+                                <p>Category: {{p.category}}</p>
                             </ul>
                         </div>
                     </div>
