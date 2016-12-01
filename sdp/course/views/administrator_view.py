@@ -108,7 +108,7 @@ def category_create_finish(request):
     category_name = request.POST['category_name']
     admin = Administrator.objects.get(user__pk=request.user.id)
     admin.createCategory(category_name)
-    return
+    return HttpResponse("Success")
 
 @login_required
 def category_delete(request):

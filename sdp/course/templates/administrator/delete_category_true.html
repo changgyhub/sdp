@@ -1,25 +1,31 @@
-
-<div class="row clearfix">
-    <div class="col-md-4 column">
-        <p  id="deleteC"></p>
-        <div class="alert alert-success alert-dismissable">
-            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-            <strong>Success!</strong> Successfully delete category
+<div class="row">
+        <div class="col-lg-3 col-md-4 col-sm-5">
+          <div class="col-sm-12">
+            <div class="alert alert-success alert-dismissable">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                <strong>Success!</strong><br>
+                The Category is successfully deleted.
+            </div>
+            <div class="sidebar portfolio-sidebar">
+                <div class="sidebar-item categories" id="category_bar">
+                    <h3>Categories</h3>
+                    <ul class="nav navbar-stacked">
+                      {% for category, num in counts.items %}
+                        <li><a onclick="getCategoryInfo('{{category.id}}', '{{category.name}}')">{{category.name}}<span class="pull-right">({{num}})</span></a></li>
+                      {% endfor %}
+                    </ul><br>
+                    <div id="button-create" ><button type="button" class="btn btn-default" onclick="createCategory()">Create new category</button></div>
+                </div>
+            </div>
+          </div>
         </div>
-        <h1 class="text-center">
-            Categories
-        </h1>
-        <ul class="nav navbar-stacked">
-            {% for category, num in counts.items %}
-                <li><a onclick="getCategoryInfo('{{category.id}}', '{{category.name}}')">{{category.name}}<span class="pull-right">({{num}})</span></a></li>
-            {% endfor %}
-        </ul>
-        <p></p>
-        <p class="text-center" id="button-create"><button type="button" class="btn btn-default" onclick="createCategory()">Create new category</button></p>
+        <div class="col-lg-9 col-md-8 col-sm-7">
+          <div class="col-sm-12">
+            <div class="row">
+                    <h1 id="content-title">Welcome!</h1>
+                    <div><div id="content-alert"></div></div>
+                    <div><div id="content-main"></div></div>
+                </div>
+            </div>
+        </div>
     </div>
-    <div class="col-md-8 column">
-        <h1 id="content-title">Welcome!</h1>
-        <div><div id="content-alert"></div></div>
-        <div><div id="content-main"></div></div>
-    </div>
-</div>

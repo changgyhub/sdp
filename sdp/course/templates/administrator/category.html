@@ -79,7 +79,7 @@
 <!--/#page-breadcrumb-->
 
 <section id="projects" class="padding-top">
-    <div class="container">
+    <div class="container" id="deleteC">
         <div class="row">
             <div class="col-lg-3 col-md-4 col-sm-5">
               <div class="col-sm-12">
@@ -90,7 +90,8 @@
                           {% for category, num in counts.items %}
                             <li><a onclick="getCategoryInfo('{{category.id}}', '{{category.name}}')">{{category.name}}<span class="pull-right">({{num}})</span></a></li>
                           {% endfor %}
-                        </ul>
+                        </ul><br>
+                        <div id="button-create" ><button type="button" class="btn btn-default" onclick="createCategory()">Create new category</button></div>
                     </div>
                 </div>
               </div>
@@ -161,7 +162,6 @@
             url : "/administrator/category/create/",
             type : "POST",
             data : {},
-
             success : function (response) {
                 $('#button-create').html(response);
             }
@@ -177,21 +177,17 @@
             data : {
                 'category_name' : $('#category_name').val(),
             },
-
             success : function (response){
-                {#            do nothint#}
             }
         })
     }
     function deleteCategory(category_name) {
-        alert(category_name);
         $.ajax({
             url : "/administrator/category/delete/",
             type : "POST",
             data : {
                 'category_name' : category_name,
             },
-
             success : function (response) {
                 $('#deleteC').html(response);
             }

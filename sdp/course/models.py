@@ -303,7 +303,7 @@ class Administrator(Staff):
 
     def createCategory(self, category_name):
         # category = Category.objects.create(name=category_name)
-        CategoryControl.createCategory(category_name)
+        CategoryControl.addCategory(category_name)
 
     def deleteCategory(self, category_name):
         # category = Category.objects.get(name=category_name)
