@@ -41,7 +41,7 @@
               </h3>
               <h5 class="panel-body">
                 {% if component.content_type == '3' %}
-                <a href="/instructor/course/image/?path={{ component.content_object.content_file.url }}"><img src="/participant/course/image/?path={{ component.content_object.content_file.url }}" alt="Not found" width="400"></img></a><p/>
+                <a href="/instructor/course/image/?path={{ component.content_object.content_file.url }}" target="_blank"><img src="/participant/course/image/?path={{ component.content_object.content_file.url }}" alt="Not found" width="400"></img></a><p/>
                 {% endif %}
                 {% if component.content_type == '4' %}
                 <div id="video-container">
@@ -62,6 +62,7 @@
 
 
     {% elif has_finished %}
+    <!-- <a class="btn btn-sm btn-warning" onclick="retake('{{course_id}}')">Retake</a> -->
     <h2 class="page-header">Progress&nbsp;</h2>
     <div class="progress">
       <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="{{percentage}}" aria-valuemin="0" aria-valuemax="100" style="width: {{percentage}}%">

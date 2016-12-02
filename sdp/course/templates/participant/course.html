@@ -219,21 +219,24 @@
     }
 
     function drop(course_id){
-      $.ajax({
-          url : "/participant/course/drop/", // the endpoint
-          type : "POST", // http method
-          data : { 'course_id' : course_id }, // data sent with the post request
-          // handle a successful response
-          success : function(response) {
-              $('#content-main').html(response);
-          },
-          // // handle a non-successful response
-          // error : function(xhr,errmsg,err) {
-          //     $('#results').html("<div class='alert-box alert radius' data-alert>Oops! We have encountered an error: "+errmsg+
-          //         " <a href='#' class='close'>&times;</a></div>"); // add the error to the dom
-          //     console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
-          // }
-      });
+      var ask=confirm("Drop the course will clear all the process that you has accumulated, are you sure?");
+      if (ask){
+        $.ajax({
+            url : "/participant/course/drop/", // the endpoint
+            type : "POST", // http method
+            data : { 'course_id' : course_id }, // data sent with the post request
+            // handle a successful response
+            success : function(response) {
+                $('#content-main').html(response);
+            },
+            // // handle a non-successful response
+            // error : function(xhr,errmsg,err) {
+            //     $('#results').html("<div class='alert-box alert radius' data-alert>Oops! We have encountered an error: "+errmsg+
+            //         " <a href='#' class='close'>&times;</a></div>"); // add the error to the dom
+            //     console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
+            // }
+        });
+      }
     }
 
 

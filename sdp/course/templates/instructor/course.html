@@ -361,6 +361,8 @@
     }
 
     function openCourse(course_id) {
+      var ask=confirm("open the course will unable your modification privilidge on this course, are you sure?");
+      if (ask){
         $.ajax({
             url : "/instructor/course/open/", // the endpoint
             type : "POST", // http method
@@ -373,6 +375,8 @@
             //     console.log('in error');
             // }
         });
+      }
+
     }
 
     function closeCourse(course_id) {
