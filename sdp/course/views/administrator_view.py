@@ -76,7 +76,10 @@ def priority(request):
             allUD = dict()
             allUsers.append(allUD)
             cnt+=1
-    num = range(len(allUsers))
+    if len(allUsers[cnt]) == 0:
+        num = range(len(allUsers)-1) 
+    else:
+        num = range(len(allUsers))
     return render_to_response('administrator/priority.html',locals())
 
 @register.filter
