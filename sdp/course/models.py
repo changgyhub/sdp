@@ -12,7 +12,7 @@ from django.contrib.contenttypes.fields import GenericRelation
 # for encapsulate all direct operaions in database
 
 
-class StaffControl():
+class Control():
 
     class Meta:
         abstract = True
@@ -30,7 +30,7 @@ class StaffControl():
             return None
 
 
-class ParticipantControl(StaffControl):
+class HRControl(Control):
 
     @staticmethod
     def viewAllParticipants():
@@ -45,7 +45,7 @@ class ParticipantControl(StaffControl):
         return participant
 
 
-class InstructorControl(StaffControl):
+class AdministratorControl(Control):
 
     @staticmethod
     def viewAllStaffs():
@@ -317,16 +317,16 @@ class Administrator(Staff):
         return CategoryControl.deleteCategory(category_id)
 
     def viewAllUsers(self):
-        return InstructorControl.viewAllStaffs()
+        return AdministratorControl.viewAllStaffs()
 
     def getUser(self, id):
-        return StaffControl.getUser(id)
+        return Control.getUser(id)
 
     def getUserByName(self, name):
-        return StaffControl.getUserByName(name)
+        return Control.getUserByName(name)
 
     def designateInstructor(self, user):
-        InstructorControl.designate(user)
+        AdministratorControl.designate(user)
 
 
 class HR(Staff):
@@ -336,10 +336,10 @@ class HR(Staff):
 
     def viewAllParticipants(self):
 
-        return ParticipantControl.viewAllParticipants()
+        return HRControl.viewAllParticipants()
 
     def viewParticipant(self, participant_id):
-        return ParticipantControl.viewParticipant(participant_id)
+        return HRControl.viewParticipant(participant_id)
 
 
 class Category(models.Model):
