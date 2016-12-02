@@ -30,6 +30,7 @@ urlpatterns = [
             ])),
             url(r'^moveup/', iv.moveup_module, name='instructor_moveup_module'),
             url(r'^movedown/', iv.movedown_module, name='instructor_movedown_module'),
+            url(r'^delete/', iv.delete_module, name='instructor_delete_module'),
         ])),
         url(r'^component/',include([
             url(r'^create/',include([

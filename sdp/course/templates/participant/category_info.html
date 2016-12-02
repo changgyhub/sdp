@@ -11,7 +11,7 @@
         {% for course in history_courses %}
         <h4><li class="list-group-item"><a onclick="getCourseInfo('{{course.id}}', '{{course.name}}')">{{course.name}} </a>by {{course.instructor}}</li></h4>
         {% endfor %}
-        <h2 class="page-header">Other Courses</h2>
+        <h2 class="page-header">All Courses</h2>
         {% for course in all_courses %}
         <h4><li class="list-group-item"><a onclick="getCourseInfo('{{course.id}}', '{{course.name}}')">{{course.name}} </a>by {{course.instructor}}</li></h4>
         {% endfor %}
