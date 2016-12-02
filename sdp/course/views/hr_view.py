@@ -113,6 +113,6 @@ def getProgress(participant, current):
     modules = collections.OrderedDict(sorted(menu['module'].items(), key=lambda x: x[0].localPosition))
     modules_total_cnt = len(modules)
     component_total_cnt = len(list(modules.items())[currentEnrollment.current_module_num-1][1])
-    percentage = 100 * (currentEnrollment.current_module_num - 1 + \
-        (currentEnrollment.current_component_num-1)/component_total_cnt) *(1/modules_total_cnt)
+    percentage = int(100 * (currentEnrollment.current_module_num - 1 + \
+        (currentEnrollment.current_component_num-1)/component_total_cnt) *(1/modules_total_cnt))
     return percentage
