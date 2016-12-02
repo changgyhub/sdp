@@ -41,28 +41,28 @@
                         {% if count_history > 10 %}
                             <div id="" style="overflow-y:scroll; overflow-x:hidden; height:500px;">
                         {% endif %}
-                        <div class="panel-group" id="accordion">
+                        <div class="panel-group" id="accordion-history">
                             {% for k, h in historyList %}
-                            <div class="panel panel-default">
-                                <div class="panel-heading">
-                                    <h4 class="panel-title">
-                                        <a data-toggle="collapse" data-parent="#accordion" href=#{{h.participant.user.id}}>{{k}}
-                                            <span class="pull-right">{{h.date_of_completion}}</span>
-                                        </a>
-                                    </h4>
-                                </div>
-                                <div id={{h.participant.user.id}} class="panel-collapse collapse">
-                                    <div class="panel-body">
-                                        <ul>
-                                            <span class="pull-right">
-                                                <a class="btn btn-md btn-warning" onclick="getParticipantInfo('{{h.participant.user.pk}}', '{{h.participant}}', '{{hr.user.pk}}', '{{course_id}}')">More</a>
-                                            </span>
-                                            <p>User ID: {{h.participant.user.id}}</p>
-                                            <p>Email: {{h.participant.user.email}}</p>
-                                        </ul>
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        <h4 class="panel-title">
+                                            <a data-toggle="collapse" data-parent="#accordion-history" href=#{{h.participant.user.id}}>{{k}}
+                                                <span class="pull-right">{{h.date_of_completion}}</span>
+                                            </a>
+                                        </h4>
+                                    </div>
+                                    <div id={{h.participant.user.id}} class="panel-collapse collapse">
+                                        <div class="panel-body">
+                                            <ul>
+                                                <span class="pull-right">
+                                                    <a class="btn btn-md btn-warning" onclick="getParticipantInfo('{{h.participant.user.pk}}', '{{h.participant}}', '{{hr.user.pk}}', '{{course_id}}')">More</a>
+                                                </span>
+                                                <p>User ID: {{h.participant.user.id}}</p>
+                                                <p>Email: {{h.participant.user.email}}</p>
+                                            </ul>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
                             {% endfor %}
                         </div>
                         {% if count_history > 10 %}
@@ -73,7 +73,6 @@
             </div>
             <div class="tab-pane fade" id="tab1-item3">
                 <h2>Current Participants</h2>
-                <div id="accordion-container">
                 <div class="panel-body">
                     {% if not current %}
                         <p>This course has no current participant.</p>
@@ -81,13 +80,13 @@
                         {% if count_current > 10 %}
                             <div id="" style="overflow-y:scroll; overflow-x:hidden; height:500px;">
                         {% endif %}
-                        <div class="panel-group" id="accordion">
+                        <div class="panel-group" id="accordion-current">
                             {% for k, c, progress in currentList %}
                                 <div class="panel panel-default">
                                     <div class="panel-heading">
                                         <h4 class="panel-title">
-                                            <a data-toggle="collapse" data-parent="#accordion" href=#{{c.participant.user.id}}>{{k}}
-                                              <span class="pull-right">{{progress}}% Completed</span>
+                                            <a data-toggle="collapse" data-parent="#accordion-current" href=#{{c.participant.user.id}}>{{k}}
+                                                <span class="pull-right">{{progress}}% Completed</span>
                                             </a>
                                         </h4>
                                     </div>
@@ -110,7 +109,6 @@
                         {% endif %}
                     {% endif %}
                 </div>
-              </div>
             </div>
         </div>
         <h4 class="page-header"></h4>

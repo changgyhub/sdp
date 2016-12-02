@@ -22,11 +22,11 @@
             <h4>This participant has no current enrollment.</h4>
         </div>
         {% else %}
-        <div class="panel-group" id="accordion">
+        <div class="panel-group" id="accordion-current">
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <h4 class="panel-title">
-                        <a data-toggle="collapse" data-parent="#accordion" href=#{{current}}>{{current}}
+                        <a data-toggle="collapse" data-parent="#accordion-current" href=#{{current}}>{{current}}
                               <span class="pull-right">{{percentage}}% Completed</span>
                         </a>
                     </h4>
@@ -42,19 +42,18 @@
             </div>
         </div>
         {% endif %}
-        <div id="accordion-container">
-            <h2 class="page-header">History Enrollment</h2>
-            {% if not history %}
-            <div class="panel-body">
-                <h4>This participant has no history enrollment.</h4>
-            </div>
-            {% else %}
-            <div class="panel-group" id="accordion">
-                {% for k, p, e in historyList %}
+        <h2 class="page-header">History Enrollment</h2>
+        {% if not history %}
+        <div class="panel-body">
+            <h4>This participant has no history enrollment.</h4>
+        </div>
+        {% else %}
+        <div class="panel-group" id="accordion-history">
+            {% for k, p, e in historyList %}
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <h4 class="panel-title">
-                            <a data-toggle="collapse" data-parent="#accordion" href=#{{p.id}}>{{k}}
+                            <a data-toggle="collapse" data-parent="#accordion-history" href=#{{p.id}}>{{k}}
                                 <span class="pull-right">{{e}}</span>
                             </a>
                         </h4>
@@ -68,10 +67,9 @@
                         </div>
                     </div>
                 </div>
-                {% endfor %}
-            </div>
-            {% endif %}
+            {% endfor %}
         </div>
+        {% endif %}
     </div>
     {% if course.id > 0 %}
     <div>
