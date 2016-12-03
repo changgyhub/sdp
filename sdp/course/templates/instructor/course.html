@@ -112,9 +112,20 @@
                 <div class="col-lg-9 col-md-8 col-sm-7" id="right_bar">
                   <div class="col-sm-12">
                     <div class="row">
-                        <h1 id="content-title">Welcome!</h1>
+                        <h1 id="content-title">My Courses</h1>
                         <div><div id="content-alert"></div></div>
-                        <div><div id="content-main"></div></div>
+                        <div><div id="content-main"></div>
+                        <div class="portfolio-item branded logos portfolio-wrapper">
+                              <ul class="list-group">
+                                {% for course in mycourses %}
+                                <h4><li class="list-group-item"><a onclick="getCourseInfo('{{course.id}}', '{{course.name}}')">{{course.name}}</a>
+                                  &nbsp;-&nbsp;{% if course.is_open %}open{% else %}closed{% endif %}
+                                </li></h4>
+                                {% endfor %}
+                              </ul>
+                        </div>
+
+                        </div>
                         <!-- <div class="portfolio-pagination">
                             <ul class="pagination">
                               <li><a href="#">left</a></li>

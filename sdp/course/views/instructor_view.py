@@ -36,6 +36,7 @@ def index(request):
 def course(request):
     instructor = Instructor.objects.get(user__pk=request.user.id)
     counts = instructor.viewCategories()
+    mycourses = Course.objects.filter(instructor=instructor)
     return render_to_response('instructor/course.html', locals())
 
 

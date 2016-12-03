@@ -32,6 +32,11 @@ def index(request):
 def course(request):
     participant = Participant.objects.get(user__pk=request.user.id)
     counts = participant.viewCategories()
+    if CurrentEnrollment.objects.filter(participant__id = participant.id, course__is_open = True).exists():
+        current_course = CurrentEnrollment.objects.get(participant__id = participant.id, course__is_open = True).course
+        has_current_course = True
+    else:
+        has_current_course = False
     return render_to_response('participant/course.html', locals())
 
 @login_required

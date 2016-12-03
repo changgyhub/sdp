@@ -112,9 +112,21 @@
                 <div class="col-lg-9 col-md-8 col-sm-7">
                   <div class="col-sm-12">
                     <div class="row">
-                        <h1 id="content-title">Welcome!</h1>
+                        <h1 id="content-title">Currently Enrolled</h1>
                         <div><div id="content-alert"></div></div>
-                        <div><div id="content-main"></div></div>
+                        <div><div id="content-main">
+                          <div class="portfolio-item branded logos portfolio-wrapper">
+                              <h4 class="portfolio-info">
+                                <ul class="list-group">
+                                  {% if has_current_course%}
+                                    <h4><li class="list-group-item"><a onclick="getCourseInfo('{{current_course.id}}', '{{current_course.name}}')">{{current_course.name}} </a>by {{current_course.instructor}}</li></h4>
+                                  {% else %}
+                                    <h4>None.</h4>
+                                  {% endif %}
+                                </ul>
+                              </h4>
+                          </div>
+                        </div></div>
                         <!-- <div class="portfolio-pagination">
                             <ul class="pagination">
                               <li><a href="#">left</a></li>
