@@ -20,7 +20,7 @@
       {% for module, components in modules.items %}
           <h2 class="page-header" style="color: #686868;">
               Module {{ forloop.counter }}: {{module.name}}&nbsp;&nbsp;
-                <a data-toggle="collapse" data-parent="#accordion" href="#collapse{{module.id}}">Collapse</a>&nbsp;
+                <a data-toggle="collapse" style="font-size:18px;"data-parent="#accordion" href="#collapse{{module.id}}">Collapse</a>&nbsp;
               {% if not is_open %}
                 <a class="btn btn-sm btn-success" style="color:#FFFFFF" onclick="createComponent('{{module.id}}','{{module.name}}')">Add Component</a>
                 <a class="btn btn-sm btn-danger" style="color:#FFFFFF" onclick="deleteModule('{{module.id}}')">Delete</a>
@@ -31,7 +31,6 @@
                 <a class="btn btn-sm" onclick="moveDownModule('{{module.id}}')"><i class="glyphicon glyphicon-arrow-down"></i></a>
                 {% endif %}
               {% endif %}
-
           </h2>
           <div id="collapse{{module.id}}" class="panel-collapse collapse in">
             {% for component in components|dictsort:"localPosition"%}
@@ -41,7 +40,7 @@
                 <a class="btn btn-sm" href="/instructor/component/download/?component_id={{component.id}}"><i class="glyphicon glyphicon-save"></i></a>
                 {% endif %}
               {% if not is_open %}
-                &nbsp;<a class="btn btn-sm btn-danger" style="color:#FFFFFF" onclick="deleteComponent('{{course_id}}','{{component.id}}')">Delete</a>
+                &nbsp;&nbsp;<a class="btn btn-sm btn-danger" style="color:#FFFFFF" onclick="deleteComponent('{{course_id}}','{{component.id}}')">Delete</a>
                 {% if component.localPosition != 1%}
                 <a class="btn btn-sm" onclick="moveUpComponent('{{component.id}}')"><i class="glyphicon glyphicon-arrow-up"></i></a>
                 {% endif %}

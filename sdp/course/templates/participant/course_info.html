@@ -19,7 +19,7 @@
         <h2 class="page-header" style="color: #686868;">
             {% if enrollment.current_module_num >= forloop.counter%}
               Module {{ forloop.counter }}: {{module.name}}&nbsp;&nbsp;
-              <a data-toggle="collapse" data-parent="#accordion" href="#collapse{{module.id}}">Collapse</a>&nbsp;
+              <a data-toggle="collapse" data-parent="#accordion" style="font-size:18px;" href="#collapse{{module.id}}">Collapse</a>&nbsp;
             {% else %}
               <div style="color: #C0C0C0;"> Module {{ forloop.counter }}: {{module.name}}&nbsp;&nbsp;</div>
             {% endif %}
@@ -36,7 +36,7 @@
                 {% endif %}
                 {% if enrollment.current_module_num == forloop.parentloop.counter and enrollment.current_component_num == forloop.counter %}
                   {% if component.content_type != '1' %}&nbsp;{% endif %}
-                <a onclick="finishComponent('{{course_id}}', '{{enrollment.id}}', '{{forloop.parentloop.counter}}', '{{forloop.counter}}', '{{modules_total_cnt}}', '{{component_total_cnt}}')">Finish</a>
+                <a style="font-size:18px;" onclick="finishComponent('{{course_id}}', '{{enrollment.id}}', '{{forloop.parentloop.counter}}', '{{forloop.counter}}', '{{modules_total_cnt}}', '{{component_total_cnt}}')">Finish</a>
                 {% endif %}
               </h3>
               <h5 class="panel-body">
@@ -73,7 +73,7 @@
         {% for module, components in modules.items %}
         <h2 class="page-header" style="color: #686868;">
               Module {{ forloop.counter }}: {{module.name}}&nbsp;&nbsp;
-              <a data-toggle="collapse" data-parent="#accordion" href="#collapse{{module.id}}">Collapse</a>&nbsp;
+              <a data-toggle="collapse" style="font-size:18px;" data-parent="#accordion" href="#collapse{{module.id}}">Collapse</a>&nbsp;
         </h3>
         <div id="collapse{{module.id}}" class="panel-collapse collapse in">
           {% for component in components|dictsort:"localPosition"%}
