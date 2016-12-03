@@ -37,7 +37,7 @@
               <h4 class="page-header" style="color: #686868;">
                 Component {{forloop.parentloop.counter}}.{{ forloop.counter }}: {{component.name}}
                 {% if component.content_type == '1' %}
-                <a class="btn btn-sm" href="/instructor/component/download/?component_id={{component.id}}"><i class="glyphicon glyphicon-save"></i></a>
+                <a class="btn btn-sm" href="/instructor/component/download/?component_id={{component.id}}">Download&nbsp;&nbsp;<i class="glyphicon glyphicon-save"></i></a>
                 {% endif %}
               {% if not is_open %}
                 &nbsp;&nbsp;<a class="btn btn-sm btn-danger" style="color:#FFFFFF" onclick="deleteComponent('{{course_id}}','{{component.id}}')">Delete</a>
@@ -48,7 +48,7 @@
                 <a class="btn btn-sm" onclick="moveDownComponent('{{component.id}}')"><i class="glyphicon glyphicon-arrow-down"></i></a></h4>
                 {% endif %}
               {% endif %}
-              <h5 class="panel-body">
+              <h5 class="panel-body" style="color: #686868; font-family: 'Times New Roman', Times, serif;font-size:15;">
                 {% if component.content_type == '3' %}
                 <!-- we load the image -->
                 <a href="/instructor/course/image/?path={{ component.content_object.content_file.url }}" target="_blank"><img src="/instructor/course/image/?path={{ component.content_object.content_file.url }}" alt="Not found" width="400"></img></a><p/>
@@ -59,7 +59,7 @@
                 </div><!--/#video-container-->
                 {% endif %}
                 {% if component.content_type != '4' %}
-                  {{component.content_object.content}}<p/>
+                  {{component.content_object.content|linebreaks}}<p/>
                 {% endif %}
               </h5>
             {% endfor %}

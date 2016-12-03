@@ -12,7 +12,7 @@ from django.contrib.contenttypes.fields import GenericRelation
 # for encapsulate all direct operaions in database
 
 
-class Control():
+class StaffControl():
 
     class Meta:
         abstract = True
@@ -30,7 +30,7 @@ class Control():
             return None
 
 
-class HRControl(Control):
+class HRControl(StaffControl):
 
     @staticmethod
     def viewAllParticipants():
@@ -45,7 +45,7 @@ class HRControl(Control):
         return participant
 
 
-class AdministratorControl(Control):
+class AdministratorControl(StaffControl):
 
     @staticmethod
     def viewAllStaffs():
@@ -320,10 +320,10 @@ class Administrator(Staff):
         return AdministratorControl.viewAllStaffs()
 
     def getUser(self, id):
-        return Control.getUser(id)
+        return StaffControl.getUser(id)
 
     def getUserByName(self, name):
-        return Control.getUserByName(name)
+        return StaffControl.getUserByName(name)
 
     def designateInstructor(self, user):
         AdministratorControl.designate(user)
@@ -403,26 +403,26 @@ class Component(models.Model):
 
 class Text(models.Model):
     # component = GenericRelation(Component)
-    content = models.CharField(max_length=200, default=None, null=True)
+    content = models.TextField()
 
 
 class File(models.Model):
     # component = GenericRelation(Component)
-    content = models.CharField(max_length=200, default=None, null=True)
+    content = models.TextField()
     content_file = models.FileField(
         upload_to='uploads/files/%Y/%m/%d/', null=True)
 
 
 class Image(models.Model):
     # component = GenericRelation(Component)
-    content = models.CharField(max_length=200, default=None, null=True)
+    content = models.TextField()
     content_file = models.FileField(
         upload_to='uploads/images/%Y/%m/%d/', null=True)
 
 
 class YouTube(models.Model):
     # component = GenericRelation(Component)
-    content = models.CharField(max_length=200, default=None, null=True)
+    content = models.TextField()
 
 
 class Enrollment(models.Model):

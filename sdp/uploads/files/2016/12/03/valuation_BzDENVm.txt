@@ -1,0 +1,5 @@
+asset valuation
+historical earnings valuation
+future maintainable earnings valuation
+relative valuation (comparable company and comparable transactions)
+discounted cash flow (DCF) valuation
