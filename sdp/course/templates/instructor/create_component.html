@@ -45,21 +45,20 @@
                 '<textarea  rows=\"4\" type=\"text\" id=\"component_create_content\" class=\"form-group form-control\" required placeholder=\"please give a short discription\"></textarea>'
             );
             $('#component_create_content_file').html('<label class="myLabel"><input type=\"file\" name=\"upload_file\" required/></label>');
-            $('input[type=file]').on('change', prepareUpload);
             $('#submitbutton').html('<input class=\"btn btn-warning\" onclick=\"finishCreateComponentFile(\'{{module.id}}\')\" value=\"Submit\">');
+            $('input[type=file]').on('change', prepareUpload);
 
-            function prepareUpload(event) {
-                files = event.target.files;
-            }
+
 
         }
 
     }
-
+    function prepareUpload(event) {
+        files = event.target.files;
+    }
     function finishCreateComponentFile(module_id) {
-        // START A LOADING SPINNER HERE
-
         // Create a formdata object and add the files
+        alert(files[0].name);
         var file_data = new FormData();
         file_data.append('file', files[0]);
         file_data.append('module_id', module_id);
@@ -76,7 +75,7 @@
             contentType: false, // Set content type to false as jQuery will tell the server its a query string request
             success: function(data) {
                 $("#content-main").html(data);
-
+                files = undefined;
             },
             error: function() {
                 // Handle errors here

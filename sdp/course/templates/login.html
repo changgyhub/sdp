@@ -19,6 +19,23 @@
   <div id="midground" class="wall"></div>
   <div id="foreground" class="wall"></div>
 
+
+
+  {% if duplicate_username %}
+  <script>
+    alert("the username has been used, please choose another one");
+    // register();
+  </script>
+  {% endif %}
+
+  {% if invalid_username %}
+  <script>
+    alert("the username should have length 8 and can only contain digits, letters, underscore and dash");
+    register();
+  </script>
+  {% endif %}
+
+
   {% if password_is_wrong %}
       <script>
         alert("Wrong password. Please try again.");
@@ -112,9 +129,12 @@
               $('#reg-lastname').val("");
               backToLogin();
               $('#username').val(new_username);
-            } else {
-              // something went wrong
-              alert(data);
+            }
+            else {
+              // something went wrong so render again
+              var newDoc = document.open("text/html", "replace");
+              newDoc.write(data);
+              newDoc.close();
             }
           },
           // // handle a non-successful response
@@ -137,6 +157,11 @@
 
 
   </script>
+  {% if register_again %}
+  <script>
+    register();
+  </script>
+  {% endif %}
 
 </body>
 </html>

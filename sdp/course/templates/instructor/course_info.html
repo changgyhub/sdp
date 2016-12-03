@@ -22,16 +22,14 @@
               Module {{ forloop.counter }}: {{module.name}}&nbsp;&nbsp;
                 <a data-toggle="collapse" data-parent="#accordion" href="#collapse{{module.id}}">Collapse</a>&nbsp;
               {% if not is_open %}
-                <a class="btn btn-sm btn-info" style="color:#FFFFFF" onclick="createComponent('{{module.id}}','{{module.name}}')">Add Component</a>
-                <a class="btn btn-sm btn-info" style="color:#FFFFFF" onclick="deleteModule('{{module.id}}')">Delete</a>
-                <div align="right" id="right-indent">
+                <a class="btn btn-sm btn-success" style="color:#FFFFFF" onclick="createComponent('{{module.id}}','{{module.name}}')">Add Component</a>
+                <a class="btn btn-danger" style="color:#FFFFFF" onclick="deleteModule('{{module.id}}')">Delete</a>
                 {% if module.localPosition != 1%}
                   <a class="btn btn-md" onclick="moveUpModule('{{module.id}}')"><i class="glyphicon glyphicon-arrow-up"></i></a>
                 {% endif %}
                 {% if module.localPosition != modules|length %}
                 <a class="btn btn-md" onclick="moveDownModule('{{module.id}}')"><i class="glyphicon glyphicon-arrow-down"></i></a>
                 {% endif %}
-                </div>
               {% endif %}
 
           </h2>
@@ -43,7 +41,7 @@
                 <a class="btn btn-md" href="/instructor/component/download/?component_id={{component.id}}"><i class="glyphicon glyphicon-save"></i></a>
                 {% endif %}
               {% if not is_open %}
-                <a class="btn btn-sm btn-info" style="color:#FFFFFF" onclick="deleteComponent('{{course_id}}','{{component.id}}')">Delete</a>
+                <a class="btn btn-danger" style="color:#FFFFFF" onclick="deleteComponent('{{course_id}}','{{component.id}}')">Delete</a>
                 {% if component.localPosition != 1%}
                 <a class="btn btn-md" onclick="moveUpComponent('{{component.id}}')"><i class="glyphicon glyphicon-arrow-up"></i></a>
                 {% endif %}

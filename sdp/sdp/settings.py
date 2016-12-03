@@ -54,7 +54,7 @@ MIDDLEWARE = [
 ]
 
 SESSION_EXPIRE_AT_BROWSER_CLOSE = False
-SESSION_COOKIE_AGE = 120 * 60 # 120 minutes auto-logout
+SESSION_COOKIE_AGE = 60 * 24 * 60 # one day auto-logout
 
 LOGIN_URL = '/'
 

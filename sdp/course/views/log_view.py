@@ -8,6 +8,7 @@ from ..models import Staff, Course, Instructor, Participant, Administrator, HR
 from django.contrib.auth.models import User
 from django.contrib.auth.models import Group
 from . import instructor_view as iv, participant_view as pv, administrator_view as av, hr_view as hv
+import re
 #from django.views.decorators.csrf import csrf_protect, csrf_exempt
 #from django.template.context_processors import csrf
 
@@ -113,7 +114,9 @@ def participant_registration(request):
     first_name = request.POST['firstname']
     last_name = request.POST['lastname']
     if Participant.objects.filter(user__username=username).exists():
-        return render_to_response('registration.html', RequestContext(request, {'form': form, 'duplicate_username': True}))
+        return render_to_response('login.html', RequestContext(request, {'duplicate_username': True, 'register_again': True}))
+    if len(username) != 8 or re.match("^[a-zA-Z0-9_.]+$", username) is None:
+        return render_to_response('login.html', RequestContext(request, {'invalid_username': True, 'register_again': True}))
     user = User.objects.create_user(
         username=username, password=password, first_name=first_name, last_name=last_name)
     g = Group.objects.get(name='Participant')
