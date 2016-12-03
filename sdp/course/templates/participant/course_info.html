@@ -32,7 +32,7 @@
             {% else %}
               <h3>Component {{forloop.parentloop.counter}}.{{ forloop.counter }}: {{component.name}}
                 {% if component.content_type == '1' %}
-                <a class="btn btn-md" href="/participant/component/download/?component_id={{component.id}}"><i class="glyphicon glyphicon-save"></i></a>
+                <a class="btn btn-sm" href="/participant/component/download/?component_id={{component.id}}"><i class="glyphicon glyphicon-save"></i></a>
                 {% endif %}
                 {% if enrollment.current_module_num == forloop.parentloop.counter and enrollment.current_component_num == forloop.counter %}
                   {% if component.content_type != '1' %}&nbsp;{% endif %}
@@ -79,7 +79,7 @@
           {% for component in components|dictsort:"localPosition"%}
             <h3>Component {{forloop.parentloop.counter}}.{{ forloop.counter }}: {{component.name}}
                 {% if component.content_type == '1' %}
-                <a class="btn btn-md" href="/participant/component/download/?component_id={{component.id}}"><i class="glyphicon glyphicon-save"></i></a>
+                <a class="btn btn-sm" href="/participant/component/download/?component_id={{component.id}}"><i class="glyphicon glyphicon-save"></i></a>
                 {% endif %}
               </h3>
               <h5 class="panel-body">

@@ -23,12 +23,12 @@
                 <a data-toggle="collapse" data-parent="#accordion" href="#collapse{{module.id}}">Collapse</a>&nbsp;
               {% if not is_open %}
                 <a class="btn btn-sm btn-success" style="color:#FFFFFF" onclick="createComponent('{{module.id}}','{{module.name}}')">Add Component</a>
-                <a class="btn btn-danger" style="color:#FFFFFF" onclick="deleteModule('{{module.id}}')">Delete</a>
+                <a class="btn btn-sm btn-danger" style="color:#FFFFFF" onclick="deleteModule('{{module.id}}')">Delete</a>
                 {% if module.localPosition != 1%}
-                  <a class="btn btn-md" onclick="moveUpModule('{{module.id}}')"><i class="glyphicon glyphicon-arrow-up"></i></a>
+                  <a class="btn btn-sm" onclick="moveUpModule('{{module.id}}')"><i class="glyphicon glyphicon-arrow-up"></i></a>
                 {% endif %}
                 {% if module.localPosition != modules|length %}
-                <a class="btn btn-md" onclick="moveDownModule('{{module.id}}')"><i class="glyphicon glyphicon-arrow-down"></i></a>
+                <a class="btn btn-sm" onclick="moveDownModule('{{module.id}}')"><i class="glyphicon glyphicon-arrow-down"></i></a>
                 {% endif %}
               {% endif %}
 
@@ -38,15 +38,15 @@
               <h4 class="page-header" style="color: #686868;">
                 Component {{forloop.parentloop.counter}}.{{ forloop.counter }}: {{component.name}}
                 {% if component.content_type == '1' %}
-                <a class="btn btn-md" href="/instructor/component/download/?component_id={{component.id}}"><i class="glyphicon glyphicon-save"></i></a>
+                <a class="btn btn-sm" href="/instructor/component/download/?component_id={{component.id}}"><i class="glyphicon glyphicon-save"></i></a>
                 {% endif %}
               {% if not is_open %}
-                <a class="btn btn-danger" style="color:#FFFFFF" onclick="deleteComponent('{{course_id}}','{{component.id}}')">Delete</a>
+                &nbsp;<a class="btn btn-sm btn-danger" style="color:#FFFFFF" onclick="deleteComponent('{{course_id}}','{{component.id}}')">Delete</a>
                 {% if component.localPosition != 1%}
-                <a class="btn btn-md" onclick="moveUpComponent('{{component.id}}')"><i class="glyphicon glyphicon-arrow-up"></i></a>
+                <a class="btn btn-sm" onclick="moveUpComponent('{{component.id}}')"><i class="glyphicon glyphicon-arrow-up"></i></a>
                 {% endif %}
                 {% if component.localPosition != components|length %}
-                <a class="btn btn-md" onclick="moveDownComponent('{{component.id}}')"><i class="glyphicon glyphicon-arrow-down"></i></a></h4>
+                <a class="btn btn-sm" onclick="moveDownComponent('{{component.id}}')"><i class="glyphicon glyphicon-arrow-down"></i></a></h4>
                 {% endif %}
               {% endif %}
               <h5 class="panel-body">
