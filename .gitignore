@@ -4,7 +4,6 @@ __pycache__/
 *$py.class
 .DS_Store
 migrations/
-uploads/
 
 # C extensions
 *.so
@@ -93,4 +92,4 @@ ENV/
 .ropeproject
 
 # database file
-db.sqlite3
+# db.sqlite3
