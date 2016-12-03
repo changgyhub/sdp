@@ -162,12 +162,6 @@ def open_course(request):
     return course_info(request, course_id, success)
 
 
-@login_required
-def close_course(request):
-    course_id = request.POST['course_id']
-    instructor = Instructor.objects.get(user__pk=request.user.id)
-    instructor.closeCourse(course_id)
-    return course_info(request, course_id)
 
 
 @login_required

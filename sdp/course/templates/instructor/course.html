@@ -378,22 +378,6 @@
 
     }
 
-    function closeCourse(course_id) {
-        $.ajax({
-            url : "/instructor/course/close/", // the endpoint
-            type : "POST", // http method
-            data : { 'course_id' : course_id }, // data sent with the post request
-            // handle a successful response
-            success : function(response) {
-            // unable the close regiestration button
-                $('#content-main').html(response);
-            },
-            // error:function(){
-            //     console.log('in error');
-            // }
-        });
-    }
-
     function deleteComponent(course_id, component_id) {
         var ask=confirm("Are you sure to delete this component?");
         if (ask){
