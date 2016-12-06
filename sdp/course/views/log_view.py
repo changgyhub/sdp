@@ -115,7 +115,7 @@ def participant_registration(request):
     last_name = request.POST['lastname']
     if Participant.objects.filter(user__username=username).exists():
         return render_to_response('login.html', RequestContext(request, {'duplicate_username': True, 'register_again': True}))
-    if len(username) != 8 or re.match("^[a-zA-Z0-9_.]+$", username) is None:
+    if len(username) != 8 or re.match("^[a-zA-Z0-9_\-]+$", username) is None:
         return render_to_response('login.html', RequestContext(request, {'invalid_username': True, 'register_again': True}))
     user = User.objects.create_user(
         username=username, password=password, first_name=first_name, last_name=last_name)
