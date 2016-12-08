@@ -400,30 +400,24 @@ class Component(models.Model):
         self.localPosition = newLocalPostion
         self.save()
 
-
-class Text(models.Model):
-    # component = GenericRelation(Component)
+class Content(models.Model):
     content = models.TextField()
 
+class Text(Content):
+    encoding = models.CharField(max_length=100, null=True)
 
-class File(models.Model):
-    # component = GenericRelation(Component)
-    content = models.TextField()
+class File(Content):
     content_file = models.FileField(
         upload_to='uploads/files/%Y/%m/%d/', null=True)
 
 
-class Image(models.Model):
-    # component = GenericRelation(Component)
-    content = models.TextField()
+class Image(Content):
     content_file = models.FileField(
         upload_to='uploads/images/%Y/%m/%d/', null=True)
 
 
-class YouTube(models.Model):
-    # component = GenericRelation(Component)
-    content = models.TextField()
-
+class YouTube(Content):
+    description = models.CharField(max_length=100, null=True)
 
 class Enrollment(models.Model):
     course = models.ForeignKey(Course, on_delete=models.CASCADE)  # many-to-one
