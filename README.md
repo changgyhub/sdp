@@ -2,6 +2,10 @@
 
 A small, fast and elegant course learning platform designed for Schools and Companies.
 
+### Demo
+http://staffdp.herokuapp.com/<br>
+You may sign up as a new staff in the login page.<br>
+
 ### Designer
 [Gao Chang, Ellison](http://hk.linkedin.com/in/irsisyphus "linkedin")<br>
 Huang Qingwei<br>
