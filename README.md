@@ -7,7 +7,7 @@ http://staffdp.herokuapp.com/<br>
 You may sign up as a new staff in the login page.<br>
 
 ### Designer
-[Gao Chang, Ellison](http://hk.linkedin.com/in/irsisyphus "linkedin")<br>
+[Gao Chang](http://hk.linkedin.com/in/irsisyphus "linkedin")<br>
 Huang Qingwei<br>
 Wang Haicheng, Bill<br>
 Yan Kai<br>
