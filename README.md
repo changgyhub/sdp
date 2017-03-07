@@ -1,6 +1,6 @@
 # Staff Development Platform
 
-<img src="https://github.com/irsisyphus/pictures/raw/master/sdp/logo.png" alt="logo" />
+<img src="https://github.com/irsisyphus/pictures/raw/master/sdp/logo.png" width=100 alt="logo" />
 
 A small, fast and elegant course learning platform designed for Schools and Companies.
 
