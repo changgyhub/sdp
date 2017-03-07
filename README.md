@@ -7,10 +7,10 @@ http://staffdp.herokuapp.com/<br>
 You may sign up as a new staff in the login page.<br>
 
 ### Designer
-[Gao Chang](http://hk.linkedin.com/in/irsisyphus "linkedin")<br>
-Huang Qingwei<br>
-Wang Haicheng, Bill<br>
-Yan Kai<br>
+[Chang Gao](https://www.linkedin.com/in/irsisyphus "linkedin")<br>
+[Qingwei Huang](https://github.com/hqwhuang)<br>
+[Haicheng Wang](https://github.com/whcacademy)<br>
+[Kai Yan](https://github.com/Yan1996)<br>
 
 
 ### Disclaimer
