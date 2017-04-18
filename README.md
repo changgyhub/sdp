@@ -4,7 +4,7 @@
 A small, fast and elegant course learning platform designed for Schools and Companies.
 
 ### Demo
-http://staffdp.herokuapp.com/<br>
+https://staffdp.herokuapp.com/<br>
 You may sign up as a new staff in the login page.<br>
 
 ### Designer
