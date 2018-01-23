@@ -28,5 +28,5 @@ Triangle theme of [themeum](http://www.themeum.com "themeum").
 #### Online
 Fonts from [google](http://fonts.googleapis.com "googleapis").
 
-### Notes
-* Do not copy contents of this repo for course assignments. You should take the responsibility for any form of plagiarism.
+### Note
+Do not copy contents of this repo for course assignments. You should take the responsibility for any form of plagiarism.
