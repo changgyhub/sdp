@@ -22,9 +22,11 @@ We make no representations or warranties of any kind, express or implied, about 
 All static css, fonts, images and web templates are correctly referenced either in the header of the file or at the bottom of this README.<br>
 
 
-
 ### Reference
 #### Offline
 Triangle theme of [themeum](http://www.themeum.com "themeum").
 #### Online
 Fonts from [google](http://fonts.googleapis.com "googleapis").
+
+### Notes
+* Do not copy contents of this repo for course assignments. You should take the responsibility for any form of plagiarism.
